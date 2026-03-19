@@ -1,0 +1,383 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  const vehicles = [
+    { slug: 'shortfork', name: 'SHORT FORK', base: "'99 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '210kg', style: 'Bobber', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000 },
+    { slug: 'saxeflames', name: 'SAXE FLAMES', base: "'97 XLH883", trans: '5-Speed', tank: '7L', tires: 'F19 / R16', weight: '195kg', style: 'Chopper', builder: '@ryoske.14', painter: 'TBD', dayPrice: 25000, multiPrice: 60000 },
+    { slug: 'hellfire', name: 'HELL FIRE', base: "'88 XLH883", trans: '4-Speed', tank: '8L', tires: 'F19 / R16', weight: '200kg', style: 'Chopper', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000 },
+    { slug: 'leopard', name: 'LEOPARD', base: "'99 XLH1200", trans: '5-Speed', tank: '6L', tires: 'F21 / R18', weight: '210kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000 },
+    { slug: 'bruno', name: 'BRUNO', base: "'91 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '205kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 22000, multiPrice: 55000 },
+    { slug: 'gladiator', name: 'GLADIATOR', base: "'99 XL1200", trans: '5-Speed', tank: '8L', tires: 'F21 / R16', weight: '215kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000 },
+  ];
+
+  return vehicles.map((v, i) => ({
+    params: { slug: v.slug },
+    props: { vehicle: v, index: i + 1, total: vehicles.length },
+  }));
+}
+
+const { vehicle, index } = Astro.props;
+
+const dayPriceFormatted = vehicle.dayPrice.toLocaleString();
+const multiPriceFormatted = vehicle.multiPrice.toLocaleString();
+
+const hasBuilder = vehicle.builder.startsWith('@');
+const builderHandle = hasBuilder ? vehicle.builder : null;
+const builderUrl = hasBuilder ? `https://instagram.com/${vehicle.builder.slice(1)}` : null;
+
+const specs = [
+  { label: 'BASE', value: vehicle.base },
+  { label: 'TRANSMISSION', value: vehicle.trans },
+  { label: 'FUEL TANK', value: vehicle.tank },
+  { label: 'TIRES', value: vehicle.tires },
+  { label: 'WEIGHT', value: vehicle.weight },
+  { label: 'STYLE', value: vehicle.style },
+];
+---
+
+<BaseLayout title={vehicle.name + " — BEETLE RIDER"} activePage="chopper" headerLogo="chopper">
+
+  <!-- Back Link -->
+  <div class="pt-[calc(80px+24px)] px-6 md:px-10 max-w-[1200px] mx-auto">
+    <a href="/chopper" class="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.15em] uppercase text-white/40 hover:text-white transition-colors">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      <span>Back to Fleet</span>
+    </a>
+  </div>
+
+  <!-- Section 1: Vehicle Hero -->
+  <section class="px-4 md:px-6 lg:px-10 pb-16 max-w-[1200px] mx-auto pt-6">
+    <!-- Top Info -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 reveal">
+      <div>
+        <p class="font-[family-name:var(--font-heading)] text-xs text-brand tracking-[0.2em] mb-2">
+          NO. {String(index).padStart(2, '0')}
+        </p>
+        <h1 class="font-[family-name:var(--font-heading)] text-[clamp(36px,6vw,72px)] text-white tracking-tight leading-[0.95]">
+          {vehicle.name}
+        </h1>
+        <p class="text-sm font-medium text-white/40 tracking-wide mt-4">
+          {vehicle.base} — {vehicle.style}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] shrink-0">
+        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/60">Available</span>
+      </div>
+    </div>
+
+    <!-- Photo Slider -->
+    <div class="relative rounded-2xl lg:rounded-[32px] overflow-hidden aspect-video md:aspect-video aspect-[4/3] bg-white/[0.03] reveal reveal-delay-1" id="slider">
+      <div class="flex h-full transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" id="sliderTrack">
+        <div class="flex-[0_0_100%] h-full relative">
+          <div class="absolute inset-0 bg-[#111] flex items-center justify-center">
+            <img
+              src={`/assets/chopper/${vehicle.slug}/hero.jpg`}
+              alt={`${vehicle.name} — Main`}
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Slider Nav (hidden with single image, shown when gallery expands) -->
+      <button
+        class="hidden slider-nav absolute top-1/2 -translate-y-1/2 left-3 lg:left-4 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl flex items-center justify-center cursor-pointer z-[5] hover:bg-black/60 hover:border-white/20 transition-all"
+        id="sliderPrev"
+        aria-label="Previous"
+      >
+        <svg class="w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button
+        class="hidden slider-nav absolute top-1/2 -translate-y-1/2 right-3 lg:right-4 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl flex items-center justify-center cursor-pointer z-[5] hover:bg-black/60 hover:border-white/20 transition-all"
+        id="sliderNext"
+        aria-label="Next"
+      >
+        <svg class="w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <!-- Counter -->
+      <div class="absolute bottom-5 right-6 z-[5] flex items-baseline gap-1 bg-black/55 backdrop-blur-lg px-4 py-2 rounded-full">
+        <span class="font-[family-name:var(--font-heading)] text-[28px] text-white font-bold" id="sliderCurrent">1</span>
+        <span class="text-xl font-bold text-white/50 mx-[2px]">/</span>
+        <span class="text-xl font-bold text-white/50" id="sliderTotal">1</span>
+      </div>
+
+      <!-- Dots (hidden with single image) -->
+      <div class="hidden absolute bottom-5 left-1/2 -translate-x-1/2 z-[5] flex gap-2 px-4 py-2 rounded-full bg-black/35 backdrop-blur-lg" id="sliderDots">
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Plans & Booking -->
+  <section class="py-24 px-4 md:px-10 bg-deep-red" id="plans">
+    <div class="max-w-[900px] mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">Book This Machine</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">Book Your Ride.</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- DAY RIDE -->
+        <div class="relative bg-white/[0.04] border border-brand/100 rounded-[16px] p-10 flex flex-col hover:translate-y-[-4px] transition-all duration-400 bg-[rgba(195,13,35,0.06)] reveal reveal-delay-1">
+          <span class="absolute -top-3 left-10 bg-brand text-white text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full">Most Popular</span>
+          <h3 class="font-[family-name:var(--font-heading)] text-[clamp(18px,2vw,24px)] text-white tracking-tight mb-2">DAY RIDE</h3>
+          <p class="text-sm text-white/45 leading-relaxed mb-6">
+            鎌倉・湘南エリアを1日自由に走る。朝10時出発、18時返却。
+          </p>
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,3vw,40px)] text-white tracking-tight mb-1">
+            &yen;{dayPriceFormatted}<span class="text-sm font-medium text-white/40 tracking-normal ml-1">/ day</span>
+          </p>
+          <p class="text-xs text-white/30 mb-6">車両により料金が異なります</p>
+          <ul class="flex flex-col gap-[10px] mb-10 flex-1">
+            {['ヘルメット貸出', '対人・対物賠償保険', '出発前レクチャー', 'おすすめルートマップ'].map((item) => (
+              <li class="flex items-center gap-[10px] text-[13px] text-white/55">
+                <svg class="w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:translate-y-[-2px] transition-all cursor-pointer border-none">
+            <span>BOOK NOW</span>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- MULTI-DAY -->
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-10 flex flex-col hover:border-white/15 hover:translate-y-[-4px] transition-all duration-400 reveal reveal-delay-2">
+          <h3 class="font-[family-name:var(--font-heading)] text-[clamp(18px,2vw,24px)] text-white tracking-tight mb-2">MULTI-DAY</h3>
+          <p class="text-sm text-white/45 leading-relaxed mb-6">
+            2日以上の長期レンタル。泊まりがけのツーリングに。日程を選んで予約リクエスト。
+          </p>
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,3vw,40px)] text-white tracking-tight mb-1">
+            &yen;{multiPriceFormatted}<span class="text-sm font-medium text-white/40 tracking-normal ml-1">/ 2days</span>
+          </p>
+          <p class="text-xs text-white/30 mb-6">予約リクエスト制 — 承認後に確定</p>
+          <ul class="flex flex-col gap-[10px] mb-10 flex-1">
+            {['DAY RIDEの全内容を含む', '2日目以降のディスカウントあり', 'ルート相談OK'].map((item) => (
+              <li class="flex items-center gap-[10px] text-[13px] text-white/55">
+                <svg class="w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/15 text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-white/[0.06] hover:border-white/30 hover:translate-y-[-2px] transition-all cursor-pointer">
+            <span>BOOK MULTI-DAY</span>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Specs -->
+  <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
+    <div class="max-w-[900px] mx-auto">
+      <div class="mb-10 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35">SPECIFICATIONS</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
+        {specs.map((spec) => (
+          <div class="bg-deep-red p-6">
+            <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">{spec.label}</p>
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{spec.value}</p>
+          </div>
+        ))}
+
+        <!-- BUILD -->
+        <div class="bg-deep-red p-6">
+          <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">BUILD</p>
+          {hasBuilder ? (
+            <a
+              href={builderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1 pl-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-[clamp(12px,1.3vw,15px)] font-semibold text-white/70 hover:bg-white/[0.12] hover:text-white hover:translate-y-[-1px] transition-all no-underline"
+            >
+              <svg class="w-3.5 h-3.5 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="5"/>
+                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+              </svg>
+              {builderHandle}
+            </a>
+          ) : (
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.builder}</p>
+          )}
+        </div>
+
+        <!-- PAINTER -->
+        <div class="bg-deep-red p-6">
+          <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">PAINTER</p>
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.painter}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Protocol -->
+  <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
+    <div class="max-w-[800px] mx-auto">
+      <div class="mb-10 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">PROTOCOL</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,36px)] text-white tracking-tight">Before You Ride.</h2>
+      </div>
+
+      <!-- 3 Steps -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 reveal reveal-delay-1">
+        <!-- Step 1: Qualification -->
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all">
+          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5">
+            <span class="font-[family-name:var(--font-heading)] text-brand text-sm">01</span>
+          </div>
+          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">QUALIFICATION</h3>
+          <p class="text-[13px] text-white/45 leading-relaxed">
+            大型二輪免許が必要です。当日、免許証の確認を行います。外国人の方はIDP（国際運転免許証）+ パスポートが必要です。
+          </p>
+        </div>
+
+        <!-- Step 2: Gear -->
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all">
+          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5">
+            <span class="font-[family-name:var(--font-heading)] text-brand text-sm">02</span>
+          </div>
+          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">GEAR UP</h3>
+          <p class="text-[13px] text-white/45 leading-relaxed">
+            ヘルメット貸出あり。長袖・長ズボン・ブーツ推奨。出発前に車両の操作レクチャーを行います。
+          </p>
+        </div>
+
+        <!-- Step 3: Departure -->
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all">
+          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5">
+            <span class="font-[family-name:var(--font-heading)] text-brand text-sm">03</span>
+          </div>
+          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">DEPARTURE</h3>
+          <p class="text-[13px] text-white/45 leading-relaxed">
+            おすすめルートマップを渡して出発。返却は18時まで。遅延の場合は事前連絡を。
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center reveal reveal-delay-2">
+        <p class="font-[family-name:var(--font-accent)] text-[clamp(20px,3vw,32px)] text-white/80 leading-tight mb-8">
+          THINK YOU CAN<br>HANDLE THIS?
+        </p>
+        <a
+          href="#plans"
+          class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase shadow-[0_4px_16px_rgba(195,13,35,0.35)] hover:bg-[#a80b1e] hover:translate-y-[-2px] hover:shadow-[0_6px_24px_rgba(195,13,35,0.45)] transition-all"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          <span>BOOK THIS MACHINE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating CTA -->
+  <button
+    class="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[90] inline-flex items-center gap-[10px] px-5 py-3 md:px-7 md:py-3.5 rounded-full bg-brand text-white text-[11px] md:text-xs font-bold tracking-[0.15em] uppercase shadow-[0_4px_16px_rgba(195,13,35,0.35),0_2px_8px_rgba(0,0,0,0.2)] cursor-pointer border-none hover:bg-[#a80b1e] hover:translate-y-[-2px] hover:shadow-[0_6px_24px_rgba(195,13,35,0.45),0_4px_12px_rgba(0,0,0,0.25)] transition-all"
+    id="floatingCta"
+  >
+    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+    <span>BOOK THIS MACHINE</span>
+  </button>
+
+  <!-- Slider & Accordion Scripts -->
+  <script>
+    // Floating CTA scroll to plans
+    document.getElementById('floatingCta')?.addEventListener('click', () => {
+      document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Photo Slider
+    (function initSlider() {
+      const track = document.getElementById('sliderTrack');
+      const prevBtn = document.getElementById('sliderPrev');
+      const nextBtn = document.getElementById('sliderNext');
+      const counterCurrent = document.getElementById('sliderCurrent');
+      const counterTotal = document.getElementById('sliderTotal');
+      const dotsContainer = document.getElementById('sliderDots');
+      const slider = document.getElementById('slider');
+
+      if (!track || !slider) return;
+
+      const slides = track.children;
+      const total = slides.length;
+      let current = 0;
+
+      // Update total counter
+      if (counterTotal) counterTotal.textContent = String(total);
+
+      // Show nav buttons and dots when multiple slides
+      if (total > 1) {
+        prevBtn?.classList.remove('hidden');
+        nextBtn?.classList.remove('hidden');
+        dotsContainer?.classList.remove('hidden');
+
+        // Generate dots
+        if (dotsContainer) {
+          for (let i = 0; i < total; i++) {
+            const dot = document.createElement('button');
+            dot.className = `w-8 h-1 rounded-sm border-none cursor-pointer transition-all p-0 ${i === 0 ? 'bg-[#C30D23] w-12' : 'bg-white/35 hover:bg-white/60'}`;
+            dot.setAttribute('data-index', String(i));
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+          }
+        }
+      }
+
+      function goTo(idx: number) {
+        if (idx < 0) idx = total - 1;
+        if (idx >= total) idx = 0;
+        current = idx;
+        track!.style.transform = `translateX(-${current * 100}%)`;
+        if (counterCurrent) counterCurrent.textContent = String(current + 1);
+
+        // Update dots
+        if (dotsContainer) {
+          Array.from(dotsContainer.children).forEach((dot, i) => {
+            const el = dot as HTMLElement;
+            if (i === current) {
+              el.className = 'w-12 h-1 rounded-sm bg-[#C30D23] border-none cursor-pointer transition-all p-0';
+            } else {
+              el.className = 'w-8 h-1 rounded-sm bg-white/35 hover:bg-white/60 border-none cursor-pointer transition-all p-0';
+            }
+          });
+        }
+      }
+
+      prevBtn?.addEventListener('click', () => goTo(current - 1));
+      nextBtn?.addEventListener('click', () => goTo(current + 1));
+
+      // Swipe support
+      let startX = 0;
+      slider.addEventListener('touchstart', (e: TouchEvent) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+      slider.addEventListener('touchend', (e: TouchEvent) => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? goTo(current + 1) : goTo(current - 1);
+        }
+      }, { passive: true });
+
+      // Keyboard
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') goTo(current - 1);
+        if (e.key === 'ArrowRight') goTo(current + 1);
+      });
+    })();
+  </script>
+</BaseLayout>

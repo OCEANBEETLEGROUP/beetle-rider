@@ -1,0 +1,20 @@
+<!-- Page Loader: OCEANBEETLE corporate logo on deep red -->
+<div id="page-loader" class="fixed inset-0 z-[200] bg-deep-red flex items-center justify-center transition-opacity duration-500">
+  <img
+    src="/assets/logo/OB_CORPORATE.svg"
+    alt="OCEANBEETLE"
+    class="h-16 animate-pulse"
+  />
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('page-loader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.visibility = 'hidden';
+      }, 500);
+    }
+  });
+</script>

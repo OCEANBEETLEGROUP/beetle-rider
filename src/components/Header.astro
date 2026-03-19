@@ -1,0 +1,98 @@
+---
+interface Props {
+  activePage: 'home' | 'chopper' | 'ebike' | 'about';
+  logo: 'chopper' | 'ebike' | 'corporate';
+}
+
+const { activePage, logo } = Astro.props;
+
+const logoSrc = {
+  chopper: '/assets/logo/BR_CHOPPER_LOGO.svg',
+  ebike: '/assets/logo/BR_EBIKE_LOGO.svg',
+  corporate: '/assets/logo/OB_CORPORATE.svg',
+}[logo];
+
+const navItems = [
+  { href: '/ebike', label: 'E-Bike', key: 'ebike' as const },
+  { href: '/chopper', label: 'Chopper', key: 'chopper' as const },
+  { href: '/about', label: 'About', key: 'about' as const },
+];
+---
+
+<header id="site-header" class="fixed top-0 left-0 right-0 z-100 px-8 py-4 flex items-center justify-between backdrop-blur-[20px] bg-[rgba(45,10,10,0.35)] border-b border-white/[0.08] transition-all duration-400">
+  <a href="/" class="flex items-center">
+    <img src={logoSrc} alt="BEETLE RIDER" class="h-8" />
+  </a>
+
+  <!-- Desktop Nav -->
+  <nav class="hidden md:flex gap-2 items-center">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class:list={[
+          'nav-pill inline-flex items-center px-5 py-2 rounded-full text-[11px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer',
+          activePage === item.key
+            ? item.key === 'ebike'
+              ? 'bg-ebike border-ebike text-white'
+              : item.key === 'chopper'
+                ? 'bg-brand border-brand text-white'
+                : 'bg-white/15 border-white/25 text-white'
+            : 'bg-white/[0.08] border border-white/10 text-white/85',
+          item.key === 'ebike' && activePage !== item.key ? 'hover:bg-ebike hover:border-ebike hover:text-white' : '',
+          item.key === 'chopper' && activePage !== item.key ? 'hover:bg-brand hover:border-brand hover:text-white' : '',
+          item.key === 'about' && activePage !== item.key ? 'hover:bg-white/15 hover:text-white' : '',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))}
+
+    <!-- Language Switch (Phase 2) -->
+    <div class="flex gap-1 items-center ml-2">
+      <button class="px-3 py-1.5 rounded-full bg-white/12 border border-white/25 text-white text-[11px] font-semibold tracking-wider">JP</button>
+      <button class="px-3 py-1.5 rounded-full bg-transparent border border-white/15 text-white/50 text-[11px] font-semibold tracking-wider">EN</button>
+    </div>
+  </nav>
+
+  <!-- Hamburger (Mobile) -->
+  <button id="hamburger" class="flex md:hidden flex-col gap-[5px] cursor-pointer p-1" aria-label="Menu">
+    <span class="w-6 h-0.5 bg-white rounded-sm transition-all duration-300"></span>
+    <span class="w-6 h-0.5 bg-white rounded-sm transition-all duration-300"></span>
+    <span class="w-6 h-0.5 bg-white rounded-sm transition-all duration-300"></span>
+  </button>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed inset-0 bg-deep-red z-[99] flex flex-col items-center justify-center gap-6 opacity-0 pointer-events-none transition-opacity duration-400">
+  {navItems.map((item) => (
+    <a href={item.href} class="font-[family-name:var(--font-heading)] text-[32px] text-white tracking-wide hover:opacity-60 transition-opacity">
+      {item.label}
+    </a>
+  ))}
+</div>
+
+<script>
+  // Header scroll effect
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (header) {
+      header.style.background = window.scrollY > 50
+        ? 'rgba(45, 10, 10, 0.85)'
+        : 'rgba(45, 10, 10, 0.35)';
+    }
+  });
+
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger?.addEventListener('click', () => {
+    const isOpen = mobileMenu?.classList.contains('opacity-100');
+    if (isOpen) {
+      mobileMenu?.classList.remove('opacity-100', 'pointer-events-auto');
+      mobileMenu?.classList.add('opacity-0', 'pointer-events-none');
+    } else {
+      mobileMenu?.classList.remove('opacity-0', 'pointer-events-none');
+      mobileMenu?.classList.add('opacity-100', 'pointer-events-auto');
+    }
+  });
+</script>
