@@ -221,15 +221,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div style="height: clamp(200px, 30vh, 400px);"></div>
 
     <!-- Manifesto: 2-column grid -->
-    <div class="grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-16 max-w-[1200px] mx-auto px-10 pb-32 items-center">
+    <div class="relative pb-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
       <!-- Image -->
       <div class="reveal-scale">
         <img
           src="/assets/chopper/promo/beetle_shop_brc_044.jpg"
           alt="OCEANBEETLE Craftsman"
           loading="lazy"
-          class="w-full h-auto min-h-[350px] md:min-h-[550px] object-cover md:-my-10"
-          style="-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 85%, transparent 100%), linear-gradient(to right, transparent 0%, black 12%, black 85%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 85%, transparent 100%), linear-gradient(to right, transparent 0%, black 12%, black 85%, transparent 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
+          class="w-full h-auto min-h-[350px] lg:min-h-[550px] object-cover lg:-my-10"
+          style="-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to right, transparent 0%, black 8%, black 100%); mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to right, transparent 0%, black 8%, black 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
         />
       </div>
       <!-- Text -->
@@ -251,6 +253,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <div class="reveal reveal-delay-5">
           <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">That's <span class="text-brand">OCEANBEETLE</span>.</p>
+        </div>
+      </div>
         </div>
       </div>
     </div>

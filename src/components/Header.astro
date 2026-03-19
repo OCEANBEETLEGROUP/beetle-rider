@@ -19,12 +19,12 @@ const navItems = [
 ];
 ---
 
-<header id="site-header" class="fixed top-0 left-0 right-0 z-100 px-8 py-4 flex items-center justify-between backdrop-blur-[20px] bg-[rgba(45,10,10,0.35)] border-b border-white/[0.08] transition-all duration-400">
+<header id="site-header" class="fixed top-0 left-0 right-0 z-100 px-10 py-5 flex items-center justify-between backdrop-blur-[20px] bg-[rgba(45,10,10,0.35)] border-b border-white/[0.08] transition-all duration-400">
   <a href="/" class="flex items-center">
-    <img src={logoSrc} alt="BEETLE RIDER" class="h-5" />
+    <img src={logoSrc} alt="BEETLE RIDER" class="h-6" />
   </a>
 
-  <!-- Desktop Nav -->
+  <!-- Desktop Nav (centered) -->
   <nav class="hidden md:flex gap-2 items-center absolute left-1/2 -translate-x-1/2">
     {navItems.map((item) => (
       <a
@@ -46,13 +46,13 @@ const navItems = [
         {item.label}
       </a>
     ))}
-
-    <!-- Language Switch (Phase 2) -->
-    <div class="flex gap-1 items-center ml-2">
-      <button class="px-3 py-1.5 rounded-full bg-white/12 border border-white/25 text-white text-[11px] font-semibold tracking-wider">JP</button>
-      <button class="px-3 py-1.5 rounded-full bg-transparent border border-white/15 text-white/50 text-[11px] font-semibold tracking-wider">EN</button>
-    </div>
   </nav>
+
+  <!-- Language Switch (right-aligned) -->
+  <div class="hidden md:flex gap-1 items-center">
+    <button class="px-3 py-1.5 rounded-full bg-white/12 border border-white/25 text-white text-[11px] font-semibold tracking-wider">JP</button>
+    <button class="px-3 py-1.5 rounded-full bg-transparent border border-white/15 text-white/50 text-[11px] font-semibold tracking-wider">EN</button>
+  </div>
 
   <!-- Hamburger (Mobile) -->
   <button id="hamburger" class="flex md:hidden flex-col gap-[5px] cursor-pointer p-1" aria-label="Menu">

@@ -121,7 +121,7 @@ const specs = [
     </div>
 
     <!-- Slider Indicator Dots (below slider) -->
-    <div class="hidden justify-center gap-2 mt-4" id="sliderDots">
+    <div class="hidden justify-center items-center gap-2.5 mt-5 pb-2" id="sliderDots">
     </div>
   </section>
 
@@ -244,7 +244,7 @@ const specs = [
   <!-- Section 4: Protocol -->
   <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
     <div class="max-w-[800px] mx-auto">
-      <div class="mb-10 reveal">
+      <div class="mb-10 text-center reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">PROTOCOL</p>
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,36px)] text-white tracking-tight">Before You Ride.</h2>
       </div>
@@ -252,8 +252,8 @@ const specs = [
       <!-- 3 Steps -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 reveal reveal-delay-1">
         <!-- Step 1: Qualification -->
-        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all">
-          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5">
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all text-center">
+          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5 mx-auto">
             <span class="font-[family-name:var(--font-heading)] text-brand text-sm">01</span>
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">QUALIFICATION</h3>
@@ -263,8 +263,8 @@ const specs = [
         </div>
 
         <!-- Step 2: Gear -->
-        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all">
-          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5">
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all text-center">
+          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5 mx-auto">
             <span class="font-[family-name:var(--font-heading)] text-brand text-sm">02</span>
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">GEAR UP</h3>
@@ -274,8 +274,8 @@ const specs = [
         </div>
 
         <!-- Step 3: Departure -->
-        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all">
-          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5">
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all text-center">
+          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5 mx-auto">
             <span class="font-[family-name:var(--font-heading)] text-brand text-sm">03</span>
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">DEPARTURE</h3>
@@ -286,15 +286,15 @@ const specs = [
       </div>
 
       <!-- Vehicle Description -->
-      <div class="mb-16 reveal reveal-delay-2">
-        <p class="text-sm md:text-base text-white/50 leading-relaxed max-w-[640px]">
+      <div class="mb-16 text-center reveal reveal-delay-2">
+        <p class="text-sm md:text-base text-white/50 leading-relaxed max-w-[640px] mx-auto">
           これは普通のバイクではない。{fullYear}年のハーレーダビッドソン {modelName}。リジッドフレームに組み替えられた{vehicle.style}スタイルのスポーツスター。世界に1台だけのマシンが、鎌倉であなたを待っている。
         </p>
       </div>
 
       <!-- CTA -->
       <div class="text-center reveal reveal-delay-2">
-        <p class="font-[family-name:var(--font-accent)] text-[clamp(20px,3vw,32px)] text-white/80 leading-tight mb-8">
+        <p class="font-[family-name:var(--font-accent)] text-[clamp(28px,4vw,52px)] text-[#C30D23] leading-tight mb-8">
           THINK YOU CAN<br>HANDLE THIS?
         </p>
         <a
@@ -356,7 +356,7 @@ const specs = [
         if (dotsContainer) {
           for (let i = 0; i < total; i++) {
             const dot = document.createElement('button');
-            dot.className = `w-8 h-1 rounded-sm border-none cursor-pointer transition-all p-0 ${i === 0 ? 'bg-[#C30D23] w-12' : 'bg-white/35 hover:bg-white/60'}`;
+            dot.className = `w-[6px] h-[6px] rounded-full border-none cursor-pointer transition-all p-0 ${i === 0 ? 'bg-white scale-125' : 'bg-white/30 hover:bg-white/50'}`;
             dot.setAttribute('data-index', String(i));
             dot.addEventListener('click', () => goTo(i));
             dotsContainer.appendChild(dot);
@@ -376,9 +376,9 @@ const specs = [
           Array.from(dotsContainer.children).forEach((dot, i) => {
             const el = dot as HTMLElement;
             if (i === current) {
-              el.className = 'w-12 h-1 rounded-sm bg-[#C30D23] border-none cursor-pointer transition-all p-0';
+              el.className = 'w-[6px] h-[6px] rounded-full bg-white scale-125 border-none cursor-pointer transition-all p-0';
             } else {
-              el.className = 'w-8 h-1 rounded-sm bg-white/35 hover:bg-white/60 border-none cursor-pointer transition-all p-0';
+              el.className = 'w-[6px] h-[6px] rounded-full bg-white/30 hover:bg-white/50 border-none cursor-pointer transition-all p-0';
             }
           });
         }

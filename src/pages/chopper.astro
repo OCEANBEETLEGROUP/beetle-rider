@@ -210,7 +210,7 @@ const protocolItems = [
               <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/60 mt-1 tracking-[0.02em]">{d.desc}</p>
             </div>
             <!-- Expand Detail Panel -->
-            <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] bg-gradient-to-t from-deep-red/95 via-deep-red/85 to-transparent px-6 pb-7 pt-20 translate-y-full opacity-0 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] pointer-events-none">
+            <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] bg-gradient-to-t from-deep-red/95 via-deep-red/85 to-transparent px-6 pb-7 pt-20 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="transform: translateY(100%); opacity: 0; pointer-events: none;">
               <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/75 leading-[1.8]" set:html={d.detail}></p>
             </div>
             <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">Tap for details</span>
@@ -336,17 +336,9 @@ const protocolItems = [
       font-size: 13px;
     }
 
-    /* Destination Card Expand */
+    /* Destination Card Expand — handled by JS inline styles */
     .dest-card:hover > div:first-child {
       transform: scale(1.08);
-    }
-    .dest-card--expanded .dest-card__detail {
-      transform: translateY(0) !important;
-      opacity: 1 !important;
-      pointer-events: all !important;
-    }
-    .dest-card--expanded .dest-card__tap-hint {
-      opacity: 0 !important;
     }
 
     /* Accordion Active State */
@@ -451,8 +443,32 @@ const protocolItems = [
     document.querySelectorAll('[data-dest-card]').forEach((card) => {
       card.addEventListener('click', () => {
         const wasExpanded = card.classList.contains('dest-card--expanded');
-        document.querySelectorAll('[data-dest-card]').forEach((el) => el.classList.remove('dest-card--expanded'));
-        if (!wasExpanded) card.classList.add('dest-card--expanded');
+
+        // Close all
+        document.querySelectorAll('[data-dest-card]').forEach((el) => {
+          el.classList.remove('dest-card--expanded');
+          const detail = el.querySelector('.dest-card__detail') as HTMLElement;
+          if (detail) {
+            detail.style.transform = 'translateY(100%)';
+            detail.style.opacity = '0';
+            detail.style.pointerEvents = 'none';
+          }
+          const hint = el.querySelector('.dest-card__tap-hint') as HTMLElement;
+          if (hint) hint.style.opacity = '1';
+        });
+
+        // Toggle clicked
+        if (!wasExpanded) {
+          card.classList.add('dest-card--expanded');
+          const detail = card.querySelector('.dest-card__detail') as HTMLElement;
+          if (detail) {
+            detail.style.transform = 'translateY(0)';
+            detail.style.opacity = '1';
+            detail.style.pointerEvents = 'all';
+          }
+          const hint = card.querySelector('.dest-card__tap-hint') as HTMLElement;
+          if (hint) hint.style.opacity = '0';
+        }
       });
     });
 
