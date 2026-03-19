@@ -1,14 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookNowButton from '../../components/BookNowButton.astro';
 
 export function getStaticPaths() {
   const vehicles = [
-    { slug: 'shortfork', name: 'SHORT FORK', base: "'99 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '210kg', style: 'Bobber', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000 },
-    { slug: 'saxeflames', name: 'SAXE FLAMES', base: "'97 XLH883", trans: '5-Speed', tank: '7L', tires: 'F19 / R16', weight: '195kg', style: 'Chopper', builder: '@ryoske.14', painter: 'TBD', dayPrice: 25000, multiPrice: 60000 },
-    { slug: 'hellfire', name: 'HELL FIRE', base: "'88 XLH883", trans: '4-Speed', tank: '8L', tires: 'F19 / R16', weight: '200kg', style: 'Chopper', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000 },
-    { slug: 'leopard', name: 'LEOPARD', base: "'99 XLH1200", trans: '5-Speed', tank: '6L', tires: 'F21 / R18', weight: '210kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000 },
-    { slug: 'bruno', name: 'BRUNO', base: "'91 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '205kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 22000, multiPrice: 55000 },
-    { slug: 'gladiator', name: 'GLADIATOR', base: "'99 XL1200", trans: '5-Speed', tank: '8L', tires: 'F21 / R16', weight: '215kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000 },
+    { slug: 'shortfork', name: 'SHORT FORK', base: "'99 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '210kg', style: 'Bobber', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000, bokunDayRideId: "", bokunMultiDayId: "" },
+    { slug: 'saxeflames', name: 'SAXE FLAMES', base: "'97 XLH883", trans: '5-Speed', tank: '7L', tires: 'F19 / R16', weight: '195kg', style: 'Chopper', builder: '@ryoske.14', painter: 'TBD', dayPrice: 25000, multiPrice: 60000, bokunDayRideId: "", bokunMultiDayId: "" },
+    { slug: 'hellfire', name: 'HELL FIRE', base: "'88 XLH883", trans: '4-Speed', tank: '8L', tires: 'F19 / R16', weight: '200kg', style: 'Chopper', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000, bokunDayRideId: "", bokunMultiDayId: "" },
+    { slug: 'leopard', name: 'LEOPARD', base: "'99 XLH1200", trans: '5-Speed', tank: '6L', tires: 'F21 / R18', weight: '210kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000, bokunDayRideId: "", bokunMultiDayId: "" },
+    { slug: 'bruno', name: 'BRUNO', base: "'91 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '205kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 22000, multiPrice: 55000, bokunDayRideId: "", bokunMultiDayId: "" },
+    { slug: 'gladiator', name: 'GLADIATOR', base: "'99 XL1200", trans: '5-Speed', tank: '8L', tires: 'F21 / R16', weight: '215kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000, bokunDayRideId: "", bokunMultiDayId: "" },
   ];
 
   return vehicles.map((v, i) => ({
@@ -25,6 +26,12 @@ const multiPriceFormatted = vehicle.multiPrice.toLocaleString();
 const hasBuilder = vehicle.builder.startsWith('@');
 const builderHandle = hasBuilder ? vehicle.builder : null;
 const builderUrl = hasBuilder ? `https://instagram.com/${vehicle.builder.slice(1)}` : null;
+
+// Parse base field for description: e.g. "'99 XLH883" → year=1999, model=XLH883
+const baseMatch = vehicle.base.match(/^'(\d{2})\s+(.+)$/);
+const fullYear = baseMatch ? (parseInt(baseMatch[1]) >= 50 ? `19${baseMatch[1]}` : `20${baseMatch[1]}`) : '';
+const modelName = baseMatch ? baseMatch[2] : vehicle.base;
+const displacement = modelName.match(/\d+/)?.[0] || '';
 
 const specs = [
   { label: 'BASE', value: vehicle.base },
@@ -111,9 +118,10 @@ const specs = [
         <span class="text-xl font-bold text-white/50" id="sliderTotal">1</span>
       </div>
 
-      <!-- Dots (hidden with single image) -->
-      <div class="hidden absolute bottom-5 left-1/2 -translate-x-1/2 z-[5] flex gap-2 px-4 py-2 rounded-full bg-black/35 backdrop-blur-lg" id="sliderDots">
-      </div>
+    </div>
+
+    <!-- Slider Indicator Dots (below slider) -->
+    <div class="hidden justify-center gap-2 mt-4" id="sliderDots">
     </div>
   </section>
 
@@ -134,7 +142,7 @@ const specs = [
             鎌倉・湘南エリアを1日自由に走る。朝10時出発、18時返却。
           </p>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,3vw,40px)] text-white tracking-tight mb-1">
-            &yen;{dayPriceFormatted}<span class="text-sm font-medium text-white/40 tracking-normal ml-1">/ day</span>
+            &yen;{dayPriceFormatted}〜<span class="text-sm font-medium text-white/40 tracking-normal ml-1">/ day</span>
           </p>
           <p class="text-xs text-white/30 mb-6">車両により料金が異なります</p>
           <ul class="flex flex-col gap-[10px] mb-10 flex-1">
@@ -145,10 +153,13 @@ const specs = [
               </li>
             ))}
           </ul>
-          <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:translate-y-[-2px] transition-all cursor-pointer border-none">
-            <span>BOOK NOW</span>
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
+          {vehicle.bokunDayRideId ? (
+            <BookNowButton widgetId={vehicle.bokunDayRideId} label="BOOK NOW" class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:translate-y-[-2px] transition-all cursor-pointer border-none" />
+          ) : (
+            <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand/50 text-white/60 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed border-none" disabled>
+              <span>COMING SOON</span>
+            </button>
+          )}
         </div>
 
         <!-- MULTI-DAY -->
@@ -158,7 +169,7 @@ const specs = [
             2日以上の長期レンタル。泊まりがけのツーリングに。日程を選んで予約リクエスト。
           </p>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,3vw,40px)] text-white tracking-tight mb-1">
-            &yen;{multiPriceFormatted}<span class="text-sm font-medium text-white/40 tracking-normal ml-1">/ 2days</span>
+            &yen;{multiPriceFormatted}〜<span class="text-sm font-medium text-white/40 tracking-normal ml-1">/ 2days</span>
           </p>
           <p class="text-xs text-white/30 mb-6">予約リクエスト制 — 承認後に確定</p>
           <ul class="flex flex-col gap-[10px] mb-10 flex-1">
@@ -169,10 +180,13 @@ const specs = [
               </li>
             ))}
           </ul>
-          <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/15 text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-white/[0.06] hover:border-white/30 hover:translate-y-[-2px] transition-all cursor-pointer">
-            <span>BOOK MULTI-DAY</span>
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
+          {vehicle.bokunMultiDayId ? (
+            <BookNowButton widgetId={vehicle.bokunMultiDayId} label="BOOK MULTI-DAY" class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/15 text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-white/[0.06] hover:border-white/30 hover:translate-y-[-2px] transition-all cursor-pointer" />
+          ) : (
+            <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/10 text-white/40 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed" disabled>
+              <span>COMING SOON</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -184,7 +198,8 @@ const specs = [
       <div class="mb-10 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35">SPECIFICATIONS</p>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
+      <div class="grid grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
+        {/* Row 1: BASE / TRANSMISSION / FUEL TANK */}
         {specs.map((spec) => (
           <div class="bg-deep-red p-6">
             <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">{spec.label}</p>
@@ -192,7 +207,7 @@ const specs = [
           </div>
         ))}
 
-        <!-- BUILD -->
+        {/* Row 3: BUILD / PAINTER / (empty) */}
         <div class="bg-deep-red p-6">
           <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">BUILD</p>
           {hasBuilder ? (
@@ -214,10 +229,13 @@ const specs = [
           )}
         </div>
 
-        <!-- PAINTER -->
         <div class="bg-deep-red p-6">
           <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">PAINTER</p>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.painter}</p>
+        </div>
+
+        <div class="bg-deep-red p-6">
+          {/* Empty cell for 3×3 alignment */}
         </div>
       </div>
     </div>
@@ -240,7 +258,7 @@ const specs = [
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">QUALIFICATION</h3>
           <p class="text-[13px] text-white/45 leading-relaxed">
-            大型二輪免許が必要です。当日、免許証の確認を行います。外国人の方はIDP（国際運転免許証）+ パスポートが必要です。
+            大型二輪免許または国際免許（IDP）保持者限定。当日、免許証の確認を行います。外国人の方はIDP（国際運転免許証）+ パスポートが必要です。
           </p>
         </div>
 
@@ -265,6 +283,13 @@ const specs = [
             おすすめルートマップを渡して出発。返却は18時まで。遅延の場合は事前連絡を。
           </p>
         </div>
+      </div>
+
+      <!-- Vehicle Description -->
+      <div class="mb-16 reveal reveal-delay-2">
+        <p class="text-sm md:text-base text-white/50 leading-relaxed max-w-[640px]">
+          これは普通のバイクではない。{fullYear}年のハーレーダビッドソン {modelName}。リジッドフレームに組み替えられた{vehicle.style}スタイルのスポーツスター。世界に1台だけのマシンが、鎌倉であなたを待っている。
+        </p>
       </div>
 
       <!-- CTA -->
@@ -325,6 +350,7 @@ const specs = [
         prevBtn?.classList.remove('hidden');
         nextBtn?.classList.remove('hidden');
         dotsContainer?.classList.remove('hidden');
+        dotsContainer?.classList.add('flex');
 
         // Generate dots
         if (dotsContainer) {

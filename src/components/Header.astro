@@ -21,11 +21,11 @@ const navItems = [
 
 <header id="site-header" class="fixed top-0 left-0 right-0 z-100 px-8 py-4 flex items-center justify-between backdrop-blur-[20px] bg-[rgba(45,10,10,0.35)] border-b border-white/[0.08] transition-all duration-400">
   <a href="/" class="flex items-center">
-    <img src={logoSrc} alt="BEETLE RIDER" class="h-8" />
+    <img src={logoSrc} alt="BEETLE RIDER" class="h-5" />
   </a>
 
   <!-- Desktop Nav -->
-  <nav class="hidden md:flex gap-2 items-center">
+  <nav class="hidden md:flex gap-2 items-center absolute left-1/2 -translate-x-1/2">
     {navItems.map((item) => (
       <a
         href={item.href}

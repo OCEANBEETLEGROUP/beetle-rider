@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BookNowButton from '../components/BookNowButton.astro';
+import { EBIKE_WIDGETS } from '../lib/bokun';
 ---
 
 <BaseLayout title="E-BIKE RENTAL — BEETLE RIDER" activePage="ebike" headerLogo="ebike">
@@ -103,31 +105,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <!-- Grid -->
       <div class="grid grid-cols-3 gap-6 items-stretch max-md:grid-cols-1">
         <!-- QUICK RIDE -->
-        <div class="relative bg-light border border-black/[0.08] rounded-2xl p-10 flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-[#2D0A0A] reveal reveal-delay-1">
+        <div class="relative bg-light border-2 border-black/[0.08] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-1">
           <h3 class="font-[family-name:var(--font-heading)] text-base text-[#2D0A0A]/60 tracking-wide mb-4">QUICK RIDE</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">&yen;3,500</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">2 Hours</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">Best for a quick coastal spin</p>
-          <button class="block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">BOOK NOW</button>
+          {EBIKE_WIDGETS.quickRide ? (
+            <BookNowButton widgetId={EBIKE_WIDGETS.quickRide} label="BOOK NOW" class="block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" />
+          ) : (
+            <button class="block w-full py-3.5 px-6 bg-ebike/50 text-white/60 text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-not-allowed" disabled>COMING SOON</button>
+          )}
           <p class="text-[11px] text-[#2D0A0A]/35 text-center mt-2.5 font-medium">Powered by Bokun</p>
         </div>
         <!-- CRUISE (POPULAR) -->
-        <div class="relative bg-light border-2 border-[#2D0A0A] rounded-2xl p-10 flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] -translate-y-2 transition-all duration-400 hover:-translate-y-3 hover:border-[#2D0A0A] max-md:translate-y-0 max-md:hover:-translate-y-1 reveal reveal-delay-2">
+        <div class="relative bg-light border-2 border-[#2D0A0A] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-2">
           <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#2D0A0A] text-ebike text-[10px] font-bold tracking-[0.2em] uppercase px-4 py-1 rounded-full">POPULAR</span>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-[#2D0A0A]/60 tracking-wide mb-4">CRUISE</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">&yen;5,000</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">2 - 4 Hours</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">Explore Kamakura at your pace</p>
-          <button class="block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">BOOK NOW</button>
+          {EBIKE_WIDGETS.cruise ? (
+            <BookNowButton widgetId={EBIKE_WIDGETS.cruise} label="BOOK NOW" class="block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" />
+          ) : (
+            <button class="block w-full py-3.5 px-6 bg-ebike/50 text-white/60 text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-not-allowed" disabled>COMING SOON</button>
+          )}
           <p class="text-[11px] text-[#2D0A0A]/35 text-center mt-2.5 font-medium">Powered by Bokun</p>
         </div>
         <!-- ALL DAY -->
-        <div class="relative bg-light border border-black/[0.08] rounded-2xl p-10 flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-[#2D0A0A] reveal reveal-delay-3">
+        <div class="relative bg-light border-2 border-black/[0.08] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-3">
           <h3 class="font-[family-name:var(--font-heading)] text-base text-[#2D0A0A]/60 tracking-wide mb-4">ALL DAY</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">&yen;7,500</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">4 - 8 Hours</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">The ultimate freedom</p>
-          <button class="block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">BOOK NOW</button>
+          {EBIKE_WIDGETS.allDay ? (
+            <BookNowButton widgetId={EBIKE_WIDGETS.allDay} label="BOOK NOW" class="block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" />
+          ) : (
+            <button class="block w-full py-3.5 px-6 bg-ebike/50 text-white/60 text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-not-allowed" disabled>COMING SOON</button>
+          )}
           <p class="text-[11px] text-[#2D0A0A]/35 text-center mt-2.5 font-medium">Powered by Bokun</p>
         </div>
       </div>
@@ -240,7 +254,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="flex flex-col reveal reveal-delay-1" id="accordion">
         <!-- Item 1 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>年齢制限はありますか？</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -252,7 +266,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <!-- Item 2 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>免許は必要ですか？</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -264,7 +278,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <!-- Item 3 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>ヘルメットは必要ですか？</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -276,7 +290,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <!-- Item 4 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>雨天時はどうなりますか？</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -288,7 +302,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <!-- Item 5 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>飲酒運転は厳禁です</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -300,7 +314,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <!-- Item 6 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>交通ルールについて</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -312,19 +326,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <!-- Item 7 -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>保険について</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </div>
           </button>
           <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">対人・対物賠償保険に加入しています。別途、車両保険の追加加入も可能です。詳細はスタッフまでお問い合わせください。</div>
+            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">対人・対物賠償保険に加入しています。プラン選択時にオプションで車両保険を追加できます。（+&yen;1,000）</div>
           </div>
         </div>
         <!-- Item 8 -->
         <div class="accordion-item border-t border-b border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-white">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>キャンセルポリシー</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
