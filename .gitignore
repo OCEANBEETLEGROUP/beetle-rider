@@ -23,5 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# Large video files (exceed GitHub 100MB limit — serve from CDN)
-public/assets/video/
+# Original large video files (keep compressed mp4 only)
+public/assets/video/*.MOV
