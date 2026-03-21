@@ -1,31 +1,29 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookNowButton from '../../components/BookNowButton.astro';
+import { getVehicles } from '../../lib/microcms';
 
-export function getStaticPaths() {
-  const vehicles = [
-    { slug: 'shortfork', name: 'SHORT FORK', base: "'99 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '210kg', style: 'Bobber', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000, bokunDayRideId: "", bokunMultiDayId: "" },
-    { slug: 'saxeflames', name: 'SAXE FLAMES', base: "'97 XLH883", trans: '5-Speed', tank: '7L', tires: 'F19 / R16', weight: '195kg', style: 'Chopper', builder: '@ryoske.14', painter: 'TBD', dayPrice: 25000, multiPrice: 60000, bokunDayRideId: "", bokunMultiDayId: "" },
-    { slug: 'hellfire', name: 'HELL FIRE', base: "'88 XLH883", trans: '4-Speed', tank: '8L', tires: 'F19 / R16', weight: '200kg', style: 'Chopper', builder: '—', painter: '—', dayPrice: 22000, multiPrice: 55000, bokunDayRideId: "", bokunMultiDayId: "" },
-    { slug: 'leopard', name: 'LEOPARD', base: "'99 XLH1200", trans: '5-Speed', tank: '6L', tires: 'F21 / R18', weight: '210kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000, bokunDayRideId: "", bokunMultiDayId: "" },
-    { slug: 'bruno', name: 'BRUNO', base: "'91 XLH883", trans: '5-Speed', tank: '8L', tires: 'F19 / R16', weight: '205kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 22000, multiPrice: 55000, bokunDayRideId: "", bokunMultiDayId: "" },
-    { slug: 'gladiator', name: 'GLADIATOR', base: "'99 XL1200", trans: '5-Speed', tank: '8L', tires: 'F21 / R16', weight: '215kg', style: 'Chopper', builder: '@ryoske.14', painter: '—', dayPrice: 28000, multiPrice: 65000, bokunDayRideId: "", bokunMultiDayId: "" },
-  ];
-
-  return vehicles.map((v, i) => ({
+export async function getStaticPaths() {
+  const { contents } = await getVehicles();
+  return contents.map((v, i) => ({
     params: { slug: v.slug },
-    props: { vehicle: v, index: i + 1, total: vehicles.length },
+    props: { vehicle: v, index: i + 1, total: contents.length },
   }));
 }
 
 const { vehicle, index } = Astro.props;
 
-const dayPriceFormatted = vehicle.dayPrice.toLocaleString();
-const multiPriceFormatted = vehicle.multiPrice.toLocaleString();
+const dayPriceFormatted = vehicle.dayRidePrice.toLocaleString();
+const multiPriceFormatted = vehicle.multiDayPrice.toLocaleString();
 
-const hasBuilder = vehicle.builder.startsWith('@');
-const builderHandle = hasBuilder ? vehicle.builder : null;
-const builderUrl = hasBuilder ? `https://instagram.com/${vehicle.builder.slice(1)}` : null;
+// Instagram link helper
+function igLink(handle?: string) {
+  if (!handle) return null;
+  const isIg = handle.startsWith('@');
+  return isIg ? { handle, url: `https://instagram.com/${handle.slice(1)}` } : null;
+}
+const builderIg = igLink(vehicle.builder);
+const painterIg = igLink(vehicle.painter);
 
 // Parse base field for description: e.g. "'99 XLH883" → year=1999, model=XLH883
 const baseMatch = vehicle.base.match(/^'(\d{2})\s+(.+)$/);
@@ -35,11 +33,20 @@ const displacement = modelName.match(/\d+/)?.[0] || '';
 
 const specs = [
   { label: 'BASE', value: vehicle.base },
-  { label: 'TRANSMISSION', value: vehicle.trans },
-  { label: 'FUEL TANK', value: vehicle.tank },
-  { label: 'TIRES', value: vehicle.tires },
-  { label: 'WEIGHT', value: vehicle.weight },
-  { label: 'STYLE', value: vehicle.style },
+  { label: 'TRANSMISSION', value: vehicle.transmission || '—' },
+  { label: 'FUEL TANK', value: vehicle.fuelTank || '—' },
+  { label: 'TIRES', value: vehicle.tires || '—' },
+  { label: 'WEIGHT', value: vehicle.weight || '—' },
+  { label: 'STYLE', value: vehicle.style || '—' },
+];
+
+// Gallery: hero (thumbnail) + gallery images
+const allImages = [
+  { url: vehicle.thumbnail.url, alt: `${vehicle.name} — Main` },
+  ...(vehicle.gallery || []).map((img, i) => ({
+    url: img.url,
+    alt: `${vehicle.name} — ${i + 2}`,
+  })),
 ];
 ---
 
@@ -79,16 +86,18 @@ const specs = [
     <!-- Photo Slider -->
     <div class="relative rounded-2xl lg:rounded-[32px] overflow-hidden aspect-video md:aspect-video aspect-[4/3] bg-white/[0.03] reveal reveal-delay-1" id="slider">
       <div class="flex h-full transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" id="sliderTrack">
-        <div class="flex-[0_0_100%] h-full relative">
-          <div class="absolute inset-0 bg-[#111] flex items-center justify-center">
-            <img
-              src={`/assets/chopper/${vehicle.slug}/hero.jpg`}
-              alt={`${vehicle.name} — Main`}
-              class="w-full h-full object-cover"
-              loading="eager"
-            />
+        {allImages.map((img, i) => (
+          <div class="flex-[0_0_100%] h-full relative">
+            <div class="absolute inset-0 bg-[#111] flex items-center justify-center">
+              <img
+                src={`${img.url}?w=1600&q=80`}
+                alt={img.alt}
+                class="w-full h-full object-cover"
+                loading={i === 0 ? "eager" : "lazy"}
+              />
+            </div>
           </div>
-        </div>
+        ))}
       </div>
 
       <!-- Slider Nav (hidden with single image, shown when gallery expands) -->
@@ -115,7 +124,7 @@ const specs = [
       <div class="absolute bottom-5 right-6 z-[5] flex items-baseline gap-1 bg-black/55 backdrop-blur-lg px-4 py-2 rounded-full">
         <span class="font-[family-name:var(--font-heading)] text-[28px] text-white font-bold" id="sliderCurrent">1</span>
         <span class="text-xl font-bold text-white/50 mx-[2px]">/</span>
-        <span class="text-xl font-bold text-white/50" id="sliderTotal">1</span>
+        <span class="text-xl font-bold text-white/50" id="sliderTotal">{allImages.length}</span>
       </div>
 
     </div>
@@ -210,9 +219,9 @@ const specs = [
         {/* Row 3: BUILD / PAINTER / (empty) */}
         <div class="bg-deep-red p-6">
           <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">BUILD</p>
-          {hasBuilder ? (
+          {builderIg ? (
             <a
-              href={builderUrl}
+              href={builderIg.url}
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1 px-3 py-1 pl-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-[clamp(12px,1.3vw,15px)] font-semibold text-white/70 hover:bg-white/[0.12] hover:text-white hover:translate-y-[-1px] transition-all no-underline"
@@ -222,16 +231,32 @@ const specs = [
                 <circle cx="12" cy="12" r="5"/>
                 <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
               </svg>
-              {builderHandle}
+              {builderIg.handle}
             </a>
           ) : (
-            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.builder}</p>
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.builder || '—'}</p>
           )}
         </div>
 
         <div class="bg-deep-red p-6">
           <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">PAINTER</p>
-          <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.painter}</p>
+          {painterIg ? (
+            <a
+              href={painterIg.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1 pl-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-[clamp(12px,1.3vw,15px)] font-semibold text-white/70 hover:bg-white/[0.12] hover:text-white hover:translate-y-[-1px] transition-all no-underline"
+            >
+              <svg class="w-3.5 h-3.5 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="5"/>
+                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+              </svg>
+              {painterIg.handle}
+            </a>
+          ) : (
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.painter || '—'}</p>
+          )}
         </div>
 
         <div class="bg-deep-red p-6">

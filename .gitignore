@@ -25,3 +25,12 @@ pnpm-debug.log*
 
 # Original large video files (keep compressed mp4 only)
 public/assets/video/*.MOV
+
+# Large video variants (keep only CHOPPER.mp4 and E_BIKE.mp4)
+public/assets/video/CHOPPER_final.mp4
+public/assets/video/CHOPPER_hq.mp4
+public/assets/video/E_BIKE_20s.mp4
+public/assets/video/E_BIKE_720.mp4
+public/assets/video/E_BIKE_crf30.mp4
+public/assets/video/E_BIKE_final.mp4
+public/assets/video/E_BIKE_hq.mp4
