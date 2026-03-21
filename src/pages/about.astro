@@ -313,19 +313,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     // Scroll float animation (defined via CSS keyframes in style tag)
 
-    // Crossroads hover: shrink siblings when one card is hovered
-    const grid = document.getElementById('crossroadsGrid');
-    if (grid) {
-      const cards = grid.querySelectorAll(':scope > a');
-      grid.addEventListener('mouseenter', () => {
-        // Managed by CSS hover states
-      });
-      grid.addEventListener('mouseleave', () => {
-        cards.forEach(c => {
-          (c as HTMLElement).style.flex = '';
-        });
-      });
-    }
+    // Crossroads hover handled purely by CSS transition-[flex]
   </script>
 
   <style>
@@ -334,14 +322,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       50% { transform: translateY(8px); }
     }
 
-    /* Crossroads: when grid is NOT hovered, all cards equal */
-    #crossroadsGrid:not(:hover) > a {
-      flex: 1 !important;
-    }
-    /* When grid IS hovered, non-hovered cards shrink */
-    #crossroadsGrid:hover > a:not(:hover) {
-      flex: 0.85;
-    }
+    /* Crossroads: smooth flex transition handled by Tailwind classes on <a> */
   </style>
 
 </BaseLayout>
