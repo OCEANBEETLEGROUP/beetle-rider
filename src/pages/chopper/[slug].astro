@@ -200,7 +200,7 @@ const allImages = [
           </p>
           <p class="text-xs text-white/30 mb-6">予約リクエスト制 — 承認後に確定</p>
           <ul class="flex flex-col gap-[10px] mb-10 flex-1">
-            {['DAY RIDEの全内容を含む', '2日目以降のディスカウントあり', 'ルート相談OK'].map((item) => (
+            {['DAY RIDEの全内容を含む', 'ルート相談OK'].map((item) => (
               <li class="flex items-center gap-[10px] text-[13px] text-white/55">
                 <svg class="w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 <span>{item}</span>
@@ -277,9 +277,6 @@ const allImages = [
           )}
         </div>
 
-        <div class="bg-deep-red p-6">
-          {/* Empty cell for 3×3 alignment */}
-        </div>
       </div>
     </div>
   </section>
@@ -311,8 +308,7 @@ const allImages = [
             <span class="font-[family-name:var(--font-heading)] text-brand text-sm">02</span>
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">GEAR UP</h3>
-          <p class="text-[13px] text-white/45 leading-relaxed" set:html="'ヘルメット・グローブ：貸し出しあり<br>ETC車載器・Phone Holder：貸し出しあり<br>長袖・長ズボン・ブーツ推奨'">
-          </p>
+          <p class="text-[13px] text-white/45 leading-relaxed" set:html="ヘルメット・グローブ：貸し出しあり<br>ETC車載器・Phone Holder：貸し出しあり<br>長袖・長ズボン・ブーツ推奨" />
         </div>
 
         <!-- Step 3: Departure -->

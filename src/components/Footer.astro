@@ -25,10 +25,10 @@ const igEbike = siteConfig?.instagramEbike || 'https://instagram.com/beetlerider
 const igChopper = siteConfig?.instagramChopper || 'https://instagram.com/beetlerider_japan';
 const mapUrl = siteConfig?.mapUrl || 'https://maps.app.goo.gl/Y2bhYqAcBkLyzdydA';
 
-// HOME & ABOUT show both IG accounts; CHOPPER/EBIKE show only their own
-const showBoth = activePage === 'home' || activePage === 'about';
-const showEbike = showBoth || activePage === 'ebike';
-const showChopper = showBoth || activePage === 'chopper';
+// All pages show both IG accounts
+const showBoth = true;
+const showEbike = true;
+const showChopper = true;
 
 // Instagram photos from props (fetched in BaseLayout)
 const ebikePhotos = (Astro.props.igPhotos?.ebike ?? [
