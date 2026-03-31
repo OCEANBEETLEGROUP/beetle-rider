@@ -89,7 +89,8 @@ export async function getVehicleBySlug(slug: string) {
 
 /** Destinations, optionally filtered by category */
 export async function getDestinations(category?: 'chopper' | 'ebike' | 'both') {
-  const filters = category ? `category[contains]${category}` : undefined;
+  // Note: microCMS select field values have trailing space
+  const filters = category ? `category[contains]${category} ` : undefined;
   return await client.getList<Destination>({
     endpoint: 'destinations',
     queries: { filters, limit: 50 },
