@@ -11,7 +11,7 @@ const vehicles = vehiclesRaw.map((v, i) => ({
   img: v.thumbnail.url + '?w=800&q=80',
 }));
 
-const { contents: destinationsRaw } = await getDestinations();
+const { contents: destinationsRaw } = await getDestinations('chopper');
 const destinations = destinationsRaw.map(d => ({
   img: d.image.url + '?w=800&q=80',
   name: d.name.toUpperCase(),
@@ -208,9 +208,9 @@ const protocolItems = [
               {d.time}
             </div>
             <!-- Base Content -->
-            <div class="absolute bottom-0 left-0 right-0 p-7 z-[2] flex flex-col justify-end min-h-[100px]">
+            <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
               <h3 class="font-[family-name:var(--font-heading)] text-[clamp(20px,3vw,28px)] text-white tracking-[-0.01em]">{d.name}</h3>
-              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/60 mt-1 tracking-[0.02em] line-clamp-2">{d.desc}</p>
+              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/60 mt-1 tracking-[0.02em] line-clamp-1">{d.desc}</p>
             </div>
             <!-- Expand Detail Panel -->
             <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] bg-gradient-to-t from-deep-red/95 via-deep-red/85 to-transparent px-6 pb-7 pt-20 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="transform: translateY(100%); opacity: 0; pointer-events: none;">
