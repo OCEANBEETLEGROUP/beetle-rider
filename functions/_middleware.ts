@@ -1,12 +1,8 @@
 /**
  * Cloudflare Pages Middleware — GeoIP language redirect
  *
- * Logic:
- * 1. If URL already has /en/ prefix → pass through (user chose English)
- * 2. If cookie "lang" is set → respect it (user made a choice)
- * 3. If visitor is from Japan (CF-IPCountry: JP) → pass through (default JA)
- * 4. If visitor is NOT from Japan and no cookie → redirect to /en/ version
- * 5. When user clicks JP/EN button → set cookie via query param ?lang=ja or ?lang=en
+ * Only applies to HTML page requests (not assets).
+ * Sets a cookie to remember the user's language preference.
  */
 
 interface Env {}
@@ -14,14 +10,23 @@ interface Env {}
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request } = context;
   const url = new URL(request.url);
+  const path = url.pathname;
 
-  // Handle language preference setting via query param
+  // Skip static assets — only process HTML page requests
+  if (
+    path.match(/\.(js|css|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|mp4|mov|m4v|json|xml|txt|map)$/) ||
+    path.startsWith('/assets/') ||
+    path.startsWith('/_astro/')
+  ) {
+    return context.next();
+  }
+
+  // Handle language preference setting via query param (?lang=ja or ?lang=en)
   const langParam = url.searchParams.get('lang');
   if (langParam === 'ja' || langParam === 'en') {
-    // Remove the query param and redirect
     url.searchParams.delete('lang');
 
-    let targetPath = url.pathname;
+    let targetPath = path;
     if (langParam === 'ja' && targetPath.startsWith('/en')) {
       targetPath = targetPath.replace(/^\/en/, '') || '/';
     } else if (langParam === 'en' && !targetPath.startsWith('/en')) {
@@ -40,12 +45,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     return response;
   }
 
-  // Already on /en/ path → pass through
-  if (url.pathname.startsWith('/en')) {
+  // Already on /en/ path → pass through (no redirect)
+  if (path.startsWith('/en')) {
     return context.next();
   }
 
-  // Check cookie
+  // On JA path — check if we should redirect to EN
   const cookieHeader = request.headers.get('Cookie') || '';
   const langCookie = cookieHeader
     .split(';')
@@ -53,26 +58,20 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     .find((c) => c.startsWith('lang='));
 
   if (langCookie) {
-    const cookieLang = langCookie.split('=')[1];
-    if (cookieLang === 'en') {
-      // User previously chose EN but is on JA path → redirect
-      return new Response(null, {
-        status: 302,
-        headers: { Location: '/en' + url.pathname },
-      });
-    }
-    // Cookie says 'ja' → pass through
+    // User has a preference cookie — respect it, don't redirect
+    // If cookie=en but they navigated to JA URL directly, let them stay
+    // (they can use the JP/EN button to switch)
     return context.next();
   }
 
-  // No cookie → check GeoIP
+  // No cookie → first visit. Check GeoIP
   const country = request.headers.get('CF-IPCountry') || 'JP';
 
   if (country !== 'JP') {
-    // Non-Japan visitor, first visit → redirect to /en/ and set cookie
+    // Non-Japan first visit → redirect to /en/ and set cookie
     const response = new Response(null, {
       status: 302,
-      headers: { Location: '/en' + url.pathname },
+      headers: { Location: '/en' + path },
     });
     response.headers.set(
       'Set-Cookie',
@@ -81,7 +80,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     return response;
   }
 
-  // Japan visitor → pass through, set cookie
+  // Japan first visit → pass through, set cookie
   const response = await context.next();
   const newResponse = new Response(response.body, response);
   newResponse.headers.set(

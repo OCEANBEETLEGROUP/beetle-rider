@@ -214,7 +214,7 @@ export default {
   'about.crossroads.chopper.sub': 'Your machine awaits.',
 
   // === Footer ===
-  'footer.relatedSites': 'Related Sites',
+  'footer.relatedSites': 'STORE',
   'footer.ig': 'Instagram',
   'footer.info': 'Info',
   'footer.hours': 'Hours',
