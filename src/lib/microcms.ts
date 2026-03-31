@@ -93,7 +93,7 @@ export async function getDestinations(category?: 'chopper' | 'ebike' | 'both') {
   const filters = category ? `category[contains]${category} ` : undefined;
   return await client.getList<Destination>({
     endpoint: 'destinations',
-    queries: { filters, limit: 50 },
+    queries: { filters, orders: 'createdAt', limit: 50 },
   });
 }
 
