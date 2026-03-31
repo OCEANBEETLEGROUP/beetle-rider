@@ -25,8 +25,9 @@ const navItems = [
 ];
 
 const altUrl = alternateUrl(Astro.url);
-const jpUrl = lang === 'ja' ? Astro.url.pathname : altUrl;
-const enUrl = lang === 'en' ? Astro.url.pathname : altUrl;
+// Add ?lang= param to set cookie via middleware
+const jpUrl = (lang === 'ja' ? Astro.url.pathname : altUrl) + '?lang=ja';
+const enUrl = (lang === 'en' ? Astro.url.pathname : altUrl) + '?lang=en';
 ---
 
 <header id="site-header" class="fixed top-0 left-0 right-0 z-100 px-10 py-5 flex items-center justify-between backdrop-blur-[20px] bg-[rgba(45,10,10,0.35)] border-b border-white/[0.08] transition-all duration-400">
