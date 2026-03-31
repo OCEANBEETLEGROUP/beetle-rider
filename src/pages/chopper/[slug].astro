@@ -84,11 +84,11 @@ const allImages = [
     </div>
 
     <!-- Photo Slider -->
-    <div class="relative rounded-2xl lg:rounded-[32px] overflow-hidden aspect-video md:aspect-video aspect-[4/3] bg-white/[0.03] reveal reveal-delay-1" id="slider">
-      <div class="flex h-full transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" id="sliderTrack">
-        {allImages.map((img, i) => (
-          <div class="flex-[0_0_100%] h-full relative">
-            <div class="absolute inset-0 bg-[#111] flex items-center justify-center">
+    <div class="relative rounded-2xl lg:rounded-[32px] overflow-hidden aspect-[4/3] md:aspect-video bg-white/[0.03] reveal reveal-delay-1" id="slider">
+      <div class="absolute inset-0">
+        <div class="flex h-full transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" id="sliderTrack" style={`width: ${allImages.length * 100}%`}>
+          {allImages.map((img, i) => (
+            <div class="h-full relative" style={`width: ${100 / allImages.length}%`}>
               <img
                 src={`${img.url}?w=1600&q=80`}
                 alt={img.alt}
@@ -96,8 +96,8 @@ const allImages = [
                 loading={i === 0 ? "eager" : "lazy"}
               />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <!-- Slider Nav (hidden with single image, shown when gallery expands) -->
