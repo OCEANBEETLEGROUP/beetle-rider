@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLangFromUrl, localePath } from '../../i18n/config';
+import { useTranslations } from '../../i18n/index';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t('meta.about.title') as string} activePage="about" headerLogo="chopper">
+
+  <!-- ========================================
+       SECTION 1: ESCAPE FROM TOKYO — Full-bleed Hero
+       ======================================== -->
+  <section class="relative h-screen min-h-[700px] flex items-end justify-start overflow-hidden" id="sec-escape">
+    <!-- Ken Burns bg -->
+    <div class="absolute inset-0 bg-[url('/assets/route/KAMAKURA_HACHIMANGU1.jpg')] bg-center bg-cover scale-105 transition-transform duration-[8000ms] ease-out" id="heroBg"></div>
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to bottom, rgba(45,10,10,0.1) 0%, rgba(45,10,10,0) 30%, rgba(45,10,10,0.4) 60%, rgba(45,10,10,1) 92%), linear-gradient(to right, rgba(45,10,10,0.6) 0%, rgba(45,10,10,0) 50%);"></div>
+    <!-- Content -->
+    <div class="relative z-[2] px-[clamp(32px,6vw,100px)] pb-[clamp(60px,10vh,120px)] max-w-[900px]">
+      <div class="reveal">
+        <div class="flex items-center gap-4 text-[11px] font-semibold tracking-[0.4em] uppercase text-white/50 mb-6 after:content-[''] after:w-[60px] after:h-px after:bg-white/30">{t('about.s1.label')}</div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <h1 class="font-[family-name:var(--font-heading)] text-[clamp(56px,11vw,140px)] text-white tracking-[-0.03em] leading-[0.9] mb-6" style="text-shadow: 0 4px 40px rgba(0,0,0,0.3);">
+          {(t('about.s1.heading') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}
+          <span class="block text-[0.45em] tracking-[0.05em] opacity-70 mt-[0.3em] font-[family-name:var(--font-serif-jp)] font-bold">{t('about.s1.headingSub')}</span>
+        </h1>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <p class="font-[family-name:var(--font-serif-jp)] text-[clamp(16px,2.2vw,24px)] text-white/75 font-normal tracking-[0.12em] leading-[1.8]">{t('about.s1.sub')}</p>
+      </div>
+    </div>
+    <!-- Scroll hint -->
+    <div class="absolute bottom-8 right-12 z-[3] flex flex-col items-center gap-2 animate-[scrollFloat_2s_ease-in-out_infinite] max-md:hidden">
+      <span class="text-[9px] tracking-[0.3em] uppercase text-white/40" style="writing-mode: vertical-rl;">Scroll</span>
+      <div class="w-px h-10" style="background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);"></div>
+    </div>
+  </section>
+
+  <!-- Editorial text for Section 1 -->
+  <div class="relative py-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="reveal">
+        <p class="font-[family-name:var(--font-serif-jp)] font-normal text-[clamp(14px,1.2vw,17px)] text-white/50 leading-[2.4] max-w-[560px] tracking-[0.04em]">{t('about.s1.editorial')}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       SECTION 2: THE 134 RITUAL — Parallax Band + Editorial
+       ======================================== -->
+  <section class="relative bg-deep-red" id="sec-ritual">
+    <!-- Full-width parallax photo band -->
+    <div class="relative h-[80vh] min-h-[500px] overflow-hidden max-md:h-[60vh] max-md:min-h-[350px]">
+      <div class="absolute inset-[-20%] bg-[url('/assets/chopper/promo/674A3883.jpg')] bg-center bg-cover bg-fixed max-lg:bg-scroll"></div>
+      <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to bottom, #2D0A0A 0%, rgba(45,10,10,0.2) 25%, rgba(45,10,10,0.2) 65%, #2D0A0A 100%), linear-gradient(to right, rgba(45,10,10,0.4) 0%, transparent 30%, transparent 70%, rgba(45,10,10,0.4) 100%);"></div>
+      <div class="absolute inset-0 flex flex-col items-center justify-center z-[2] text-center px-10">
+        <div class="reveal">
+          <div class="flex items-center justify-center gap-4 text-[11px] font-semibold tracking-[0.4em] uppercase text-white/50 mb-6 after:content-[''] after:w-[60px] after:h-px after:bg-white/30">{t('about.s2.label')}</div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h2 class="font-[family-name:var(--font-heading)] text-[clamp(48px,9vw,120px)] text-white tracking-[-0.03em] leading-[0.9] mb-4" style="text-shadow: 0 4px 60px rgba(0,0,0,0.4);">{(t('about.s2.heading') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h2>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="font-[family-name:var(--font-serif-jp)] text-[clamp(16px,2vw,24px)] text-white/70 font-bold tracking-[0.15em]">{t('about.s2.sub')}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial text below parallax -->
+    <div class="relative py-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="reveal">
+          <p class="font-[family-name:var(--font-serif-jp)] font-normal text-[clamp(14px,1.2vw,17px)] text-white/50 leading-[2.4] max-w-[560px] tracking-[0.04em]">{t('about.s2.editorial')}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHOPPER ORGASM — Editorial Grid -->
+    <div class="relative pt-16 pb-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+          <!-- Text -->
+          <div>
+            <div class="reveal">
+              <p class="text-[11px] font-semibold tracking-[0.4em] uppercase text-white/25 mb-10 flex items-center gap-4 after:content-[''] after:w-[60px] after:h-px after:bg-white/15">{t('about.s2.philosophy')}</p>
+            </div>
+            <div class="reveal reveal-delay-1">
+              <h3 class="font-[family-name:var(--font-heading)] text-[clamp(32px,6vw,64px)] text-white tracking-[-0.03em] leading-[0.95] mb-4">{(t('about.s2.chopper.heading') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h3>
+            </div>
+            <div class="reveal reveal-delay-2">
+              <p class="font-[family-name:var(--font-serif-jp)] font-normal text-[clamp(14px,1.2vw,17px)] text-white/50 leading-[2.4] max-w-[560px] tracking-[0.04em]">{t('about.s2.chopper.body')}</p>
+            </div>
+          </div>
+          <!-- Illustration -->
+          <div class="reveal-scale">
+            <img
+              src="/assets/illustration/BR_CHOPPER ORGAZZM.png"
+              alt="Chopper Orgasm — Ukiyo-e"
+              loading="lazy"
+              class="w-full h-auto min-h-[350px] lg:min-h-[550px] object-cover lg:-my-10"
+              style="-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to right, transparent 0%, black 8%, black 100%); mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to right, transparent 0%, black 8%, black 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote Band — Parallax -->
+  <div class="relative h-[70vh] min-h-[400px] overflow-hidden max-md:h-[50vh] max-md:min-h-[300px]">
+    <div class="absolute inset-0 bg-[url('/assets/chopper/promo/IMG_9498_1.jpg')] bg-center bg-cover bg-fixed max-lg:bg-scroll"></div>
+    <div class="absolute top-0 left-0 right-0 h-[40%] z-[1]" style="background: linear-gradient(to bottom, #2D0A0A 0%, rgba(45,10,10,0) 100%);"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-[50%] z-[1]" style="background: linear-gradient(to top, #2D0A0A 0%, rgba(45,10,10,0) 100%);"></div>
+    <div class="absolute inset-0 flex items-center justify-center z-[2] text-center px-10">
+      <div class="reveal">
+        <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,5vw,64px)] text-white tracking-[-0.01em] leading-[1.2]" style="text-shadow: 0 2px 40px rgba(0,0,0,0.5);">It's not a road.<br>It's a <em class="not-italic text-brand">ritual</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breathing space -->
+  <div class="h-[60px] md:h-[clamp(120px,18vh,240px)] bg-deep-red"></div>
+
+  <!-- ========================================
+       SECTION 3: ANCIENT REBEL — Full-bleed Photo + Text Overlay
+       ======================================== -->
+  <section class="relative bg-deep-red overflow-hidden" id="sec-rebel">
+    <!-- Full-bleed hero -->
+    <div class="relative h-[90vh] min-h-[600px] overflow-hidden max-md:h-[70vh] max-md:min-h-[400px]">
+      <div class="absolute inset-0 bg-[url('/assets/route/KAMAKURA.jpg')] bg-center bg-cover"></div>
+      <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to bottom, #2D0A0A 0%, rgba(45,10,10,0) 20%, rgba(45,10,10,0) 40%, rgba(45,10,10,0.85) 80%, #2D0A0A 100%), linear-gradient(to right, rgba(45,10,10,0.7) 0%, rgba(45,10,10,0) 40%);"></div>
+      <div class="absolute bottom-0 left-0 right-0 z-[2] px-[clamp(32px,6vw,100px)] pb-[clamp(60px,8vh,100px)]">
+        <div class="reveal">
+          <div class="flex items-center gap-4 text-[11px] font-semibold tracking-[0.4em] uppercase text-white/50 mb-6 after:content-[''] after:w-[60px] after:h-px after:bg-white/30">{t('about.s3.label')}</div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h2 class="font-[family-name:var(--font-heading)] text-[clamp(48px,9vw,120px)] text-white tracking-[-0.03em] leading-[0.9] mb-4" style="text-shadow: 0 4px 60px rgba(0,0,0,0.3);">{(t('about.s3.heading') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h2>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="font-[family-name:var(--font-serif-jp)] text-[clamp(18px,2.5vw,28px)] text-white/70 font-bold tracking-[0.12em]">{t('about.s3.sub')}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial: Text + Big Buddha -->
+    <div class="relative py-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+          <div>
+            <div class="reveal">
+              <p class="font-[family-name:var(--font-serif-jp)] font-normal text-[clamp(14px,1.2vw,17px)] text-white/50 leading-[2.4] tracking-[0.04em]">{t('about.s3.editorial')}</p>
+            </div>
+          </div>
+          <div class="reveal-scale">
+            <img
+              src="/assets/route/KAMAKURA_BIG BUDA1.jpg"
+              alt="Great Buddha of Kamakura"
+              loading="lazy"
+              class="w-full h-auto min-h-[350px] lg:min-h-[550px] object-cover lg:-my-10"
+              style="-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to right, transparent 0%, black 8%, black 100%); mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to right, transparent 0%, black 8%, black 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kagemasa Editorial Grid (reversed) -->
+    <div class="relative pt-10 pb-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 items-center">
+          <!-- Illustration (left on desktop) -->
+          <div class="reveal-scale order-2 lg:order-1">
+            <img
+              src="/assets/illustration/BR_KAMAKURA_HOKUSAI.png"
+              alt="Hokusai — Kamakura Gongorō Kagemasa"
+              loading="lazy"
+              class="w-full h-auto min-h-[350px] lg:min-h-[550px] object-cover lg:-my-10"
+              style="-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to left, transparent 0%, black 8%, black 100%); mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to left, transparent 0%, black 8%, black 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
+            />
+          </div>
+          <!-- Text (right on desktop) -->
+          <div class="order-1 lg:order-2">
+            <div class="reveal">
+              <p class="font-[family-name:var(--font-serif-jp)] text-[11px] font-semibold tracking-[0.4em] uppercase text-white/25 mb-10 flex items-center gap-4 after:content-[''] after:w-[60px] after:h-px after:bg-white/15">{t('about.s3.kagemasa.label')}</p>
+            </div>
+            <div class="reveal reveal-delay-1">
+              <h3 class="font-[family-name:var(--font-serif-jp)] font-black text-[clamp(28px,4vw,48px)] text-white tracking-[0.05em] leading-[1.3] mb-10">{(t('about.s3.kagemasa.heading') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h3>
+            </div>
+            <div class="reveal reveal-delay-2">
+              <p class="font-[family-name:var(--font-serif-jp)] font-normal text-[clamp(14px,1.2vw,17px)] text-white/50 leading-[2.4] max-w-[560px] tracking-[0.04em]">{t('about.s3.kagemasa.body')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Breathing space -->
+  <div class="h-[60px] md:h-[clamp(120px,18vh,240px)] bg-deep-red"></div>
+
+  <!-- ========================================
+       SECTION 4: THE CRAFT — Mechanic Hero + Manifesto
+       ======================================== -->
+  <section class="relative bg-deep-red overflow-hidden" id="sec-craft">
+    <!-- Hero -->
+    <div class="relative h-[70vh] min-h-[450px] overflow-hidden max-md:h-[60vh] max-md:min-h-[350px]">
+      <div class="absolute inset-0 bg-[url('/assets/chopper/promo/beetle_shop_brc_008.jpg')] bg-center bg-cover"></div>
+      <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to bottom, #2D0A0A 0%, rgba(45,10,10,0) 30%, rgba(45,10,10,0.6) 70%, #2D0A0A 100%), linear-gradient(to right, rgba(45,10,10,0.8) 0%, rgba(45,10,10,0) 50%);"></div>
+      <div class="absolute top-1/2 -translate-y-1/2 left-[clamp(32px,6vw,100px)] z-[2]">
+        <div class="reveal">
+          <div class="flex items-center gap-4 text-[11px] font-semibold tracking-[0.4em] uppercase text-white/40 mb-6 after:content-[''] after:w-[60px] after:h-px after:bg-white/20">{t('about.s4.label')}</div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h2 class="font-[family-name:var(--font-heading)] text-[clamp(48px,9vw,120px)] text-white tracking-[-0.03em] leading-[0.9] mb-4" style="text-shadow: 0 4px 60px rgba(0,0,0,0.3);">{(t('about.s4.heading') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h2>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="font-[family-name:var(--font-serif-jp)] text-[clamp(18px,2.5vw,28px)] text-white/65 font-bold tracking-[0.12em]">{t('about.s4.subtitle')}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacer -->
+    <div class="h-[80px] md:h-[clamp(200px,30vh,400px)]"></div>
+
+    <!-- Manifesto: 2-column grid -->
+    <div class="relative pb-32 px-[clamp(24px,6vw,100px)] bg-deep-red overflow-hidden">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+      <!-- Image -->
+      <div class="reveal-scale">
+        <img
+          src="/assets/chopper/promo/beetle_shop_brc_044.jpg"
+          alt="OCEANBEETLE Craftsman"
+          loading="lazy"
+          class="w-full h-auto min-h-[350px] lg:min-h-[550px] object-cover lg:-my-10"
+          style="-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to left, transparent 0%, black 8%, black 100%); mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to left, transparent 0%, black 8%, black 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
+        />
+      </div>
+      <!-- Text -->
+      <div class="text-left">
+        <div class="reveal">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">We don't build bikes.</p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">We strip away everything<br>the white-collar world told you mattered —<br>just like a chopper.</p>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">What's left?</p>
+        </div>
+        <div class="reveal reveal-delay-3">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">Steel, sweat, and a century of craft.</p>
+        </div>
+        <div class="reveal reveal-delay-4">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">This country was built by hands, not desks.<br>We're here to remind you.</p>
+        </div>
+        <div class="reveal reveal-delay-5">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2.2vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">That's <span class="text-brand">OCEANBEETLE</span>.</p>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="w-[60px] h-px bg-white/10 mx-auto"></div>
+  </section>
+
+  <!-- ========================================
+       SECTION 5: THE CROSSROADS — Split CTA
+       ======================================== -->
+  <section class="px-3 py-16 bg-deep-red max-md:px-2 max-md:py-10" id="sec-crossroads">
+    <div class="text-center mb-16 reveal">
+      <h2 class="font-[family-name:var(--font-heading)] text-[clamp(32px,5vw,56px)] text-white tracking-[-0.02em] mb-2">{t('about.crossroads.heading')}</h2>
+      <p class="font-[family-name:var(--font-serif-jp)] text-[clamp(14px,1.5vw,18px)] text-white/40 font-normal tracking-[0.1em]">{t('about.crossroads.sub')}</p>
+    </div>
+    <div class="flex h-[65vh] min-h-[400px] max-h-[700px] gap-3 max-w-[1400px] mx-auto max-md:flex-col max-md:h-auto max-md:max-h-none" id="crossroadsGrid">
+      <!-- E-BIKE Card -->
+      <a href={localePath('/ebike', lang)} class="group relative flex-1 rounded-[32px] overflow-hidden cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-md:min-h-[280px] reveal">
+        <div class="absolute inset-0 bg-[url('/assets/ebike/ebike0010.jpg')] bg-center bg-cover transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/5 to-black/60 group-hover:from-black/0 group-hover:to-black/50 transition-all duration-500"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-12 z-[2] max-lg:p-8 max-md:p-7">
+          <h3 class="font-[family-name:var(--font-heading)] text-[clamp(28px,4vw,48px)] text-white tracking-[-0.02em] leading-none mb-3">{(t('about.crossroads.ebike') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h3>
+          <p class="text-sm font-semibold text-white/70 tracking-[0.1em] uppercase">{t('about.crossroads.ebike.sub')}</p>
+        </div>
+        <div class="absolute bottom-12 right-10 w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center z-[2] group-hover:bg-white/20 group-hover:translate-x-1 transition-all duration-400 max-lg:bottom-8 max-lg:right-7 max-lg:w-12 max-lg:h-12 max-md:bottom-7 max-md:right-6 max-md:w-11 max-md:h-11">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <!-- CHOPPER Card -->
+      <a href={localePath('/chopper', lang)} class="group relative flex-1 rounded-[32px] overflow-hidden cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-md:min-h-[280px] reveal reveal-delay-1">
+        <div class="absolute inset-0 bg-[url('/assets/chopper/promo/R0006459.JPG')] bg-center bg-cover transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/5 to-black/60 group-hover:from-black/0 group-hover:to-black/50 transition-all duration-500"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-12 z-[2] max-lg:p-8 max-md:p-7">
+          <h3 class="font-[family-name:var(--font-heading)] text-[clamp(28px,4vw,48px)] text-white tracking-[-0.02em] leading-none mb-3">{(t('about.crossroads.chopper') as string).split('\n').map((line, i, arr) => <>{line}{i < arr.length - 1 && <br />}</>)}</h3>
+          <p class="text-sm font-semibold text-white/70 tracking-[0.1em] uppercase">{t('about.crossroads.chopper.sub')}</p>
+        </div>
+        <div class="absolute bottom-12 right-10 w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center z-[2] group-hover:bg-white/20 group-hover:translate-x-1 transition-all duration-400 max-lg:bottom-8 max-lg:right-7 max-lg:w-12 max-lg:h-12 max-md:bottom-7 max-md:right-6 max-md:w-11 max-md:h-11">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Ken Burns + scroll hint animation -->
+  <script>
+    // Ken Burns on hero load
+    window.addEventListener('load', () => {
+      const bg = document.getElementById('heroBg');
+      if (bg) {
+        requestAnimationFrame(() => {
+          bg.style.transform = 'scale(1)';
+        });
+      }
+    });
+  </script>
+
+  <style>
+    @keyframes scrollFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+  </style>
+
+</BaseLayout>

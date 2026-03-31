@@ -4,7 +4,10 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageLoader from '../components/PageLoader.astro';
 import { getSiteConfig, getInstagramPosts } from '../lib/microcms';
+import { getLangFromUrl } from '../i18n/config';
+import { alternateUrl } from '../i18n/config';
 
+const lang = getLangFromUrl(Astro.url);
 const siteConfig = await getSiteConfig();
 
 // Fetch Instagram gallery photos
@@ -32,28 +35,33 @@ const {
   activePage = 'home',
   headerLogo = 'chopper',
 } = Astro.props;
+
+const altUrl = alternateUrl(Astro.url);
+const altLang = lang === 'ja' ? 'en' : 'ja';
 ---
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang={lang}>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   <meta name="description" content={description}>
+  <link rel="alternate" hreflang={altLang} href={altUrl} />
+  <link rel="alternate" hreflang={lang} href={Astro.url.pathname} />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Rubik+Dirt&family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
 </head>
 <body class={bodyClass}>
   <PageLoader />
-  <Header activePage={activePage} logo={headerLogo} />
+  <Header activePage={activePage} logo={headerLogo} lang={lang} />
 
   <main>
     <slot />
   </main>
 
-  <Footer activePage={activePage} siteConfig={siteConfig} igPhotos={igPhotos} />
+  <Footer activePage={activePage} siteConfig={siteConfig} igPhotos={igPhotos} lang={lang} />
 
   <!-- Scroll Reveal -->
   <script>

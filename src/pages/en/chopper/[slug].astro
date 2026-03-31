@@ -1,6 +1,6 @@
 ---
-import ChopperDetailPage from '../../components/pages/ChopperDetailPage.astro';
-import { getVehicles } from '../../lib/microcms';
+import ChopperDetailPage from '../../../components/pages/ChopperDetailPage.astro';
+import { getVehicles } from '../../../lib/microcms';
 
 export async function getStaticPaths() {
   const { contents } = await getVehicles();

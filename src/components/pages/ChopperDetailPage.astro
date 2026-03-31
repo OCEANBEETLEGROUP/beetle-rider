@@ -1,0 +1,460 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookNowButton from '../../components/BookNowButton.astro';
+import { getLangFromUrl, localePath } from '../../i18n/config';
+import { useTranslations } from '../../i18n/index';
+import type { Vehicle } from '../../lib/microcms';
+
+interface Props {
+  vehicle: Vehicle;
+  index: number;
+}
+
+const { vehicle, index } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const dayPriceFormatted = vehicle.dayRidePrice.toLocaleString();
+const multiPriceFormatted = vehicle.multiDayPrice.toLocaleString();
+
+// Instagram link helper
+function igLink(handle?: string) {
+  if (!handle) return null;
+  const isIg = handle.startsWith('@');
+  return isIg ? { handle, url: `https://instagram.com/${handle.slice(1)}` } : null;
+}
+const builderIg = igLink(vehicle.builder);
+const painterIg = igLink(vehicle.painter);
+
+const specs = [
+  { label: t('detail.specs.model') as string, value: vehicle.base },
+  { label: t('detail.specs.engine') as string, value: t('detail.specs.engineVal') as string },
+  { label: t('detail.specs.transmission') as string, value: vehicle.transmission || '—' },
+  { label: t('detail.specs.fuelTank') as string, value: vehicle.fuelTank || '—' },
+  { label: t('detail.specs.tires') as string, value: vehicle.tires || '—' },
+  { label: t('detail.specs.weight') as string, value: vehicle.weight || '—' },
+  { label: t('detail.specs.style') as string, value: vehicle.style || '—' },
+];
+
+// Gallery: hero (thumbnail) + gallery images
+const allImages = [
+  { url: vehicle.thumbnail.url, alt: `${vehicle.name} — Main` },
+  ...(vehicle.gallery || []).map((img, i) => ({
+    url: img.url,
+    alt: `${vehicle.name} — ${i + 2}`,
+  })),
+];
+
+// FAQ items using chopper.faq.* keys
+const faqKeys = ['license', 'alcohol', 'weather', 'equipment', 'clothing', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const faqItems = faqKeys.map(key => ({
+  title: t(`chopper.faq.${key}.title` as any) as string,
+  content: t(`chopper.faq.${key}.content` as any) as string,
+}));
+---
+
+<BaseLayout title={vehicle.name + " — BEETLE RIDER"} activePage="chopper" headerLogo="chopper">
+
+  <!-- Back Link -->
+  <div class="pt-[calc(80px+24px)] px-6 md:px-10 max-w-[1200px] mx-auto">
+    <a href={localePath('/chopper', lang)} class="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.15em] uppercase text-white/40 hover:text-white transition-colors">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      <span>{t('detail.backToFleet')}</span>
+    </a>
+  </div>
+
+  <!-- Section 1: Vehicle Hero -->
+  <section class="px-4 md:px-6 lg:px-10 pb-16 max-w-[1200px] mx-auto pt-6">
+    <!-- Top Info -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 reveal">
+      <div>
+        <p class="font-[family-name:var(--font-heading)] text-xs text-brand tracking-[0.2em] mb-2">
+          NO. {String(index).padStart(2, '0')}
+        </p>
+        <h1 class="font-[family-name:var(--font-heading)] text-[clamp(36px,6vw,72px)] text-white tracking-tight leading-[0.95]">
+          {vehicle.name}
+        </h1>
+        <p class="text-sm font-medium text-white/40 tracking-wide mt-4">
+          {vehicle.base} — {vehicle.style}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] shrink-0">
+        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/60">{t('detail.available')}</span>
+      </div>
+    </div>
+
+    <!-- Photo Slider -->
+    <div class="relative rounded-2xl lg:rounded-[32px] overflow-hidden aspect-[4/3] md:aspect-video bg-white/[0.03] reveal reveal-delay-1" id="slider">
+      <div class="absolute inset-0">
+        <div class="flex h-full transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" id="sliderTrack" style={`width: ${allImages.length * 100}%`}>
+          {allImages.map((img, i) => (
+            <div class="h-full relative" style={`width: ${100 / allImages.length}%`}>
+              <img
+                src={`${img.url}?w=1600&q=80`}
+                alt={img.alt}
+                class="w-full h-full object-cover"
+                loading={i === 0 ? "eager" : "lazy"}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Slider Nav -->
+      <button
+        class="hidden slider-nav absolute top-1/2 -translate-y-1/2 left-3 lg:left-4 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl flex items-center justify-center cursor-pointer z-[5] hover:bg-black/60 hover:border-white/20 transition-all"
+        id="sliderPrev"
+        aria-label="Previous"
+      >
+        <svg class="w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button
+        class="hidden slider-nav absolute top-1/2 -translate-y-1/2 right-3 lg:right-4 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl flex items-center justify-center cursor-pointer z-[5] hover:bg-black/60 hover:border-white/20 transition-all"
+        id="sliderNext"
+        aria-label="Next"
+      >
+        <svg class="w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <!-- Counter -->
+      <div class="absolute bottom-5 right-6 z-[5] flex items-baseline gap-1 bg-black/55 backdrop-blur-lg px-4 py-2 rounded-full">
+        <span class="font-[family-name:var(--font-heading)] text-[28px] text-white font-bold" id="sliderCurrent">1</span>
+        <span class="text-xl font-bold text-white/50 mx-[2px]">/</span>
+        <span class="text-xl font-bold text-white/50" id="sliderTotal">{allImages.length}</span>
+      </div>
+
+    </div>
+
+    <!-- Thumbnail Strip -->
+    {allImages.length > 1 && (
+      <div class="flex justify-center gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide" id="thumbStrip">
+        {allImages.map((img, i) => (
+          <button
+            class:list={[
+              'shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 cursor-pointer',
+              i === 0 ? 'border-brand opacity-100' : 'border-transparent opacity-40 hover:opacity-70',
+            ]}
+            data-thumb-index={i}
+          >
+            <img src={`${img.url}?w=200&q=60`} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
+          </button>
+        ))}
+      </div>
+    )}
+
+    <!-- Slider Indicator Dots -->
+    <div class="hidden justify-center items-center gap-2.5 mt-3 pb-2" id="sliderDots">
+    </div>
+  </section>
+
+  <!-- Section 2: Plans & Booking -->
+  <section class="py-24 px-4 md:px-10 bg-deep-red" id="plans">
+    <div class="max-w-[900px] mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t('detail.plans.label')}</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t('detail.plans.heading')}</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- DAY RIDE -->
+        <div class="relative bg-white/[0.04] border border-brand/100 rounded-[16px] p-10 flex flex-col hover:translate-y-[-4px] transition-all duration-400 bg-[rgba(195,13,35,0.06)] reveal reveal-delay-1">
+          <span class="absolute -top-3 left-10 bg-brand text-white text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full">{t('detail.dayride.badge')}</span>
+          <h3 class="font-[family-name:var(--font-heading)] text-[clamp(18px,2vw,24px)] text-white tracking-tight mb-2">{t('detail.dayride.name')}</h3>
+          <p class="text-sm text-white/45 leading-relaxed mb-6">
+            {t('detail.dayride.desc')}
+          </p>
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,3vw,40px)] text-white tracking-tight mb-1">
+            &yen;{dayPriceFormatted}〜<span class="text-sm font-medium text-white/40 tracking-normal ml-1">{t('common.perDay')}</span>
+          </p>
+          <p class="text-xs text-white/30 mb-6">{t('detail.dayride.note')}</p>
+          <ul class="flex flex-col gap-[10px] mb-10 flex-1">
+            {(t('detail.dayride.items') as string[]).map((item) => (
+              <li class="flex items-center gap-[10px] text-[13px] text-white/55">
+                <svg class="w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          {vehicle.bokunDayRideId ? (
+            <BookNowButton widgetId={vehicle.bokunDayRideId} label={t('common.bookNow') as string} class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:translate-y-[-2px] transition-all cursor-pointer border-none" />
+          ) : (
+            <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand/50 text-white/60 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed border-none" disabled>
+              <span>{t('common.comingSoon')}</span>
+            </button>
+          )}
+        </div>
+
+        <!-- MULTI-DAY -->
+        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-10 flex flex-col hover:border-white/15 hover:translate-y-[-4px] transition-all duration-400 reveal reveal-delay-2">
+          <h3 class="font-[family-name:var(--font-heading)] text-[clamp(18px,2vw,24px)] text-white tracking-tight mb-2">{t('detail.multiday.name')}</h3>
+          <p class="text-sm text-white/45 leading-relaxed mb-6">
+            {t('detail.multiday.desc')}
+          </p>
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(28px,3vw,40px)] text-white tracking-tight mb-1">
+            &yen;{multiPriceFormatted}〜<span class="text-sm font-medium text-white/40 tracking-normal ml-1">{t('common.per2days')}</span>
+          </p>
+          <p class="text-xs text-white/30 mb-6">{t('detail.multiday.note')}</p>
+          <ul class="flex flex-col gap-[10px] mb-10 flex-1">
+            {(t('detail.multiday.items') as string[]).map((item) => (
+              <li class="flex items-center gap-[10px] text-[13px] text-white/55">
+                <svg class="w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          {vehicle.bokunMultiDayId ? (
+            <BookNowButton widgetId={vehicle.bokunMultiDayId} label={t('detail.multiday.cta') as string} class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/15 text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-white/[0.06] hover:border-white/30 hover:translate-y-[-2px] transition-all cursor-pointer" />
+          ) : (
+            <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/10 text-white/40 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed" disabled>
+              <span>{t('common.comingSoon')}</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Specs -->
+  <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
+    <div class="max-w-[900px] mx-auto">
+      <div class="mb-10 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35">{t('detail.specs.label')}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
+        {specs.map((spec) => (
+          <div class="bg-deep-red p-6">
+            <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">{spec.label}</p>
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{spec.value}</p>
+          </div>
+        ))}
+
+        <div class="bg-deep-red p-6">
+          <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">{t('detail.specs.build')}</p>
+          {builderIg ? (
+            <a
+              href={builderIg.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1 pl-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-[clamp(12px,1.3vw,15px)] font-semibold text-white/70 hover:bg-white/[0.12] hover:text-white hover:translate-y-[-1px] transition-all no-underline"
+            >
+              <svg class="w-3.5 h-3.5 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="5"/>
+                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+              </svg>
+              {builderIg.handle}
+            </a>
+          ) : (
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.builder || '—'}</p>
+          )}
+        </div>
+
+        <div class="bg-deep-red p-6">
+          <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">{t('detail.specs.painter')}</p>
+          {painterIg ? (
+            <a
+              href={painterIg.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1 pl-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-[clamp(12px,1.3vw,15px)] font-semibold text-white/70 hover:bg-white/[0.12] hover:text-white hover:translate-y-[-1px] transition-all no-underline"
+            >
+              <svg class="w-3.5 h-3.5 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="5"/>
+                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+              </svg>
+              {painterIg.handle}
+            </a>
+          ) : (
+            <p class="font-[family-name:var(--font-heading)] text-[clamp(14px,1.5vw,18px)] text-white tracking-tight">{vehicle.painter || '—'}</p>
+          )}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Protocol -->
+  <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
+    <div class="max-w-[800px] mx-auto">
+      <div class="text-center mb-16">
+        <div class="reveal">
+          <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t('detail.protocol.label')}</p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h2 class="font-[family-name:var(--font-heading)] text-[clamp(28px,4vw,48px)] text-white tracking-[-0.02em] mb-6">{t('detail.protocol.heading')}</h2>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="font-[family-name:var(--font-heading-jp)] text-[15px] font-medium text-white/50 leading-[1.8] tracking-[0.03em]">{t('chopper.protocol.body1')}</p>
+          <p class="font-[family-name:var(--font-heading-jp)] text-[15px] font-medium text-white/50 leading-[1.8] tracking-[0.03em] mt-4">{t('chopper.protocol.body2')}</p>
+          <p class="font-[family-name:var(--font-accent)] text-[clamp(32px,6vw,56px)] font-bold text-brand leading-[1.3] tracking-[0.02em] mt-10 drop-shadow-[0_0_40px_rgba(195,13,35,0.3)]">{t('detail.protocol.thinkYouCan')}</p>
+        </div>
+      </div>
+      <!-- Accordion -->
+      <div class="reveal reveal-delay-1 mb-16">
+        {faqItems.map((item, i) => (
+          <div class:list={['accordion-item overflow-hidden', 'border-t border-white/15']}>
+            <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-brand">
+              <span>{item.title}</span>
+              <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </button>
+            <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+              <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide" set:html={item.content}></div>
+            </div>
+          </div>
+        ))}
+        <div class="border-b border-white/15"></div>
+      </div>
+
+
+
+    </div>
+  </section>
+
+  <!-- Floating CTA -->
+  <button
+    class="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[90] inline-flex items-center gap-[10px] px-5 py-3 md:px-7 md:py-3.5 rounded-full bg-brand text-white text-[11px] md:text-xs font-bold tracking-[0.15em] uppercase shadow-[0_4px_16px_rgba(195,13,35,0.35),0_2px_8px_rgba(0,0,0,0.2)] cursor-pointer border-none hover:bg-[#a80b1e] hover:translate-y-[-2px] hover:shadow-[0_6px_24px_rgba(195,13,35,0.45),0_4px_12px_rgba(0,0,0,0.25)] transition-all"
+    id="floatingCta"
+  >
+    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+    <span>{t('common.bookMachine')}</span>
+  </button>
+
+  <!-- Slider & Accordion Scripts -->
+  <script>
+    // Floating CTA scroll to plans
+    document.getElementById('floatingCta')?.addEventListener('click', () => {
+      document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Photo Slider
+    (function initSlider() {
+      const track = document.getElementById('sliderTrack');
+      const prevBtn = document.getElementById('sliderPrev');
+      const nextBtn = document.getElementById('sliderNext');
+      const counterCurrent = document.getElementById('sliderCurrent');
+      const counterTotal = document.getElementById('sliderTotal');
+      const dotsContainer = document.getElementById('sliderDots');
+      const slider = document.getElementById('slider');
+
+      if (!track || !slider) return;
+
+      const slides = track.children;
+      const total = slides.length;
+      let current = 0;
+
+      // Update total counter
+      if (counterTotal) counterTotal.textContent = String(total);
+
+      // Show nav buttons and dots when multiple slides
+      if (total > 1) {
+        prevBtn?.classList.remove('hidden');
+        nextBtn?.classList.remove('hidden');
+        dotsContainer?.classList.remove('hidden');
+        dotsContainer?.classList.add('flex');
+
+        // Generate dots
+        if (dotsContainer) {
+          for (let i = 0; i < total; i++) {
+            const dot = document.createElement('button');
+            dot.className = `w-[6px] h-[6px] rounded-full border-none cursor-pointer transition-all p-0 ${i === 0 ? 'bg-white scale-125' : 'bg-white/30 hover:bg-white/50'}`;
+            dot.setAttribute('data-index', String(i));
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+          }
+        }
+      }
+
+      function goTo(idx: number) {
+        if (idx < 0) idx = total - 1;
+        if (idx >= total) idx = 0;
+        current = idx;
+        const slidePercent = 100 / total;
+        track!.style.transform = `translateX(-${current * slidePercent}%)`;
+        if (counterCurrent) counterCurrent.textContent = String(current + 1);
+
+        // Update dots
+        if (dotsContainer) {
+          Array.from(dotsContainer.children).forEach((dot, i) => {
+            const el = dot as HTMLElement;
+            if (i === current) {
+              el.className = 'w-[6px] h-[6px] rounded-full bg-white scale-125 border-none cursor-pointer transition-all p-0';
+            } else {
+              el.className = 'w-[6px] h-[6px] rounded-full bg-white/30 hover:bg-white/50 border-none cursor-pointer transition-all p-0';
+            }
+          });
+        }
+
+        // Update thumbnails
+        const thumbs = document.querySelectorAll('[data-thumb-index]');
+        thumbs.forEach((thumb, i) => {
+          const el = thumb as HTMLElement;
+          if (i === current) {
+            el.classList.add('border-brand', 'opacity-100');
+            el.classList.remove('border-transparent', 'opacity-40');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          } else {
+            el.classList.remove('border-brand', 'opacity-100');
+            el.classList.add('border-transparent', 'opacity-40');
+          }
+        });
+      }
+
+      prevBtn?.addEventListener('click', () => goTo(current - 1));
+      nextBtn?.addEventListener('click', () => goTo(current + 1));
+
+      // Thumbnail clicks
+      document.querySelectorAll('[data-thumb-index]').forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+          const idx = parseInt((thumb as HTMLElement).dataset.thumbIndex || '0');
+          goTo(idx);
+        });
+      });
+
+      // Swipe support
+      let startX = 0;
+      slider.addEventListener('touchstart', (e: TouchEvent) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+      slider.addEventListener('touchend', (e: TouchEvent) => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? goTo(current + 1) : goTo(current - 1);
+        }
+      }, { passive: true });
+
+      // Keyboard
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') goTo(current - 1);
+        if (e.key === 'ArrowRight') goTo(current + 1);
+      });
+    })();
+
+    // Accordion toggle
+    document.querySelectorAll('.accordion-trigger').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const body = btn.nextElementSibling as HTMLElement;
+        const icon = btn.querySelector('.accordion-icon') as HTMLElement;
+        const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
+        if (isOpen) {
+          body.style.maxHeight = '0px';
+          if (icon) icon.style.transform = 'rotate(0deg)';
+        } else {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          if (icon) icon.style.transform = 'rotate(45deg)';
+        }
+      });
+    });
+  </script>
+</BaseLayout>

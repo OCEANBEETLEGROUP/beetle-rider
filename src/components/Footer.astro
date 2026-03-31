@@ -1,6 +1,10 @@
 ---
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/index';
+
 interface Props {
   activePage: 'home' | 'chopper' | 'ebike' | 'about';
+  lang: Lang;
   siteConfig?: {
     instagramChopper?: string;
     instagramEbike?: string;
@@ -19,7 +23,8 @@ interface Props {
   };
 }
 
-const { activePage, siteConfig } = Astro.props;
+const { activePage, lang, siteConfig } = Astro.props;
+const t = useTranslations(lang);
 
 const igEbike = siteConfig?.instagramEbike || 'https://instagram.com/beetlerider_ebike';
 const igChopper = siteConfig?.instagramChopper || 'https://instagram.com/beetlerider_japan';
@@ -48,7 +53,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
   <!-- Instagram Gallery -->
   <div class="px-10 py-16 border-b border-white/[0.06]">
     <div class="max-w-[1200px] mx-auto">
-      <span class="block text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">Instagram</span>
+      <span class="block text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t('footer.ig')}</span>
 
       <div class:list={[
         'grid gap-10',
@@ -121,18 +126,18 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
 
     <!-- Info Column -->
     <div class="flex flex-col gap-4 md:justify-end">
-      <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30">Info</h4>
+      <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30">{t('footer.info')}</h4>
       <dl class="flex flex-col gap-3">
         <div>
-          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">Hours</dt>
+          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.hours')}</dt>
           <dd class="text-sm text-white/55 font-medium">{siteConfig?.businessHours || '10:00 - 18:00'}</dd>
         </div>
         <div>
-          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">Tel</dt>
+          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.tel')}</dt>
           <dd><a href={`tel:${siteConfig?.phone || '0467379926'}`} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.phone || '0467-37-9926'}</a></dd>
         </div>
         <div>
-          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">Location</dt>
+          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.location')}</dt>
           <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.address || '神奈川県鎌倉市由比ガ浜2-1-11'}</a></dd>
         </div>
       </dl>
@@ -142,13 +147,13 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
   <!-- Bottom Legal -->
   <div class="border-t border-white/[0.06] px-10 py-6 pb-20">
     <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <span class="text-[11px] text-white/20">&copy; 2026 OCEANBEETLE Co., Ltd. All rights reserved.</span>
+      <span class="text-[11px] text-white/20">{t('footer.copyright')}</span>
       <div class="flex flex-wrap items-center gap-4">
-        <a href={`mailto:${siteConfig?.email || 'info@beetlerider.com'}`} class="text-[11px] text-white/25 hover:text-white/50 transition-colors underline">お問い合わせ</a>
+        <a href={`mailto:${siteConfig?.email || 'info@beetlerider.com'}`} class="text-[11px] text-white/25 hover:text-white/50 transition-colors underline">{t('footer.contact')}</a>
         <span class="text-white/10">|</span>
-        <a href={siteConfig?.privacyPolicyUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Privacy Policy</a>
-        <a href={siteConfig?.tokushohoUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">特定商取引法に基づく表記</a>
-        <a href={siteConfig?.importantNoticesUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">重要事項説明</a>
+        <a href={siteConfig?.privacyPolicyUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">{t('footer.privacy')}</a>
+        <a href={siteConfig?.tokushohoUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">{t('footer.tokushoho')}</a>
+        <a href={siteConfig?.importantNoticesUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">{t('footer.important')}</a>
       </div>
     </div>
   </div>

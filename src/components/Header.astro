@@ -1,10 +1,16 @@
 ---
+import { localePath, alternateUrl } from '../i18n/config';
+import { useTranslations } from '../i18n/index';
+import type { Lang } from '../i18n/config';
+
 interface Props {
   activePage: 'home' | 'chopper' | 'ebike' | 'about';
   logo: 'chopper' | 'ebike' | 'corporate';
+  lang: Lang;
 }
 
-const { activePage, logo } = Astro.props;
+const { activePage, logo, lang } = Astro.props;
+const t = useTranslations(lang);
 
 const logoSrc = {
   chopper: '/assets/logo/BR_CHOPPER_LOGO.svg',
@@ -13,14 +19,18 @@ const logoSrc = {
 }[logo];
 
 const navItems = [
-  { href: '/ebike', label: 'E-Bike', key: 'ebike' as const },
-  { href: '/chopper', label: 'Chopper', key: 'chopper' as const },
-  { href: '/about', label: 'About', key: 'about' as const },
+  { href: localePath('/ebike', lang), label: t('nav.ebike'), key: 'ebike' as const },
+  { href: localePath('/chopper', lang), label: t('nav.chopper'), key: 'chopper' as const },
+  { href: localePath('/about', lang), label: t('nav.about'), key: 'about' as const },
 ];
+
+const altUrl = alternateUrl(Astro.url);
+const jpUrl = lang === 'ja' ? Astro.url.pathname : altUrl;
+const enUrl = lang === 'en' ? Astro.url.pathname : altUrl;
 ---
 
 <header id="site-header" class="fixed top-0 left-0 right-0 z-100 px-10 py-5 flex items-center justify-between backdrop-blur-[20px] bg-[rgba(45,10,10,0.35)] border-b border-white/[0.08] transition-all duration-400">
-  <a href="/" class="flex items-center">
+  <a href={localePath('/', lang)} class="flex items-center">
     <img src={logoSrc} alt="BEETLE RIDER" class="h-4" />
   </a>
 
@@ -50,8 +60,18 @@ const navItems = [
 
   <!-- Language Switch (right-aligned, hidden on tablet, shown on lg+) -->
   <div class="hidden lg:flex gap-1 items-center">
-    <button class="px-3 py-1.5 rounded-full bg-white/12 border border-white/25 text-white text-[11px] font-semibold tracking-wider">JP</button>
-    <button class="px-3 py-1.5 rounded-full bg-transparent border border-white/15 text-white/50 text-[11px] font-semibold tracking-wider">EN</button>
+    <a href={jpUrl} class:list={[
+      'px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wider',
+      lang === 'ja'
+        ? 'bg-white/12 border border-white/25 text-white'
+        : 'bg-transparent border border-white/15 text-white/50 hover:text-white/80 transition-colors',
+    ]}>JP</a>
+    <a href={enUrl} class:list={[
+      'px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wider',
+      lang === 'en'
+        ? 'bg-white/12 border border-white/25 text-white'
+        : 'bg-transparent border border-white/15 text-white/50 hover:text-white/80 transition-colors',
+    ]}>EN</a>
   </div>
 
   <!-- Hamburger (Mobile) -->
@@ -69,6 +89,21 @@ const navItems = [
       {item.label}
     </a>
   ))}
+  <!-- Mobile Language Switch -->
+  <div class="flex gap-3 mt-6">
+    <a href={jpUrl} class:list={[
+      'px-4 py-2 rounded-full text-[13px] font-semibold tracking-wider',
+      lang === 'ja'
+        ? 'bg-white/12 border border-white/25 text-white'
+        : 'bg-transparent border border-white/15 text-white/50',
+    ]}>JP</a>
+    <a href={enUrl} class:list={[
+      'px-4 py-2 rounded-full text-[13px] font-semibold tracking-wider',
+      lang === 'en'
+        ? 'bg-white/12 border border-white/25 text-white'
+        : 'bg-transparent border border-white/15 text-white/50',
+    ]}>EN</a>
+  </div>
 </div>
 
 <script>
