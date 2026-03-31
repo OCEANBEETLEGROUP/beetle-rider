@@ -215,7 +215,7 @@ export default {
 
   // === Footer ===
   'footer.store': 'Store',
-  'footer.addressEn': '2-1-11 Yuigahama, Kamakura, Kanagawa',
+  'footer.addressEn': '1-15-2 Komachi, Kamakura, Kanagawa',
   'footer.group': 'OCEANBEETLE GROUP',
   'footer.ig': 'Instagram',
   'footer.hours': 'Hours',
