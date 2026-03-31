@@ -214,9 +214,9 @@ export default {
   'about.crossroads.chopper.sub': 'Your machine awaits.',
 
   // === Footer ===
-  'footer.relatedSites': 'STORE',
+  'footer.store': 'Store',
+  'footer.group': 'OCEANBEETLE GROUP',
   'footer.ig': 'Instagram',
-  'footer.info': 'Info',
   'footer.hours': 'Hours',
   'footer.tel': 'Tel',
   'footer.location': 'Location',

@@ -124,36 +124,37 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
       </div>
     </div>
 
-    <!-- Right Column -->
-    <div class="flex flex-col gap-8 md:justify-end">
-      <!-- Related Sites -->
+    <!-- Right Column: 2-col grid (Store + OCEANBEETLE GROUP) -->
+    <div class="grid grid-cols-2 gap-10">
+      <!-- Store (Kamakura shop info) -->
       <div>
-        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-3">{t('footer.relatedSites')}</h4>
-        <ul class="flex flex-col gap-2">
-          <li><a href="https://oceanbeetle.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE Official</a></li>
+        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">{t('footer.store')}</h4>
+        <dl class="flex flex-col gap-3">
+          <div>
+            <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.hours')}</dt>
+            <dd class="text-sm text-white/55 font-medium">{siteConfig?.businessHours || '10:00 - 18:00'}</dd>
+          </div>
+          <div>
+            <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.tel')}</dt>
+            <dd><a href={`tel:${siteConfig?.phone || '0467379926'}`} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.phone || '0467-37-9926'}</a></dd>
+          </div>
+          <div>
+            <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.location')}</dt>
+            <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.address || '神奈川県鎌倉市由比ガ浜2-1-11'}</a></dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- OCEANBEETLE GROUP -->
+      <div>
+        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">{t('footer.group')}</h4>
+        <ul class="flex flex-col gap-2.5">
+          <li><a href="https://oceanbeetle.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE</a></li>
           <li><a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE EC</a></li>
-          <li><a href="https://www.houndracer.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">HOUND RACER (Parts)</a></li>
+          <li><a href="https://www.houndracer.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">HOUND RACER / MOTORCYCLE PARTS</a></li>
           <li><a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a></li>
         </ul>
       </div>
-
-      <!-- Info -->
-      <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30">{t('footer.info')}</h4>
-      <dl class="flex flex-col gap-3">
-        <div>
-          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.hours')}</dt>
-          <dd class="text-sm text-white/55 font-medium">{siteConfig?.businessHours || '10:00 - 18:00'}</dd>
-        </div>
-        <div>
-          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.tel')}</dt>
-          <dd><a href={`tel:${siteConfig?.phone || '0467379926'}`} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.phone || '0467-37-9926'}</a></dd>
-        </div>
-        <div>
-          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.location')}</dt>
-          <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.address || '神奈川県鎌倉市由比ガ浜2-1-11'}</a></dd>
-        </div>
-      </dl>
-    </div>
     </div>
   </div>
 
