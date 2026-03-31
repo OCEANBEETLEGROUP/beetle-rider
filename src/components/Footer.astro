@@ -92,7 +92,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
     <div class="flex flex-col gap-6">
       <img src="/assets/logo/OB_CORPORATE.svg" alt="OCEANBEETLE" class="h-10 w-auto self-start" />
       <p class="text-[13px] text-white/40 font-medium whitespace-nowrap">BEETLE RIDER — A rental experience by OCEANBEETLE.</p>
-      <div class="flex gap-3 mt-2">
+      <div class="flex flex-wrap gap-3 mt-2">
         <a href={igEbike} target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-ebike hover:border-ebike hover:-translate-y-0.5 transition-all group">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/60 group-hover:text-white">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
@@ -111,26 +111,12 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
           </svg>
           <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">MAP</span>
         </a>
-      </div>
-    </div>
-
-    <!-- Nav Columns -->
-    <div class="grid grid-cols-2 gap-10">
-      <div>
-        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">Experience</h4>
-        <ul class="flex flex-col gap-3">
-          <li><a href="/ebike" class="text-sm text-white/55 font-medium hover:text-white transition-colors">E-Bike Rental</a></li>
-          <li><a href="/chopper" class="text-sm text-white/55 font-medium hover:text-white transition-colors">Chopper Experience</a></li>
-          <li><a href="/about" class="text-sm text-white/55 font-medium hover:text-white transition-colors">About Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">Info</h4>
-        <ul class="flex flex-col gap-3">
-          <li><a href="#" class="text-sm text-white/55 font-medium hover:text-white transition-colors">Access</a></li>
-          <li><a href="#" class="text-sm text-white/55 font-medium hover:text-white transition-colors">FAQ</a></li>
-          <li><a href="#" class="text-sm text-white/55 font-medium hover:text-white transition-colors">Contact</a></li>
-        </ul>
+        <a href="mailto:info@oceanbeetle.net" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-white/15 hover:-translate-y-0.5 transition-all group">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/60 group-hover:text-white">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/>
+          </svg>
+          <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">MAIL</span>
+        </a>
       </div>
     </div>
   </div>
@@ -138,12 +124,11 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
   <!-- Bottom Legal -->
   <div class="border-t border-white/[0.06] px-10 py-6">
     <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <span class="text-[11px] text-white/20">&copy; 2026 OCEANBEETLE GROUP. All rights reserved.</span>
+      <span class="text-[11px] text-white/20">&copy; 2026 OCEANBEETLE Co., Ltd. All rights reserved.</span>
       <div class="flex flex-wrap gap-4">
         <a href="https://numerous-property-d81.notion.site/27249996ef50807d91c6fd22db3be5ef" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Privacy Policy</a>
-        <a href="#" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Terms of Service</a>
         <a href="https://numerous-property-d81.notion.site/29d49996ef5080fa9b79c255beef3d30" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">特定商取引法に基づく表記</a>
-        <a href="https://numerous-property-d81.notion.site/Important-Information-27149996ef50800eb490e680091e4abe" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Important Notices</a>
+        <a href="https://numerous-property-d81.notion.site/Important-Information-27149996ef50800eb490e680091e4abe" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">重要事項説明書</a>
       </div>
     </div>
   </div>
