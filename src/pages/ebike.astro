@@ -2,6 +2,52 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookNowButton from '../components/BookNowButton.astro';
 import { EBIKE_WIDGETS } from '../lib/bokun';
+import { getDestinations } from '../lib/microcms';
+
+const { contents: destinationsRaw } = await getDestinations('ebike');
+
+// TODO: add ebike destinations to microCMS (Shrine, Big Buddha, Enoshima, Beach)
+// Once added, remove this fallback array.
+const fallbackDestinations = [
+  {
+    img: '/assets/route/KAMAKURA_HACHIMANGU1.jpg',
+    name: 'SHRINE',
+    desc: '鶴岡八幡宮 — 鎌倉の象徴を参拝する',
+    time: '~5 min',
+    detail: '<strong>鶴岡八幡宮</strong><br>鎌倉幕府の守護神。境内の石段や源平池など見どころ多数。小町通りを抜けてすぐ。E-BIKEは鳥居前の駐輪場へ。',
+  },
+  {
+    img: '/assets/route/KAMAKURA_BIG BUDA1.jpg',
+    name: 'BIG BUDDHA',
+    desc: '鎌倉大仏 — 国宝の青銅仏を間近で',
+    time: '~15 min',
+    detail: '<strong>鎌倉大仏（高徳院）</strong><br>高さ約13mの国宝青銅阿弥陀如来像。胎内拝観も可能。長谷エリアは紫陽花の名所・長谷寺もすぐ近く。',
+  },
+  {
+    img: '/assets/route/ENOSHIMA2.jpg',
+    name: 'ENOSHIMA',
+    desc: '江ノ島 — 海沿いを走り島へ渡る',
+    time: '~20 min',
+    detail: '<strong>江ノ島</strong><br>134号線の海沿いルートは最高のE-BIKEコース。島内では展望灯台・岩屋洞窟・しらすグルメが楽しめる。',
+  },
+  {
+    img: '/assets/route/KAMAKURA_BEACH1.jpg',
+    name: 'BEACH',
+    desc: '湘南のビーチ沿いを風を感じて走る',
+    time: '~10 min',
+    detail: '<strong>湘南ビーチ</strong><br>由比ヶ浜・材木座から稲村ヶ崎へ。海風を感じながら走るシーサイドルート。夕暮れ時は富士山のシルエットも。',
+  },
+];
+
+const destinations = destinationsRaw.length > 0
+  ? destinationsRaw.map(d => ({
+      img: d.image.url + '?w=800&q=80',
+      name: d.name.toUpperCase(),
+      desc: `${d.nameJp} — ${d.descriptionJp?.split('。')[0] || ''}`,
+      time: d.timeFromBase || '',
+      detail: `<strong>${d.nameJp}</strong><br>${d.descriptionJp || ''}`,
+    }))
+  : fallbackDestinations;
 ---
 
 <BaseLayout title="E-BIKE RENTAL — BEETLE RIDER" activePage="ebike" headerLogo="ebike">
@@ -159,85 +205,31 @@ import { EBIKE_WIDGETS } from '../lib/bokun';
       </div>
       <!-- Grid -->
       <div class="grid grid-cols-4 gap-5 max-lg:grid-cols-2 max-md:grid-cols-1 dest-grid">
-        <!-- SHRINE -->
-        <div class="dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-video cursor-pointer reveal reveal-delay-1">
-          <div class="dest-card__bg absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <img src="/assets/route/KAMAKURA_HACHIMANGU1.jpg" alt="TSURUGAOKA HACHIMANGU" class="w-full h-full object-cover" loading="lazy" />
+        {destinations.map((d, i) => (
+          <div class={`dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-video cursor-pointer reveal reveal-delay-${i + 1}`}>
+            <div class="dest-card__bg absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+              <img src={d.img} alt={d.name} class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to top, rgba(45,10,10,0.85) 0%, rgba(45,10,10,0.1) 50%, rgba(0,0,0,0) 100%);"></div>
+            <!-- Time Badge -->
+            {d.time && (
+              <div class="absolute top-4 right-4 z-[3] flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/55 backdrop-blur-sm border border-white/12 text-[11px] font-semibold text-white tracking-wide">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-ebike shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                {d.time}
+              </div>
+            )}
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
+              <h3 class="font-[family-name:var(--font-heading)] text-[clamp(16px,1.8vw,22px)] text-white tracking-wide mb-2">{d.name}</h3>
+              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-medium text-white/60 leading-relaxed">{d.desc}</p>
+            </div>
+            <!-- Detail Panel (expand) -->
+            <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] pt-20 px-6 pb-7 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="background: linear-gradient(to top, rgba(45,10,10,0.95) 0%, rgba(45,10,10,0.85) 70%, rgba(45,10,10,0) 100%); transform: translateY(100%); opacity: 0; pointer-events: none;">
+              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-normal text-white/75 leading-[1.8]" set:html={d.detail}></p>
+            </div>
+            <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">Tap for details</span>
           </div>
-          <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to top, rgba(45,10,10,0.85) 0%, rgba(45,10,10,0.1) 50%, rgba(0,0,0,0) 100%);"></div>
-          <!-- Time Badge -->
-          <div class="absolute top-4 right-4 z-[3] flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/55 backdrop-blur-sm border border-white/12 text-[11px] font-semibold text-white tracking-wide">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-ebike shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ~5 min
-          </div>
-          <!-- Content -->
-          <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
-            <h3 class="font-[family-name:var(--font-heading)] text-[clamp(16px,1.8vw,22px)] text-white tracking-wide mb-2">SHRINE</h3>
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-medium text-white/60 leading-relaxed">鶴岡八幡宮 — 鎌倉の象徴を参拝する</p>
-          </div>
-          <!-- Detail Panel (expand) -->
-          <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] pt-20 px-6 pb-7 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="background: linear-gradient(to top, rgba(45,10,10,0.95) 0%, rgba(45,10,10,0.85) 70%, rgba(45,10,10,0) 100%); transform: translateY(100%); opacity: 0; pointer-events: none;">
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-normal text-white/75 leading-[1.8]"><strong class="text-white font-bold">鶴岡八幡宮</strong><br>鎌倉幕府の守護神。境内の石段や源平池など見どころ多数。小町通りを抜けてすぐ。E-BIKEは鳥居前の駐輪場へ。</p>
-          </div>
-          <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">Tap for details</span>
-        </div>
-        <!-- BIG BUDDHA -->
-        <div class="dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-video cursor-pointer reveal reveal-delay-2">
-          <div class="dest-card__bg absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <img src="/assets/route/KAMAKURA_BIG BUDA1.jpg" alt="GREAT BUDDHA" class="w-full h-full object-cover" loading="lazy" />
-          </div>
-          <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to top, rgba(45,10,10,0.85) 0%, rgba(45,10,10,0.1) 50%, rgba(0,0,0,0) 100%);"></div>
-          <div class="absolute top-4 right-4 z-[3] flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/55 backdrop-blur-sm border border-white/12 text-[11px] font-semibold text-white tracking-wide">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-ebike shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ~15 min
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
-            <h3 class="font-[family-name:var(--font-heading)] text-[clamp(16px,1.8vw,22px)] text-white tracking-wide mb-2">BIG BUDDHA</h3>
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-medium text-white/60 leading-relaxed">鎌倉大仏 — 国宝の青銅仏を間近で</p>
-          </div>
-          <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] pt-20 px-6 pb-7 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="background: linear-gradient(to top, rgba(45,10,10,0.95) 0%, rgba(45,10,10,0.85) 70%, rgba(45,10,10,0) 100%); transform: translateY(100%); opacity: 0; pointer-events: none;">
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-normal text-white/75 leading-[1.8]"><strong class="text-white font-bold">鎌倉大仏（高徳院）</strong><br>高さ約13mの国宝青銅阿弥陀如来像。胎内拝観も可能。長谷エリアは紫陽花の名所・長谷寺もすぐ近く。</p>
-          </div>
-          <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">Tap for details</span>
-        </div>
-        <!-- ENOSHIMA -->
-        <div class="dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-video cursor-pointer reveal reveal-delay-3">
-          <div class="dest-card__bg absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <img src="/assets/route/ENOSHIMA2.jpg" alt="ENOSHIMA" class="w-full h-full object-cover" loading="lazy" />
-          </div>
-          <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to top, rgba(45,10,10,0.85) 0%, rgba(45,10,10,0.1) 50%, rgba(0,0,0,0) 100%);"></div>
-          <div class="absolute top-4 right-4 z-[3] flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/55 backdrop-blur-sm border border-white/12 text-[11px] font-semibold text-white tracking-wide">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-ebike shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ~20 min
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
-            <h3 class="font-[family-name:var(--font-heading)] text-[clamp(16px,1.8vw,22px)] text-white tracking-wide mb-2">ENOSHIMA</h3>
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-medium text-white/60 leading-relaxed">江ノ島 — 海沿いを走り島へ渡る</p>
-          </div>
-          <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] pt-20 px-6 pb-7 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="background: linear-gradient(to top, rgba(45,10,10,0.95) 0%, rgba(45,10,10,0.85) 70%, rgba(45,10,10,0) 100%); transform: translateY(100%); opacity: 0; pointer-events: none;">
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-normal text-white/75 leading-[1.8]"><strong class="text-white font-bold">江ノ島</strong><br>134号線の海沿いルートは最高のE-BIKEコース。島内では展望灯台・岩屋洞窟・しらすグルメが楽しめる。</p>
-          </div>
-          <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">Tap for details</span>
-        </div>
-        <!-- BEACH -->
-        <div class="dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-video cursor-pointer reveal reveal-delay-4">
-          <div class="dest-card__bg absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <img src="/assets/route/KAMAKURA_BEACH1.jpg" alt="BEACH" class="w-full h-full object-cover" loading="lazy" />
-          </div>
-          <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to top, rgba(45,10,10,0.85) 0%, rgba(45,10,10,0.1) 50%, rgba(0,0,0,0) 100%);"></div>
-          <div class="absolute top-4 right-4 z-[3] flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/55 backdrop-blur-sm border border-white/12 text-[11px] font-semibold text-white tracking-wide">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-ebike shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ~10 min
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
-            <h3 class="font-[family-name:var(--font-heading)] text-[clamp(16px,1.8vw,22px)] text-white tracking-wide mb-2">BEACH</h3>
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-medium text-white/60 leading-relaxed">湘南のビーチ沿いを風を感じて走る</p>
-          </div>
-          <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] pt-20 px-6 pb-7 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="background: linear-gradient(to top, rgba(45,10,10,0.95) 0%, rgba(45,10,10,0.85) 70%, rgba(45,10,10,0) 100%); transform: translateY(100%); opacity: 0; pointer-events: none;">
-            <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-normal text-white/75 leading-[1.8]"><strong class="text-white font-bold">湘南ビーチ</strong><br>由比ヶ浜・材木座から稲村ヶ崎へ。海風を感じながら走るシーサイドルート。夕暮れ時は富士山のシルエットも。</p>
-          </div>
-          <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">Tap for details</span>
-        </div>
+        ))}
       </div>
     </div>
   </section>

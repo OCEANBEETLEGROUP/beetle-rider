@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getVehicles } from '../lib/microcms';
+import { getVehicles, getDestinations } from '../lib/microcms';
 
 const { contents: vehiclesRaw } = await getVehicles();
 const vehicles = vehiclesRaw.map((v, i) => ({
@@ -11,12 +11,14 @@ const vehicles = vehiclesRaw.map((v, i) => ({
   img: v.thumbnail.url + '?w=800&q=80',
 }));
 
-const destinations = [
-  { img: 'HAKONE.jpg', name: 'HAKONE', desc: '箱根 — 峠道とワインディングを駆け抜ける', time: '~90 min', detail: '<strong>箱根</strong><br>峠道とワインディングを駆け抜ける。温泉街を抜け、芦ノ湖を望むルートは最高のロングライド。チョッパーの鼓動が山に響く。' },
-  { img: 'MT FUJI VIEW.jpg', name: 'MT. FUJI VIEW', desc: '富士山ビュー — 134号線から望む日本一の山', time: '~60 min', detail: '<strong>富士山ビュー</strong><br>134号線から望む日本一の山。西湘バイパスを抜けた先に広がる絶景ポイント。晴天時の富士山とチョッパーの組み合わせは最高。' },
-  { img: 'ODAWARA.jpg', name: 'ODAWARA', desc: '小田原 — 城下町と海岸線のロングライド', time: '~70 min', detail: '<strong>小田原</strong><br>城下町と海岸線のロングライド。小田原城を横目に、漁港で新鮮な海鮮を。海沿いの直線道路はチョッパー向き。' },
-  { img: 'ZUSHI.jpg', name: 'ZUSHI', desc: '逗子 — 静かな海辺のショートトリップ', time: '~15 min', detail: '<strong>逗子</strong><br>静かな海辺のショートトリップ。鎌倉から最も近い海沿いルート。気軽に走れる。初めてのチョッパーライドにも最適。' },
-];
+const { contents: destinationsRaw } = await getDestinations();
+const destinations = destinationsRaw.map(d => ({
+  img: d.image.url + '?w=800&q=80',
+  name: d.name.toUpperCase(),
+  desc: `${d.nameJp} — ${d.descriptionJp?.split('。')[0] || ''}`,
+  time: d.timeFromBase || '',
+  detail: `<strong>${d.nameJp}</strong><br>${d.descriptionJp || ''}`,
+}));
 
 const protocolItems = [
   {
@@ -197,7 +199,7 @@ const protocolItems = [
         {destinations.map((d, i) => (
           <div class={`dest-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal reveal-delay-${i + 1}`} data-dest-card>
             <div class="absolute inset-0 bg-[#111] transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover-parent-scale">
-              <img src={`/assets/route/${d.img}`} alt={d.name} loading="lazy" class="w-full h-full object-cover" />
+              <img src={d.img} alt={d.name} loading="lazy" class="w-full h-full object-cover" />
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-deep-red/85 via-deep-red/10 to-transparent z-[1]"></div>
             <!-- Time Badge -->

@@ -1,9 +1,20 @@
 ---
 interface Props {
   activePage: 'home' | 'chopper' | 'ebike' | 'about';
+  siteConfig?: {
+    instagramChopper?: string;
+    instagramEbike?: string;
+    address?: string;
+    phone?: string;
+    businessHours?: string;
+  };
 }
 
-const { activePage } = Astro.props;
+const { activePage, siteConfig } = Astro.props;
+
+const igEbike = siteConfig?.instagramEbike || 'https://instagram.com/beetlerider_ebike';
+const igChopper = siteConfig?.instagramChopper || 'https://instagram.com/beetlerider_japan';
+const mapUrl = siteConfig?.address || 'https://maps.app.goo.gl/Y2bhYqAcBkLyzdydA';
 
 // HOME & ABOUT show both IG accounts; CHOPPER/EBIKE show only their own
 const showBoth = activePage === 'home' || activePage === 'about';
@@ -37,7 +48,7 @@ const chopperPhotos = [
           <div>
             <div class="flex items-center gap-2 mb-2.5">
               <div class="w-1.5 h-1.5 rounded-full bg-ebike"></div>
-              <a href="https://instagram.com/beetlerider_ebike" target="_blank" class="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors">@beetlerider_ebike</a>
+              <a href={igEbike} target="_blank" class="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors">@beetlerider_ebike</a>
             </div>
             <div class="grid grid-cols-3 gap-1">
               {ebikePhotos.map((photo) => (
@@ -54,7 +65,7 @@ const chopperPhotos = [
           <div>
             <div class="flex items-center gap-2 mb-2.5">
               <div class="w-1.5 h-1.5 rounded-full bg-brand"></div>
-              <a href="https://instagram.com/oceanbeetle_chopper" target="_blank" class="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors">@oceanbeetle_chopper</a>
+              <a href={igChopper} target="_blank" class="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors">@beetlerider_japan</a>
             </div>
             <div class="grid grid-cols-3 gap-1">
               {chopperPhotos.map((photo) => (
@@ -77,19 +88,19 @@ const chopperPhotos = [
       <img src="/assets/logo/OB_CORPORATE.svg" alt="OCEANBEETLE" class="h-10 w-auto self-start" />
       <p class="text-[13px] text-white/40 font-medium whitespace-nowrap">BEETLE RIDER — A rental experience by OCEANBEETLE.</p>
       <div class="flex gap-3 mt-2">
-        <a href="https://instagram.com/beetlerider_ebike" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-ebike hover:border-ebike hover:-translate-y-0.5 transition-all group">
+        <a href={igEbike} target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-ebike hover:border-ebike hover:-translate-y-0.5 transition-all group">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/60 group-hover:text-white">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
           </svg>
           <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">E-BIKE</span>
         </a>
-        <a href="https://instagram.com/oceanbeetle_chopper" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-brand hover:border-brand hover:-translate-y-0.5 transition-all group">
+        <a href={igChopper} target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-brand hover:border-brand hover:-translate-y-0.5 transition-all group">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/60 group-hover:text-white">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
           </svg>
           <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">CHOPPER</span>
         </a>
-        <a href="https://maps.google.com/?q=OCEANBEETLE" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-white/15 hover:-translate-y-0.5 transition-all group">
+        <a href={mapUrl} target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-white/15 hover:-translate-y-0.5 transition-all group">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/60 group-hover:text-white">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
           </svg>
