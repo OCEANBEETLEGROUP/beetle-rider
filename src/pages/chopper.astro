@@ -193,7 +193,7 @@ const protocolItems = [
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">Where the Road Takes You</p>
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(28px,5vw,56px)] text-white tracking-[-0.02em]">ROUTE 134.</h2>
       </div>
-      <div class="grid grid-cols-4 max-md:grid-cols-2 gap-3">
+      <div class="grid grid-cols-4 max-md:grid-cols-2 gap-3 items-stretch">
         {destinations.map((d, i) => (
           <div class={`dest-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal reveal-delay-${i + 1}`} data-dest-card>
             <div class="absolute inset-0 bg-[#111] transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover-parent-scale">
@@ -206,9 +206,9 @@ const protocolItems = [
               {d.time}
             </div>
             <!-- Base Content -->
-            <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
+            <div class="absolute bottom-0 left-0 right-0 p-7 z-[2] flex flex-col justify-end min-h-[100px]">
               <h3 class="font-[family-name:var(--font-heading)] text-[clamp(20px,3vw,28px)] text-white tracking-[-0.01em]">{d.name}</h3>
-              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/60 mt-1 tracking-[0.02em]">{d.desc}</p>
+              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/60 mt-1 tracking-[0.02em] line-clamp-2">{d.desc}</p>
             </div>
             <!-- Expand Detail Panel -->
             <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] bg-gradient-to-t from-deep-red/95 via-deep-red/85 to-transparent px-6 pb-7 pt-20 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="transform: translateY(100%); opacity: 0; pointer-events: none;">
