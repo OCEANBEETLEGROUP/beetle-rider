@@ -289,52 +289,32 @@ const allImages = [
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,36px)] text-white tracking-tight">Before You Ride.</h2>
       </div>
 
-      <!-- 3 Steps -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 reveal reveal-delay-1">
-        <!-- Step 1: Qualification -->
-        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all text-center">
-          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5 mx-auto">
-            <span class="font-[family-name:var(--font-heading)] text-brand text-sm">01</span>
+      <!-- Accordion (same as chopper.astro) -->
+      <div class="reveal reveal-delay-1 mb-16">
+        {[
+          { title: '大型二輪免許が必要です', content: '普通二輪免許では乗れません。大型自動二輪免許（排気量制限なし）が必要です。当日、免許証の確認を行います。忘れた場合、乗車をお断りします。例外はありません。<br><br><strong class="text-white/70">外国人の方：</strong>以下の書類が必要です。<br>① IDP（国際運転免許証）— 大型二輪相当の「Aタイプ」の記載が必要<br>② 母国の運転免許証（原本）<br>③ パスポート<br>※ IDPにAタイプの記載がない場合、乗車はできません。' },
+          { title: '飲酒後の乗車は厳禁です', content: '飲酒が確認された場合、理由を問わず乗車をお断りします。キャンセル料が発生します。' },
+          { title: '雨天時の対応について', content: '荒天時はこちらの判断により催行を中止する場合があります。催行中止の場合は全額返金いたします。' },
+          { title: 'ヘルメットなどの装備品はありますか？', content: 'ヘルメット、グローブ、フォンホルダーマウント、ETCデバイスをご用意しています。これらはプラン選択時にオプションとして追加可能です。' },
+          { title: '服装について', content: '長袖・長ズボン・ブーツを推奨します。サンダルやハーフパンツでの乗車はお断りする場合があります。天候に応じて防寒着もご持参ください。' },
+          { title: 'タンデムは可能ですか？', content: 'タンデムもプラン選択時のオプションで選択可能です。一部車両に限ります。' },
+          { title: '手荷物の預かりについて', content: 'ライド中の手荷物は店舗でお預かりいたします。貴重品の管理はご自身でお願いいたします。' },
+          { title: '延長料金について', content: '15分あたり ¥1,250 の延長料金が発生します。スタッフにお申し付けください。' },
+          { title: 'キャンセルポリシー', content: '5日以上前：無料キャンセル<br>5日前〜3日前：料金の50%<br>3日前〜1日前：料金の70%<br>当日：料金の100%' },
+        ].map((item, i) => (
+          <div class:list={['accordion-item overflow-hidden', i === 0 ? 'border-t border-white/15' : 'border-t border-white/15']}>
+            <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-brand">
+              <span>{item.title}</span>
+              <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </button>
+            <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+              <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide" set:html={item.content}></div>
+            </div>
           </div>
-          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">QUALIFICATION</h3>
-          <p class="text-[13px] text-white/45 leading-relaxed">
-            有効な大型二輪免許が必要です。<br>外国人の方は、免許証・IDP（国際運転免許証）・パスポートの3点をご持参ください。
-          </p>
-        </div>
-
-        <!-- Step 2: Gear -->
-        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all text-center">
-          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5 mx-auto">
-            <span class="font-[family-name:var(--font-heading)] text-brand text-sm">02</span>
-          </div>
-          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">GEAR UP</h3>
-          <div class="text-[13px] text-white/45 leading-relaxed text-left">
-            <p class="text-white/60 font-semibold text-[11px] tracking-[0.1em] uppercase mb-2">無料貸し出し</p>
-            <ul class="flex flex-col gap-1 mb-4">
-              <li>・ヘルメット</li>
-              <li>・グローブ</li>
-              <li>・Phone Holder Mount</li>
-              <li>・ETC車載器</li>
-            </ul>
-            <p class="text-white/60 font-semibold text-[11px] tracking-[0.1em] uppercase mb-2">服装（推奨）</p>
-            <ul class="flex flex-col gap-1">
-              <li>・長袖・長ズボン</li>
-              <li>・ブーツ</li>
-              <li>・防寒着（季節に応じて）</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Step 3: Departure -->
-        <div class="relative bg-white/[0.04] border border-white/[0.08] rounded-[16px] p-8 hover:border-white/15 transition-all text-center">
-          <div class="w-10 h-10 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center mb-5 mx-auto">
-            <span class="font-[family-name:var(--font-heading)] text-brand text-sm">03</span>
-          </div>
-          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">DEPARTURE</h3>
-          <p class="text-[13px] text-white/45 leading-relaxed">
-            おすすめルートマップを渡して出発。返却は18時まで。遅延の場合は事前連絡を。
-          </p>
-        </div>
+        ))}
+        <div class="border-b border-white/15"></div>
       </div>
 
       <!-- Vehicle Description -->
@@ -480,5 +460,21 @@ const allImages = [
         if (e.key === 'ArrowRight') goTo(current + 1);
       });
     })();
+
+    // Accordion toggle
+    document.querySelectorAll('.accordion-trigger').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const body = btn.nextElementSibling as HTMLElement;
+        const icon = btn.querySelector('.accordion-icon') as HTMLElement;
+        const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
+        if (isOpen) {
+          body.style.maxHeight = '0px';
+          if (icon) icon.style.transform = 'rotate(0deg)';
+        } else {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          if (icon) icon.style.transform = 'rotate(45deg)';
+        }
+      });
+    });
   </script>
 </BaseLayout>
