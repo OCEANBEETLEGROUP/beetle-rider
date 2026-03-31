@@ -7,6 +7,10 @@ interface Props {
     address?: string;
     phone?: string;
     businessHours?: string;
+    email?: string;
+    privacyPolicyUrl?: string;
+    tokushohoUrl?: string;
+    importantNoticesUrl?: string;
   };
   igPhotos?: {
     ebike: { src: string; alt: string }[];
@@ -111,12 +115,6 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
           </svg>
           <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">MAP</span>
         </a>
-        <a href="mailto:info@oceanbeetle.net" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] hover:bg-white/15 hover:-translate-y-0.5 transition-all group">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/60 group-hover:text-white">
-            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/>
-          </svg>
-          <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">MAIL</span>
-        </a>
       </div>
     </div>
   </div>
@@ -125,10 +123,12 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
   <div class="border-t border-white/[0.06] px-10 py-6">
     <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <span class="text-[11px] text-white/20">&copy; 2026 OCEANBEETLE Co., Ltd. All rights reserved.</span>
-      <div class="flex flex-wrap gap-4">
-        <a href="https://numerous-property-d81.notion.site/27249996ef50807d91c6fd22db3be5ef" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Privacy Policy</a>
-        <a href="https://numerous-property-d81.notion.site/29d49996ef5080fa9b79c255beef3d30" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">特定商取引法に基づく表記</a>
-        <a href="https://numerous-property-d81.notion.site/Important-Information-27149996ef50800eb490e680091e4abe" target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">重要事項説明書</a>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href={`mailto:${siteConfig?.email || 'info@beetlerider.com'}`} class="text-[11px] text-white/25 hover:text-white/50 transition-colors">お問い合わせはこちら</a>
+        <span class="text-white/10">|</span>
+        <a href={siteConfig?.privacyPolicyUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Privacy Policy</a>
+        <a href={siteConfig?.tokushohoUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">特定商取引法に基づく表記</a>
+        <a href={siteConfig?.importantNoticesUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">重要事項説明書</a>
       </div>
     </div>
   </div>

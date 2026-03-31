@@ -56,6 +56,10 @@ export type SiteConfig = {
   instagramChopper?: string;
   instagramEbike?: string;
   announcement?: string;
+  email?: string;
+  privacyPolicyUrl?: string;
+  tokushohoUrl?: string;
+  importantNoticesUrl?: string;
 } & MicroCMSObjectContent;
 
 export type NewsPost = {
