@@ -61,7 +61,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
             </div>
             <div class="grid grid-cols-3 gap-1">
               {ebikePhotos.map((photo) => (
-                <a href={igEbike} target="_blank" class="aspect-square rounded-lg overflow-hidden relative cursor-pointer group block">
+                <a href={igEbike} target="_blank" class="aspect-[4/5] rounded-lg overflow-hidden relative cursor-pointer group block">
                   <img src={photo.src} alt={photo.alt} class="w-full h-full object-cover" loading="lazy" />
                   <div class="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-colors"></div>
                 </a>
@@ -78,7 +78,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
             </div>
             <div class="grid grid-cols-3 gap-1">
               {chopperPhotos.map((photo) => (
-                <a href={igChopper} target="_blank" class="aspect-square rounded-lg overflow-hidden relative cursor-pointer group block">
+                <a href={igChopper} target="_blank" class="aspect-[4/5] rounded-lg overflow-hidden relative cursor-pointer group block">
                   <img src={photo.src} alt={photo.alt} class="w-full h-full object-cover" loading="lazy" />
                   <div class="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-colors"></div>
                 </a>

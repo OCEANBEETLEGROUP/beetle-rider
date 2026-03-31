@@ -129,8 +129,25 @@ const allImages = [
 
     </div>
 
+    <!-- Thumbnail Strip (below slider) -->
+    {allImages.length > 1 && (
+      <div class="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide" id="thumbStrip">
+        {allImages.map((img, i) => (
+          <button
+            class:list={[
+              'shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 cursor-pointer',
+              i === 0 ? 'border-brand opacity-100' : 'border-transparent opacity-40 hover:opacity-70',
+            ]}
+            data-thumb-index={i}
+          >
+            <img src={`${img.url}?w=200&q=60`} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
+          </button>
+        ))}
+      </div>
+    )}
+
     <!-- Slider Indicator Dots (below slider) -->
-    <div class="hidden justify-center items-center gap-2.5 mt-5 pb-2" id="sliderDots">
+    <div class="hidden justify-center items-center gap-2.5 mt-3 pb-2" id="sliderDots">
     </div>
   </section>
 
@@ -207,7 +224,7 @@ const allImages = [
       <div class="mb-10 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35">SPECIFICATIONS</p>
       </div>
-      <div class="grid grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
         {/* Row 1: BASE / TRANSMISSION / FUEL TANK */}
         {specs.map((spec) => (
           <div class="bg-deep-red p-6">
@@ -393,7 +410,8 @@ const allImages = [
         if (idx < 0) idx = total - 1;
         if (idx >= total) idx = 0;
         current = idx;
-        track!.style.transform = `translateX(-${current * 100}%)`;
+        const slidePercent = 100 / total;
+        track!.style.transform = `translateX(-${current * slidePercent}%)`;
         if (counterCurrent) counterCurrent.textContent = String(current + 1);
 
         // Update dots
@@ -407,10 +425,32 @@ const allImages = [
             }
           });
         }
+
+        // Update thumbnails
+        const thumbs = document.querySelectorAll('[data-thumb-index]');
+        thumbs.forEach((thumb, i) => {
+          const el = thumb as HTMLElement;
+          if (i === current) {
+            el.classList.add('border-brand', 'opacity-100');
+            el.classList.remove('border-transparent', 'opacity-40');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          } else {
+            el.classList.remove('border-brand', 'opacity-100');
+            el.classList.add('border-transparent', 'opacity-40');
+          }
+        });
       }
 
       prevBtn?.addEventListener('click', () => goTo(current - 1));
       nextBtn?.addEventListener('click', () => goTo(current + 1));
+
+      // Thumbnail clicks
+      document.querySelectorAll('[data-thumb-index]').forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+          const idx = parseInt((thumb as HTMLElement).dataset.thumbIndex || '0');
+          goTo(idx);
+        });
+      });
 
       // Swipe support
       let startX = 0;
