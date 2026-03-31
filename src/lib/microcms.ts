@@ -85,7 +85,7 @@ export async function getVehicleBySlug(slug: string) {
 
 /** Destinations, optionally filtered by category */
 export async function getDestinations(category?: 'chopper' | 'ebike' | 'both') {
-  const filters = category ? `category[equals]${category}` : undefined;
+  const filters = category ? `category[contains]${category}` : undefined;
   return await client.getList<Destination>({
     endpoint: 'destinations',
     queries: { filters, limit: 50 },
@@ -94,7 +94,7 @@ export async function getDestinations(category?: 'chopper' | 'ebike' | 'both') {
 
 /** Instagram gallery posts */
 export async function getInstagramPosts(account?: 'chopper' | 'ebike') {
-  const filters = account ? `account[equals]${account}` : undefined;
+  const filters = account ? `account[contains]${account}` : undefined;
   return await client.getList<InstagramPost>({
     endpoint: 'instagram',
     queries: { filters, orders: 'order', limit: 50 },

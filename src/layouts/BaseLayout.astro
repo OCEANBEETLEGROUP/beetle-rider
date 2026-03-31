@@ -3,9 +3,19 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageLoader from '../components/PageLoader.astro';
-import { getSiteConfig } from '../lib/microcms';
+import { getSiteConfig, getInstagramPosts } from '../lib/microcms';
 
 const siteConfig = await getSiteConfig();
+
+// Fetch Instagram gallery photos
+const [ebikeIg, chopperIg] = await Promise.all([
+  getInstagramPosts('ebike'),
+  getInstagramPosts('chopper'),
+]);
+const igPhotos = {
+  ebike: ebikeIg.contents.map(p => ({ src: p.image.url + '?w=400&q=80', alt: p.altText || '' })),
+  chopper: chopperIg.contents.map(p => ({ src: p.image.url + '?w=400&q=80', alt: p.altText || '' })),
+};
 
 interface Props {
   title: string;
@@ -43,7 +53,7 @@ const {
     <slot />
   </main>
 
-  <Footer activePage={activePage} siteConfig={siteConfig} />
+  <Footer activePage={activePage} siteConfig={siteConfig} igPhotos={igPhotos} />
 
   <!-- Scroll Reveal -->
   <script>

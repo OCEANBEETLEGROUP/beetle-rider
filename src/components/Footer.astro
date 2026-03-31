@@ -8,6 +8,10 @@ interface Props {
     phone?: string;
     businessHours?: string;
   };
+  igPhotos?: {
+    ebike: { src: string; alt: string }[];
+    chopper: { src: string; alt: string }[];
+  };
 }
 
 const { activePage, siteConfig } = Astro.props;
@@ -21,17 +25,18 @@ const showBoth = activePage === 'home' || activePage === 'about';
 const showEbike = showBoth || activePage === 'ebike';
 const showChopper = showBoth || activePage === 'chopper';
 
-const ebikePhotos = [
+// Instagram photos from props (fetched in BaseLayout)
+const ebikePhotos = (Astro.props.igPhotos?.ebike ?? [
   { src: '/assets/ebike/ebike0010.jpg', alt: 'E-BIKE Kamakura' },
   { src: '/assets/ebike/ebike0023.jpg', alt: 'E-BIKE coastal ride' },
   { src: '/assets/ebike/ebike0026.jpg', alt: 'E-BIKE temple' },
-];
+]);
 
-const chopperPhotos = [
+const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
   { src: '/assets/chopper/promo/R0006459.JPG', alt: 'Chopper ride' },
   { src: '/assets/chopper/promo/R0006463.JPG', alt: 'Chopper sunset' },
   { src: '/assets/chopper/promo/2512080004.jpg', alt: 'Chopper Kamakura' },
-];
+]);
 ---
 
 <footer class="bg-deep-red">
