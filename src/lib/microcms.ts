@@ -48,8 +48,6 @@ export type InstagramPost = {
 } & MicroCMSListContent;
 
 export type SiteConfig = {
-  chopperTagline?: string;
-  ebikeTagline?: string;
   businessHours?: string;
   address?: string;
   mapUrl?: string;
