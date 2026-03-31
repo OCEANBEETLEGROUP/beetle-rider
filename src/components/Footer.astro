@@ -140,7 +140,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
           </div>
           <div>
             <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.location')}</dt>
-            <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.address || '神奈川県鎌倉市由比ガ浜2-1-11'}</a></dd>
+            <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{lang === 'en' ? (t('footer.addressEn') as string) : (siteConfig?.address || '神奈川県鎌倉市由比ガ浜2-1-11')}</a></dd>
           </div>
         </dl>
       </div>
@@ -150,8 +150,8 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
         <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">{t('footer.group')}</h4>
         <ul class="flex flex-col gap-2.5">
           <li><a href="https://oceanbeetle.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE</a></li>
-          <li><a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE EC</a></li>
-          <li><a href="https://www.houndracer.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">HOUND RACER / MOTORCYCLE PARTS</a></li>
+          <li><a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE ONLINE STORE</a></li>
+          <li><a href="https://www.houndracer.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">HOUND RACER</a></li>
           <li><a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a></li>
         </ul>
       </div>
