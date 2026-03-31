@@ -5,6 +5,7 @@ interface Props {
     instagramChopper?: string;
     instagramEbike?: string;
     address?: string;
+    mapUrl?: string;
     phone?: string;
     businessHours?: string;
     email?: string;
@@ -22,7 +23,7 @@ const { activePage, siteConfig } = Astro.props;
 
 const igEbike = siteConfig?.instagramEbike || 'https://instagram.com/beetlerider_ebike';
 const igChopper = siteConfig?.instagramChopper || 'https://instagram.com/beetlerider_japan';
-const mapUrl = siteConfig?.address || 'https://maps.app.goo.gl/Y2bhYqAcBkLyzdydA';
+const mapUrl = siteConfig?.mapUrl || 'https://maps.app.goo.gl/Y2bhYqAcBkLyzdydA';
 
 // HOME & ABOUT show both IG accounts; CHOPPER/EBIKE show only their own
 const showBoth = activePage === 'home' || activePage === 'about';
@@ -54,7 +55,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
         showBoth ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1',
       ]}>
         {showEbike && (
-          <div>
+          <div class:list={[!showBoth && 'max-w-[480px]']}>
             <div class="flex items-center gap-2 mb-2.5">
               <div class="w-1.5 h-1.5 rounded-full bg-ebike"></div>
               <a href={igEbike} target="_blank" class="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors">@beetlerider_ebike</a>
@@ -71,7 +72,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
         )}
 
         {showChopper && (
-          <div>
+          <div class:list={[!showBoth && 'max-w-[480px]']}>
             <div class="flex items-center gap-2 mb-2.5">
               <div class="w-1.5 h-1.5 rounded-full bg-brand"></div>
               <a href={igChopper} target="_blank" class="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors">@beetlerider_japan</a>
@@ -132,7 +133,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
         </div>
         <div>
           <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">Location</dt>
-          <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">Kamakura, Kanagawa</a></dd>
+          <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.address || '神奈川県鎌倉市由比ガ浜2-1-11'}</a></dd>
         </div>
       </dl>
     </div>
@@ -147,7 +148,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
         <span class="text-white/10">|</span>
         <a href={siteConfig?.privacyPolicyUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">Privacy Policy</a>
         <a href={siteConfig?.tokushohoUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">特定商取引法に基づく表記</a>
-        <a href={siteConfig?.importantNoticesUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">重要事項説明書</a>
+        <a href={siteConfig?.importantNoticesUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">重要事項説明</a>
       </div>
     </div>
   </div>

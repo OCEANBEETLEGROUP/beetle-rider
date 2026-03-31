@@ -32,7 +32,8 @@ const modelName = baseMatch ? baseMatch[2] : vehicle.base;
 const displacement = modelName.match(/\d+/)?.[0] || '';
 
 const specs = [
-  { label: 'BASE', value: vehicle.base },
+  { label: 'MODEL', value: vehicle.base },
+  { label: 'ENGINE', value: 'Evolution Sportster' },
   { label: 'TRANSMISSION', value: vehicle.transmission || '—' },
   { label: 'FUEL TANK', value: vehicle.fuelTank || '—' },
   { label: 'TIRES', value: vehicle.tires || '—' },
@@ -131,7 +132,7 @@ const allImages = [
 
     <!-- Thumbnail Strip (below slider) -->
     {allImages.length > 1 && (
-      <div class="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide" id="thumbStrip">
+      <div class="flex justify-center gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide" id="thumbStrip">
         {allImages.map((img, i) => (
           <button
             class:list={[
@@ -172,7 +173,7 @@ const allImages = [
           </p>
           <p class="text-xs text-white/30 mb-6">車両により料金が異なります</p>
           <ul class="flex flex-col gap-[10px] mb-10 flex-1">
-            {['ヘルメット貸出', '対人・対物賠償保険', '出発前レクチャー', 'おすすめルートマップ'].map((item) => (
+            {['ヘルメット・グローブ等貸し出し', '対人・対物賠償保険', '出発前レクチャー', 'おすすめルートマップ'].map((item) => (
               <li class="flex items-center gap-[10px] text-[13px] text-white/55">
                 <svg class="w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 <span>{item}</span>
@@ -300,7 +301,7 @@ const allImages = [
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">QUALIFICATION</h3>
           <p class="text-[13px] text-white/45 leading-relaxed">
-            大型二輪免許または国際免許（IDP）保持者限定。当日、免許証の確認を行います。外国人の方はIDP（国際運転免許証）+ パスポートが必要です。
+            有効な大型二輪免許が必要です。<br>外国人の方は、免許証・IDP（国際運転免許証）・パスポートの3点をご持参ください。
           </p>
         </div>
 
@@ -310,8 +311,7 @@ const allImages = [
             <span class="font-[family-name:var(--font-heading)] text-brand text-sm">02</span>
           </div>
           <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-3">GEAR UP</h3>
-          <p class="text-[13px] text-white/45 leading-relaxed">
-            ヘルメット貸出あり。長袖・長ズボン・ブーツ推奨。出発前に車両の操作レクチャーを行います。
+          <p class="text-[13px] text-white/45 leading-relaxed" set:html="'ヘルメット・グローブ：貸し出しあり<br>ETC車載器・Phone Holder：貸し出しあり<br>長袖・長ズボン・ブーツ推奨'">
           </p>
         </div>
 

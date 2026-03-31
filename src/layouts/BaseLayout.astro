@@ -13,8 +13,8 @@ const [ebikeIg, chopperIg] = await Promise.all([
   getInstagramPosts('chopper'),
 ]);
 const igPhotos = {
-  ebike: ebikeIg.contents.map(p => ({ src: p.image.url + '?w=400&q=80', alt: p.altText || '' })),
-  chopper: chopperIg.contents.map(p => ({ src: p.image.url + '?w=400&q=80', alt: p.altText || '' })),
+  ebike: ebikeIg.contents.map(p => ({ src: p.image.url + '?w=600&q=80', alt: p.altText || '' })),
+  chopper: chopperIg.contents.map(p => ({ src: p.image.url + '?w=600&q=80', alt: p.altText || '' })),
 };
 
 interface Props {

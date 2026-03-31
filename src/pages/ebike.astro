@@ -54,12 +54,9 @@ const destinations = destinationsRaw.length > 0
 
   <!-- Section 1: Hero (Video) -->
   <section class="relative h-screen min-h-[600px] flex items-end justify-start overflow-hidden">
-    <!-- Video Background -->
+    <!-- Hero Background -->
     <div class="absolute inset-0 bg-[#0a0a0a] z-0">
-      <video autoplay muted loop playsinline poster="/assets/ebike/ebike0010.jpg" class="w-full h-full object-cover">
-        <source src="/assets/video/E_BIKE.mp4" type="video/quicktime">
-        <source src="/assets/video/E_BIKE.mp4" type="video/mp4">
-      </video>
+      <img src="/assets/ebike/ebike0010.jpg" alt="E-BIKE Rental" class="w-full h-full object-cover" />
     </div>
     <!-- Gradient Overlay fading to #B42550 -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-[rgba(0,0,0,0.15)]  to-[rgba(180,37,80,0.95)] z-[1]" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.15) 40%, rgba(180,37,80,0.7) 80%, rgba(180,37,80,0.95) 100%);"></div>
@@ -244,55 +241,19 @@ const destinations = destinationsRaw.length > 0
       </div>
       <!-- Accordion -->
       <div class="flex flex-col reveal reveal-delay-1" id="accordion">
-        <!-- Item 1 -->
+        <!-- Item 1: License/Age -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
           <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
-            <span>年齢制限はありますか？</span>
+            <span>免許・年齢制限について</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </div>
           </button>
           <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">16歳以上の方がご利用いただけます。</div>
+            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">16歳以上の方がご利用いただけます。特定小型原動機付自転車のため、免許は不要です。最高速度は20km/hです。</div>
           </div>
         </div>
-        <!-- Item 2 -->
-        <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
-            <span>免許は必要ですか？</span>
-            <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">不要です。特定小型原動機付自転車のため、免許なしでご乗車いただけます。最高速度は20km/hです。</div>
-          </div>
-        </div>
-        <!-- Item 3 -->
-        <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
-            <span>ヘルメットは必要ですか？</span>
-            <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">任意ですが、安全のため着用を推奨しています。無料レンタルヘルメットをご用意しています。</div>
-          </div>
-        </div>
-        <!-- Item 4 -->
-        <div class="accordion-item border-t border-white/15 overflow-hidden">
-          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
-            <span>雨天時はどうなりますか？</span>
-            <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">小雨の場合は運行します。荒天時はキャンセル・日程変更が可能です。</div>
-          </div>
-        </div>
-        <!-- Item 5 -->
+        <!-- Item 2: Alcohol -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
           <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>飲酒運転は厳禁です</span>
@@ -304,19 +265,19 @@ const destinations = destinationsRaw.length > 0
             <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">E-BIKEも道路交通法上の車両です。飲酒後の運転は法律で禁止されています。飲酒が確認された場合、理由を問わず乗車をお断りします。</div>
           </div>
         </div>
-        <!-- Item 6 -->
+        <!-- Item 3: Weather -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
           <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
-            <span>交通ルールについて</span>
+            <span>雨天時の対応について</span>
             <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </div>
           </button>
           <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">出発前に、店頭でスタッフが交通ルール・走行上の注意事項を丁寧にご説明いたします。初めての方も安心してご乗車いただけます。</div>
+            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">荒天時はこちらの判断により催行を中止する場合があります。催行中止の場合は全額返金いたします。</div>
           </div>
         </div>
-        <!-- Item 7 -->
+        <!-- Item 4: Insurance -->
         <div class="accordion-item border-t border-white/15 overflow-hidden">
           <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>保険について</span>
@@ -328,7 +289,19 @@ const destinations = destinationsRaw.length > 0
             <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">対人・対物賠償保険に加入しています。プラン選択時にオプションで車両保険を追加できます。（+&yen;1,000）</div>
           </div>
         </div>
-        <!-- Item 8 -->
+        <!-- Item 5: Extension fees -->
+        <div class="accordion-item border-t border-white/15 overflow-hidden">
+          <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
+            <span>延長料金について</span>
+            <div class="accordion-icon shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white/40 transition-colors duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+          </button>
+          <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">ご利用時間を超過した場合、延長料金が発生します。<br><br>・QUICK RIDE（2時間）: 超過1時間あたり &yen;1,500<br>・CRUISE（4時間）: 超過1時間あたり &yen;1,000<br>・ALL DAY: 延長なし（営業時間内でご利用ください）</div>
+          </div>
+        </div>
+        <!-- Item 6: Cancellation policy -->
         <div class="accordion-item border-t border-b border-white/15 overflow-hidden">
           <button class="accordion-trigger w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] font-bold text-white/85 tracking-wide transition-colors duration-300 hover:text-[#2D0A0A]">
             <span>キャンセルポリシー</span>
@@ -337,7 +310,7 @@ const destinations = destinationsRaw.length > 0
             </div>
           </button>
           <div class="accordion-body max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">前日までのキャンセルは無料。当日キャンセルは50%のキャンセル料が発生します。</div>
+            <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm font-normal text-white/70 leading-[1.9] tracking-wide">ご予約日の24時間以上前：無料キャンセル<br>ご予約日の24時間未満：料金の100%</div>
           </div>
         </div>
       </div>

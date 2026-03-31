@@ -52,6 +52,7 @@ export type SiteConfig = {
   ebikeTagline?: string;
   businessHours?: string;
   address?: string;
+  mapUrl?: string;
   phone?: string;
   instagramChopper?: string;
   instagramEbike?: string;
