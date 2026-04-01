@@ -13,6 +13,7 @@ export type Vehicle = {
   slug: string;
   name: string;
   base: string;
+  engine?: string;
   transmission?: string;
   fuelTank?: string;
   tires?: string;

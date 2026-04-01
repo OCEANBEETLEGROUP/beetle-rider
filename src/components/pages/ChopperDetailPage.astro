@@ -28,7 +28,7 @@ const painterIg = igLink(vehicle.painter);
 
 const specs = [
   { label: t('detail.specs.model') as string, value: vehicle.base },
-  { label: t('detail.specs.engine') as string, value: t('detail.specs.engineVal') as string },
+  { label: t('detail.specs.engine') as string, value: vehicle.engine || 'Evolution Sportster' },
   { label: t('detail.specs.transmission') as string, value: vehicle.transmission || '—' },
   { label: t('detail.specs.fuelTank') as string, value: vehicle.fuelTank || '—' },
   { label: t('detail.specs.tires') as string, value: vehicle.tires || '—' },
