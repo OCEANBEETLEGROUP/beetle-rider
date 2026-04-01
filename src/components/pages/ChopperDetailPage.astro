@@ -46,7 +46,7 @@ const allImages = [
 ];
 
 // FAQ items using chopper.faq.* keys
-const faqKeys = ['license', 'alcohol', 'weather', 'equipment', 'clothing', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
 const faqItems = faqKeys.map(key => ({
   title: t(`chopper.faq.${key}.title` as any) as string,
   content: t(`chopper.faq.${key}.content` as any) as string,

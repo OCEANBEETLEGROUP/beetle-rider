@@ -28,7 +28,7 @@ const destinations = destinationsRaw.map(d => ({
     : `<strong>${d.nameJp}</strong><br>${d.descriptionJp || ''}`,
 }));
 
-const faqKeys = ['license', 'alcohol', 'weather', 'equipment', 'clothing', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
 const protocolItems = faqKeys.map(key => ({
   title: t(lang, `chopper.faq.${key}.title` as any) as string,
   content: t(lang, `chopper.faq.${key}.content` as any) as string,

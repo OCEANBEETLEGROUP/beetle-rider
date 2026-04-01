@@ -69,7 +69,7 @@ const destinations = destinationsRaw.length > 0
       detail: lang === 'en' ? d.detailEn : d.detailJp,
     }));
 
-const faqKeys = ['license', 'alcohol', 'weather', 'insurance', 'luggage', 'extension', 'cancel'] as const;
+const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'insurance', 'luggage', 'extension', 'cancel'] as const;
 const faqItems = faqKeys.map(key => ({
   title: t(lang, `ebike.faq.${key}.title` as any) as string,
   content: t(lang, `ebike.faq.${key}.content` as any) as string,
