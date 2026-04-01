@@ -1,4 +1,6 @@
 ---
+import { bokunWidgetUrl } from '../lib/bokun';
+
 interface Props {
   widgetId: string;
   label?: string;
@@ -6,107 +8,20 @@ interface Props {
 }
 
 const { widgetId, label = 'BOOK NOW', class: className } = Astro.props;
-const channelUUID = import.meta.env.BOKUN_CHANNEL_UUID;
+const bookingUrl = widgetId ? bokunWidgetUrl(widgetId) : '';
 ---
 
-<button
-  class:list={['book-now-btn', className]}
-  data-bokun-widget={widgetId}
-  data-bokun-channel={channelUUID}
->
-  {label}
-</button>
-
-<dialog id={`dialog-${widgetId}`} class="bokun-dialog">
-  <div class="dialog-inner">
-    <button class="dialog-close" aria-label="Close">&times;</button>
-    <div id={`bokun-${widgetId}`}></div>
-  </div>
-</dialog>
-
-<script>
-  document.addEventListener('astro:page-load', () => {
-    document.querySelectorAll<HTMLButtonElement>('.book-now-btn').forEach((btn) => {
-      if (btn.dataset.bokunBound) return;
-      btn.dataset.bokunBound = 'true';
-
-      const wid = btn.dataset.bokunWidget!;
-      const channelUUID = btn.dataset.bokunChannel!;
-      const dialog = document.getElementById(`dialog-${wid}`) as HTMLDialogElement | null;
-
-      btn.addEventListener('click', () => {
-        if (!dialog) return;
-        dialog.showModal();
-
-        // Load Bokun widget script on first open
-        if (!document.querySelector(`script[data-bokun-loaded="${wid}"]`)) {
-          const script = document.createElement('script');
-          script.src = `https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=${channelUUID}`;
-          script.async = true;
-          script.dataset.bokunLoaded = wid;
-          document.head.appendChild(script);
-
-          const poll = setInterval(() => {
-            if (typeof (window as any).BokunWidgetsLoader !== 'undefined') {
-              clearInterval(poll);
-              (window as any).BokunWidgetsLoader.init({ widgetId: wid });
-            }
-          }, 100);
-        }
-      });
-    });
-
-    // Close handlers
-    document.querySelectorAll<HTMLDialogElement>('.bokun-dialog').forEach((dialog) => {
-      if (dialog.dataset.closeBound) return;
-      dialog.dataset.closeBound = 'true';
-
-      dialog.querySelector('.dialog-close')?.addEventListener('click', () => {
-        dialog.close();
-      });
-
-      dialog.addEventListener('click', (e) => {
-        if (e.target === dialog) dialog.close();
-      });
-    });
-  });
-</script>
-
-<style>
-  .bokun-dialog {
-    padding: 0;
-    border: none;
-    border-radius: 12px;
-    max-width: 520px;
-    width: 90vw;
-    max-height: 90vh;
-    overflow-y: auto;
-    background: #fff;
-  }
-
-  .bokun-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  .dialog-inner {
-    position: relative;
-    padding: 24px;
-  }
-
-  .dialog-close {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    font-size: 28px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-    line-height: 1;
-    z-index: 10;
-  }
-
-  .dialog-close:hover {
-    color: #000;
-  }
-</style>
+{widgetId ? (
+  <a
+    href={bookingUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class:list={[className]}
+  >
+    {label}
+  </a>
+) : (
+  <span class:list={[className, 'opacity-50 cursor-not-allowed']}>
+    COMING SOON
+  </span>
+)}
