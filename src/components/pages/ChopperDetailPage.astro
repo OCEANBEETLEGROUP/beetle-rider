@@ -227,7 +227,7 @@ const faqItems = faqKeys.map(key => ({
       <div class="mb-10 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35">{t('detail.specs.label')}</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/[0.06] rounded-[16px] overflow-hidden reveal reveal-delay-1">
         {specs.map((spec) => (
           <div class="bg-deep-red p-6">
             <p class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-2">{spec.label}</p>
@@ -335,7 +335,12 @@ const faqItems = faqKeys.map(key => ({
   <script>
     // Floating CTA scroll to plans
     document.getElementById('floatingCta')?.addEventListener('click', () => {
-      document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' });
+      const el = document.getElementById('plans');
+      if (el) {
+        const offset = 80;
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
     });
 
     // Photo Slider

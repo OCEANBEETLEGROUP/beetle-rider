@@ -93,7 +93,7 @@ const faqItems = faqKeys.map(key => ({
       <p class="font-[family-name:var(--font-heading-jp)] text-[clamp(14px,1.5vw,20px)] font-medium text-white/50 tracking-wide">{t(lang, 'ebike.hero.sub')}</p>
     </div>
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2 animate-[scrollBounce_2s_ease-in-out_infinite]">
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2 text-center w-full animate-[scrollBounce_2s_ease-in-out_infinite]">
       <span class="text-[9px] font-bold tracking-[0.25em] uppercase text-white/30">{t(lang, 'common.scroll')}</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white/30">
         <polyline points="6 9 12 15 18 9"/>
@@ -110,7 +110,7 @@ const faqItems = faqKeys.map(key => ({
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t(lang, 'ebike.specs.heading')}</h2>
       </div>
       <!-- Grid -->
-      <div class="grid grid-cols-4 gap-5 max-lg:grid-cols-2 max-md:grid-cols-2">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- POWER -->
         <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square max-md:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-1">
           <div class="w-10 h-10 rounded-[10px] bg-ebike/12 flex items-center justify-center mb-4 shrink-0">
@@ -270,7 +270,7 @@ const faqItems = faqKeys.map(key => ({
   </section>
 
   <!-- Floating CTA -->
-  <button id="floating-cta" class="fixed bottom-7 right-7 z-90 flex items-center gap-2 py-3.5 px-7 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase border-none rounded-full cursor-pointer shadow-[0_8px_32px_rgba(180,37,80,0.4)] transition-colors duration-300 hover:bg-[#8e1d40] max-md:bottom-5 max-md:right-5 max-md:py-3 max-md:px-6 max-md:text-xs" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">
+  <button id="floating-cta" class="fixed bottom-7 right-7 z-90 flex items-center gap-2 py-3.5 px-7 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase border-none rounded-full cursor-pointer shadow-[0_8px_32px_rgba(180,37,80,0.4)] transition-colors duration-300 hover:bg-[#8e1d40] max-md:bottom-5 max-md:right-5 max-md:py-3 max-md:px-6 max-md:text-xs" onclick="(function(){var el=document.getElementById('plans');if(el){var top=el.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:top,behavior:'smooth'})}})()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
       <polyline points="18 15 12 9 6 15"/>
     </svg>

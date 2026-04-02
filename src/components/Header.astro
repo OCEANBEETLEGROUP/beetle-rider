@@ -86,7 +86,7 @@ const enUrl = (lang === 'en' ? Astro.url.pathname : altUrl) + '?lang=en';
 <!-- Mobile Menu -->
 <div id="mobile-menu" class="fixed inset-0 bg-deep-red z-[99] flex flex-col items-center justify-center gap-6 opacity-0 pointer-events-none transition-opacity duration-400">
   {navItems.map((item) => (
-    <a href={item.href} class="font-[family-name:var(--font-heading)] text-[32px] text-white tracking-wide hover:opacity-60 transition-opacity">
+    <a href={item.href} class="font-[family-name:var(--font-heading)] text-[32px] text-white tracking-wide uppercase hover:opacity-60 transition-opacity">
       {item.label}
     </a>
   ))}

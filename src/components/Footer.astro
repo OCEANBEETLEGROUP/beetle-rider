@@ -160,9 +160,9 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
 
   <!-- Bottom Legal -->
   <div class="border-t border-white/[0.06] px-10 py-6 pb-20">
-    <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
       <span class="text-[11px] text-white/20">{t('footer.copyright')}</span>
-      <div class="flex flex-wrap items-center gap-4">
+      <div class="flex flex-wrap items-center justify-center md:justify-end gap-4">
         <a href={`mailto:${siteConfig?.email || 'info@beetlerider.com'}`} class="text-[11px] text-white/25 hover:text-white/50 transition-colors underline">{t('footer.contact')}</a>
         <span class="text-white/10">|</span>
         <a href={siteConfig?.privacyPolicyUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">{t('footer.privacy')}</a>
