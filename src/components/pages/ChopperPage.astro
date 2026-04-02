@@ -478,9 +478,9 @@ const protocolItems = faqKeys.map(key => ({
 
     /* Floating CTA */
     document.getElementById('floatingCta')?.addEventListener('click', () => {
-      const el = document.getElementById('gallery');
+      const el = document.getElementById('galleryTrack');
       if (el) {
-        const offset = 80;
+        const offset = 100;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       }

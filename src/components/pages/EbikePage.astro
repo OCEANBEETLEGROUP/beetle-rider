@@ -172,7 +172,7 @@ const faqItems = faqKeys.map(key => ({
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t(lang, 'ebike.plans.heading')}</h2>
       </div>
       <!-- Grid -->
-      <div class="grid grid-cols-3 gap-6 items-stretch max-md:grid-cols-1">
+      <div class="grid grid-cols-3 gap-6 items-stretch max-md:grid-cols-1" id="planCards">
         <!-- QUICK RIDE -->
         <div class="relative bg-light border-2 border-black/[0.08] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-1">
           <h3 class="font-[family-name:var(--font-heading)] text-base text-[#2D0A0A]/60 tracking-wide mb-4">{t(lang, 'ebike.plans.quick.name')}</h3>
@@ -270,7 +270,7 @@ const faqItems = faqKeys.map(key => ({
   </section>
 
   <!-- Floating CTA -->
-  <button id="floating-cta" class="fixed bottom-7 right-7 z-90 flex items-center gap-2 py-3.5 px-7 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase border-none rounded-full cursor-pointer shadow-[0_8px_32px_rgba(180,37,80,0.4)] transition-colors duration-300 hover:bg-[#8e1d40] max-md:bottom-5 max-md:right-5 max-md:py-3 max-md:px-6 max-md:text-xs" onclick="(function(){var el=document.getElementById('plans');if(el){var top=el.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:top,behavior:'smooth'})}})()">
+  <button id="floating-cta" class="fixed bottom-7 right-7 z-90 flex items-center gap-2 py-3.5 px-7 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase border-none rounded-full cursor-pointer shadow-[0_8px_32px_rgba(180,37,80,0.4)] transition-colors duration-300 hover:bg-[#8e1d40] max-md:bottom-5 max-md:right-5 max-md:py-3 max-md:px-6 max-md:text-xs" onclick="(function(){var el=document.getElementById('planCards');if(el){var top=el.getBoundingClientRect().top+window.scrollY-100;window.scrollTo({top:top,behavior:'smooth'})}})()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
       <polyline points="18 15 12 9 6 15"/>
     </svg>
