@@ -1,0 +1,17 @@
+# Legacy WordPress URL redirects
+/choppers/ /chopper 301
+/choppers /chopper 301
+/ja/choppers/ /chopper 301
+/ja/choppers /chopper 301
+/product/beetle-ninja/ /ebike 301
+/product/beetle-ninja /ebike 301
+/ja/product/beetle-ninja/ /ebike 301
+/ja/product/beetle-ninja /ebike 301
+/ja/ / 301
+/ja/about/ /about 301
+/ja/about /about 301
+/ja/cart/ / 301
+/ja/checkout/ / 301
+/cart/ / 301
+/checkout/ / 301
+/about/ /about 301
