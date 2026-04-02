@@ -93,7 +93,7 @@ const faqItems = faqKeys.map(key => ({
       <p class="font-[family-name:var(--font-heading-jp)] text-[clamp(14px,1.5vw,20px)] font-medium text-white/50 tracking-wide">{t(lang, 'ebike.hero.sub')}</p>
     </div>
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2 text-center w-full animate-[scrollBounce_2s_ease-in-out_infinite]">
+    <div class="absolute bottom-8 left-0 right-0 z-[2] flex flex-col items-center gap-2 text-center animate-[scrollBounce_2s_ease-in-out_infinite]">
       <span class="text-[9px] font-bold tracking-[0.25em] uppercase text-white/30">{t(lang, 'common.scroll')}</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white/30">
         <polyline points="6 9 12 15 18 9"/>
@@ -112,7 +112,7 @@ const faqItems = faqKeys.map(key => ({
       <!-- Grid -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- POWER -->
-        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square max-md:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-1">
+        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-1">
           <div class="w-10 h-10 rounded-[10px] bg-ebike/12 flex items-center justify-center mb-4 shrink-0">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ebike">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
@@ -124,7 +124,7 @@ const faqItems = faqKeys.map(key => ({
           <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.powerDescEn')}</p>
         </div>
         <!-- RANGE -->
-        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square max-md:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-2">
+        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-2">
           <div class="w-10 h-10 rounded-[10px] bg-ebike/12 flex items-center justify-center mb-4 shrink-0">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ebike">
               <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/><line x1="5" y1="10" x2="5" y2="14"/><line x1="9" y1="10" x2="9" y2="14"/><line x1="13" y1="10" x2="13" y2="14"/>
@@ -136,7 +136,7 @@ const faqItems = faqKeys.map(key => ({
           <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.rangeDescEn')}</p>
         </div>
         <!-- STYLE -->
-        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square max-md:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-3">
+        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-3">
           <div class="w-10 h-10 rounded-[10px] bg-ebike/12 flex items-center justify-center mb-4 shrink-0">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ebike">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -148,7 +148,7 @@ const faqItems = faqKeys.map(key => ({
           <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.styleDescEn')}</p>
         </div>
         <!-- LICENSE -->
-        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square max-md:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-4">
+        <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-4">
           <div class="w-10 h-10 rounded-[10px] bg-ebike/12 flex items-center justify-center mb-4 shrink-0">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ebike">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
@@ -228,7 +228,7 @@ const faqItems = faqKeys.map(key => ({
             )}
             <!-- Content -->
             <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
-              <h3 class="font-[family-name:var(--font-heading)] text-[clamp(16px,1.8vw,22px)] text-white tracking-wide mb-2">{d.name}</h3>
+              <h3 class="font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] text-white tracking-wide mb-2">{d.name}</h3>
               <p class="font-[family-name:var(--font-heading-jp)] text-[13px] font-medium text-white/60 leading-relaxed">{d.desc}</p>
             </div>
             <!-- Detail Panel (expand) -->
@@ -360,8 +360,8 @@ const faqItems = faqKeys.map(key => ({
   <!-- Scroll Bounce Keyframe -->
   <style>
     @keyframes scrollBounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(8px); }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
     }
   </style>
 
