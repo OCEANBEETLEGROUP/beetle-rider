@@ -162,7 +162,7 @@ const faqItems = faqKeys.map(key => ({
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t('detail.plans.heading')}</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="planCards">
         <!-- DAY RIDE -->
         <div class="relative bg-white/[0.04] border border-brand/100 rounded-[16px] p-10 flex flex-col hover:translate-y-[-4px] transition-all duration-400 bg-[rgba(195,13,35,0.06)] reveal reveal-delay-1">
           <span class="absolute -top-3 left-10 bg-brand text-white text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full">{t('detail.dayride.badge')}</span>
@@ -335,9 +335,9 @@ const faqItems = faqKeys.map(key => ({
   <script>
     // Floating CTA scroll to plans
     document.getElementById('floatingCta')?.addEventListener('click', () => {
-      const el = document.getElementById('plans');
+      const el = document.getElementById('planCards');
       if (el) {
-        const offset = 20;
+        const offset = 100;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       }
