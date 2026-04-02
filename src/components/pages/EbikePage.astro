@@ -79,7 +79,7 @@ const faqItems = faqKeys.map(key => ({
 <BaseLayout title={t(lang, 'meta.ebike.title') as string} activePage="ebike" headerLogo="ebike">
 
   <!-- Section 1: Hero (Video) -->
-  <section class="relative h-screen min-h-[600px] flex items-end justify-start overflow-hidden">
+  <section class="relative h-screen max-md:h-[100svh] min-h-[600px] max-md:min-h-0 flex items-end justify-start overflow-hidden">
     <!-- Hero Background -->
     <div class="absolute inset-0 bg-[#0a0a0a] z-0">
       <img src="/assets/ebike/ebike0010.jpg" alt="E-BIKE Rental" class="w-full h-full object-cover" />
