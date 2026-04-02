@@ -47,8 +47,27 @@ const altLang = lang === 'ja' ? 'en' : 'ja';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   <meta name="description" content={description}>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- OGP / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content="https://beetle-rider.pages.dev/ogp.png">
+  <meta property="og:url" content={Astro.url.href}>
+  <meta property="og:site_name" content="BEETLE RIDER">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content="https://beetle-rider.pages.dev/ogp.png">
+
+  <!-- i18n -->
   <link rel="alternate" hreflang={altLang} href={altUrl} />
   <link rel="alternate" hreflang={lang} href={Astro.url.pathname} />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Rubik+Dirt&family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
