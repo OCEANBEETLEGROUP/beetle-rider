@@ -137,7 +137,7 @@ export default {
   'chopper.faq.weather.title': '雨天時の対応について',
   'chopper.faq.weather.content': '荒天時はこちらの判断により催行を中止する場合があります。催行中止の場合は全額返金いたします。',
   'chopper.faq.equipment.title': 'ヘルメットなどの装備品はありますか？',
-  'chopper.faq.equipment.content': 'ヘルメット、グローブ、フォンホルダー、CCバーバンド、ETCデバイスをご用意しています。これらはプラン選択時にオプションとして追加可能です。',
+  'chopper.faq.equipment.content': 'ヘルメット、グローブ、フォンホルダー、シーシーバンド、ETCデバイスをご用意しています。これらはプラン選択時にオプションとして追加可能です。',
   'chopper.faq.clothing.title': '服装について',
   'chopper.faq.clothing.content': '長袖・長ズボン・ブーツを推奨します。サンダルやハーフパンツでの乗車はお断りする場合があります。天候に応じて防寒着もご持参ください。',
   'chopper.faq.tandem.title': 'タンデムは可能ですか？',
