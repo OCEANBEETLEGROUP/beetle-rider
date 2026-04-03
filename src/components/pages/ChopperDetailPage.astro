@@ -352,20 +352,10 @@ const faqItems = faqKeys.map(key => ({
   <script>
     // Floating CTA scroll to plans
     document.getElementById('floatingCta')?.addEventListener('click', () => {
-      if (window.innerWidth >= 1024) {
-        // PC: scroll so the plans section bottom aligns with viewport bottom
-        const section = document.getElementById('plans');
-        if (section) {
-          const sectionBottom = section.getBoundingClientRect().bottom + window.scrollY;
-          const top = sectionBottom - window.innerHeight;
-          window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-        }
-      } else {
-        const el = document.getElementById('planCards');
-        if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY - 100;
-          window.scrollTo({ top, behavior: 'smooth' });
-        }
+      const el = document.getElementById('planCards');
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top, behavior: 'smooth' });
       }
     });
 
