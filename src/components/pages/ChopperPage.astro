@@ -472,11 +472,20 @@ const protocolItems = faqKeys.map(key => ({
 
     /* Floating CTA */
     document.getElementById('floatingCta')?.addEventListener('click', () => {
-      const el = document.getElementById('galleryTrack');
-      if (el) {
-        const offset = window.innerWidth >= 1024 ? 160 : 100;
-        const top = el.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+      if (window.innerWidth >= 1024) {
+        // PC: scroll so the gallery section bottom aligns with viewport bottom
+        const section = document.getElementById('gallery');
+        if (section) {
+          const sectionBottom = section.getBoundingClientRect().bottom + window.scrollY;
+          const top = sectionBottom - window.innerHeight;
+          window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        }
+      } else {
+        const el = document.getElementById('galleryTrack');
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
       }
     });
 
