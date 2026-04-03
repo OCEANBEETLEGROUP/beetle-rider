@@ -27,7 +27,7 @@ export type Vehicle = {
   multiDayPrice: number;
   bokunDayRideId?: string;
   bokunMultiDayId?: string;
-  published?: boolean;
+  status?: string[];
   order: number;
 } & MicroCMSListContent;
 

@@ -13,7 +13,7 @@ const vehicles = vehiclesRaw.map((v, i) => ({
   specs: `${v.base} — Hard Tail ${v.style || 'Chopper'}`,
   num: String(i + 1).padStart(2, '0'),
   img: v.thumbnail.url + '?w=800&q=80',
-  comingSoon: !v.published || (!v.bokunDayRideId && !v.bokunMultiDayId),
+  status: v.status?.[0] || 'active',
 }));
 
 const { contents: destinationsRaw } = await getDestinations('chopper');
@@ -91,7 +91,7 @@ const protocolItems = faqKeys.map(key => ({
       <!-- Track -->
       <div class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth py-4 pb-10 cursor-grab [&:active]:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:px-4" id="galleryTrack">
         {vehicles.map((v) => (
-          v.comingSoon ? (
+          v.status === 'hidden' ? (
             <div class="flex-none w-[400px] max-lg:w-[340px] max-md:w-[320px] aspect-[3/4] rounded-2xl overflow-hidden relative snap-center cursor-not-allowed select-none">
               <div class="absolute inset-0 bg-[#111]">
                 <img src={v.img} alt={v.name} loading="lazy" class="w-full h-full object-cover blur-[6px] brightness-50" />
