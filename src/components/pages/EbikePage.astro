@@ -82,7 +82,9 @@ const faqItems = faqKeys.map(key => ({
   <section class="relative h-screen max-lg:h-[100svh] min-h-[600px] max-lg:min-h-0 flex items-end justify-start overflow-hidden">
     <!-- Hero Background -->
     <div class="absolute inset-0 bg-[#0a0a0a] z-0">
-      <img src="/assets/ebike/ebike0010.jpg" alt="E-BIKE Rental" class="w-full h-full object-cover" />
+      <video autoplay muted loop playsinline poster="/assets/ebike/ebike0010.jpg" class="w-full h-full object-cover">
+        <source src="/assets/video/E_BIKE.mp4" type="video/mp4">
+      </video>
     </div>
     <!-- Gradient Overlay fading to #B42550 -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-[rgba(0,0,0,0.15)]  to-[rgba(180,37,80,0.95)] z-[1]" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.15) 40%, rgba(180,37,80,0.7) 80%, rgba(180,37,80,0.95) 100%);"></div>

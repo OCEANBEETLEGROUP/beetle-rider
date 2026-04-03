@@ -13,7 +13,9 @@ const t = useTranslations(lang);
   <section class="flex h-screen max-lg:h-auto max-lg:min-h-0 p-1.5 gap-1.5 pt-[66px] pb-1.5 bg-deep-red max-lg:flex-col lg:p-2 lg:gap-2 lg:pt-[72px]" style="--mobile-card-h: calc((100svh - 66px - 6px) / 2);">
     <a href={localePath('/ebike', lang)} class="group relative flex-1 max-lg:h-[var(--mobile-card-h)] max-lg:flex-none rounded-[32px] overflow-hidden cursor-pointer transition-[flex] duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:flex-[1.15]">
       <div class="absolute inset-0 bg-[#111] transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105">
-        <img src="/assets/ebike/ebike0010.jpg" alt="E-BIKE" class="w-full h-full object-cover" loading="lazy" />
+        <video autoplay muted loop playsinline poster="/assets/ebike/ebike0010.jpg" class="w-full h-full object-cover">
+          <source src="/assets/video/E_BIKE.mp4" type="video/mp4">
+        </video>
       </div>
       <div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/5 group-hover:to-black/40 transition-all duration-500"></div>
       <div class="absolute bottom-0 left-0 right-0 p-12 max-md:p-6 z-[2]">
