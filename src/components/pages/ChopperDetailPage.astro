@@ -14,11 +14,8 @@ const { vehicle, index } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// Hidden vehicles → redirect to chopper page
 const vehicleStatus = vehicle.status?.[0] || 'active';
-if (vehicleStatus === 'hidden') {
-  return Astro.redirect(localePath('/chopper', lang));
-}
+const isHidden = vehicleStatus === 'hidden';
 const isMaintenance = vehicleStatus === 'maintenance';
 
 const dayPriceFormatted = vehicle.dayRidePrice.toLocaleString();
@@ -60,6 +57,15 @@ const faqItems = faqKeys.map(key => ({
 }));
 ---
 
+{isHidden ? (
+  <html>
+    <head>
+      <meta http-equiv="refresh" content={`0;url=${localePath('/chopper', lang)}`} />
+      <title>Redirecting...</title>
+    </head>
+    <body></body>
+  </html>
+) : (
 <BaseLayout title={vehicle.name + " — BEETLE RIDER"} activePage="chopper" headerLogo="chopper">
 
   <!-- Back Link -->
@@ -477,3 +483,4 @@ const faqItems = faqKeys.map(key => ({
   <script type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3" async></script>
 
 </BaseLayout>
+)}

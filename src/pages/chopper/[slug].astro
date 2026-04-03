@@ -4,12 +4,10 @@ import { getVehicles } from '../../lib/microcms';
 
 export async function getStaticPaths() {
   const { contents } = await getVehicles();
-  return contents
-    .filter(v => (v.status?.[0] || 'active') !== 'hidden')
-    .map((v, i) => ({
-      params: { slug: v.slug },
-      props: { vehicle: v, index: i + 1 },
-    }));
+  return contents.map((v, i) => ({
+    params: { slug: v.slug },
+    props: { vehicle: v, index: i + 1 },
+  }));
 }
 
 const { vehicle, index } = Astro.props;
