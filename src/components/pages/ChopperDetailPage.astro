@@ -352,10 +352,9 @@ const faqItems = faqKeys.map(key => ({
   <script>
     // Floating CTA scroll to plans
     document.getElementById('floatingCta')?.addEventListener('click', () => {
-      const isPC = window.innerWidth >= 1024;
-      const el = document.getElementById(isPC ? 'plans' : 'planCards');
+      const el = document.getElementById('planCards');
       if (el) {
-        const offset = isPC ? 80 : 100;
+        const offset = window.innerWidth >= 1024 ? 160 : 100;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       }
