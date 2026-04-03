@@ -272,7 +272,7 @@ const faqItems = faqKeys.map(key => ({
   </section>
 
   <!-- Floating CTA -->
-  <button id="floating-cta" class="fixed bottom-7 right-7 z-90 flex items-center gap-2 py-3.5 px-7 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase border-none rounded-full cursor-pointer shadow-[0_8px_32px_rgba(180,37,80,0.4)] transition-colors duration-300 hover:bg-[#8e1d40] max-md:bottom-5 max-md:right-5 max-md:py-3 max-md:px-6 max-md:text-xs" onclick="(function(){var el=document.getElementById('planCards');if(el){var top=el.getBoundingClientRect().top+window.scrollY-100;window.scrollTo({top:top,behavior:'smooth'})}})()">
+  <button id="floating-cta" class="fixed bottom-7 right-7 z-90 flex items-center gap-2 py-3.5 px-7 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase border-none rounded-full cursor-pointer shadow-[0_8px_32px_rgba(180,37,80,0.4)] transition-colors duration-300 hover:bg-[#8e1d40] max-md:bottom-5 max-md:right-5 max-md:py-3 max-md:px-6 max-md:text-xs" onclick="(function(){var isPC=window.innerWidth>=1024;var el=document.getElementById(isPC?'plans':'planCards');if(el){var top=el.getBoundingClientRect().top+window.scrollY-(isPC?80:100);window.scrollTo({top:top,behavior:'smooth'})}})()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
       <polyline points="18 15 12 9 6 15"/>
     </svg>
