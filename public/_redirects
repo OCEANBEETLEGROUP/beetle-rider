@@ -1,3 +1,6 @@
+# Sitemap redirect (legacy WordPress URL)
+/sitemap.xml /sitemap-index.xml 301
+
 # Legacy WordPress URL redirects
 /choppers/ /chopper 301
 /choppers /chopper 301
