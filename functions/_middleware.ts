@@ -12,11 +12,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const url = new URL(request.url);
   const path = url.pathname;
 
-  // Skip static assets — only process HTML page requests
+  // Skip static assets and sitemaps — only process HTML page requests
   if (
     path.match(/\.(js|css|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|mp4|mov|m4v|json|xml|txt|map)$/) ||
     path.startsWith('/assets/') ||
-    path.startsWith('/_astro/')
+    path.startsWith('/_astro/') ||
+    path.startsWith('/sitemap') ||
+    path === '/robots.txt' ||
+    path === '/favicon.svg'
   ) {
     return context.next();
   }
