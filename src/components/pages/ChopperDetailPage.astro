@@ -93,9 +93,9 @@ const faqItems = faqKeys.map(key => ({
           {vehicle.base} — {vehicle.style}
         </p>
       </div>
-      <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] shrink-0">
-        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-        <span class="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/60">{t('detail.available')}</span>
+      <div class:list={["flex items-center gap-2 px-4 py-2 rounded-full border shrink-0", isMaintenance ? "bg-yellow-500/10 border-yellow-500/30" : "bg-white/[0.06] border-white/[0.08]"]}>
+        <div class:list={["w-2 h-2 rounded-full", isMaintenance ? "bg-yellow-500" : "bg-green-500 animate-pulse"]}></div>
+        <span class:list={["text-[11px] font-semibold tracking-[0.15em] uppercase", isMaintenance ? "text-yellow-500" : "text-white/60"]}>{isMaintenance ? 'MAINTENANCE' : t('detail.available')}</span>
       </div>
     </div>
 
