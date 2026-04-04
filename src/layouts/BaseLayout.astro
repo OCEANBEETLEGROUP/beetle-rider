@@ -55,13 +55,23 @@ const altLang = lang === 'ja' ? 'en' : 'ja';
   <meta property="og:type" content="website">
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
-  <meta property="og:image" content="https://beetle-rider.pages.dev/ogp.png">
+  <meta property="og:image" content="https://beetlerider.com/ogp.png">
   <meta property="og:url" content={Astro.url.href}>
   <meta property="og:site_name" content="BEETLE RIDER">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
-  <meta name="twitter:image" content="https://beetle-rider.pages.dev/ogp.png">
+  <meta name="twitter:image" content="https://beetlerider.com/ogp.png">
+
+  <!-- Google Analytics (GA4) + Google Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7BY8Q8C33D"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7BY8Q8C33D');
+    gtag('config', 'GT-P3JXZPBB');
+  </script>
 
   <!-- i18n -->
   <link rel="alternate" hreflang={altLang} href={altUrl} />
