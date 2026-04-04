@@ -59,8 +59,8 @@ const enUrl = (lang === 'en' ? Astro.url.pathname : altUrl) + '?lang=en';
     ))}
   </nav>
 
-  <!-- Language Switch (right-aligned, hidden on tablet, shown on lg+) -->
-  <div class="hidden lg:flex gap-1 items-center">
+  <!-- Language Switch (right-aligned, shown on md+) -->
+  <div class="hidden md:flex gap-1 items-center">
     <a href={jpUrl} class:list={[
       'px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wider',
       lang === 'ja'
