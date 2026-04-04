@@ -1,9 +1,13 @@
 export default {
   // === Meta ===
   'meta.home.title': 'BEETLE RIDER — Not Just a Rental',
-  'meta.chopper.title': 'CHOPPER EXPERIENCE — BEETLE RIDER',
+  'meta.home.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
+  'meta.chopper.title': 'CHOPPER RENTAL — BEETLE RIDER',
+  'meta.chopper.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper rental in Kamakura.',
   'meta.ebike.title': 'E-BIKE RENTAL — BEETLE RIDER',
-  'meta.about.title': 'ABOUT — OCEANBEETLE',
+  'meta.ebike.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. E-Bike rental in Kamakura.',
+  'meta.about.title': 'ABOUT — BEETLE RIDER',
+  'meta.about.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
 
   // === Header ===
   'nav.ebike': 'E-Bike',

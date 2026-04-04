@@ -7,7 +7,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<BaseLayout title={t('meta.about.title') as string} activePage="about" headerLogo="chopper">
+<BaseLayout title={t('meta.about.title') as string} description={t('meta.about.desc') as string} activePage="about" headerLogo="chopper">
 
   <!-- ========================================
        SECTION 1: ESCAPE FROM TOKYO — Full-bleed Hero

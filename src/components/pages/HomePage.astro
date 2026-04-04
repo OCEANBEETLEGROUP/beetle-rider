@@ -7,7 +7,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<BaseLayout title={t('meta.home.title') as string} activePage="home" headerLogo="chopper">
+<BaseLayout title={t('meta.home.title') as string} description={t('meta.home.desc') as string} activePage="home" headerLogo="chopper">
 
   <!-- Section 1: Split Hero -->
   <section class="flex h-screen max-lg:h-auto max-lg:min-h-0 p-1.5 gap-1.5 pt-[66px] pb-1.5 bg-deep-red max-lg:flex-col lg:p-2 lg:gap-2 lg:pt-[72px]" style="--mobile-card-h: calc((100svh - 66px - 6px) / 2);">
