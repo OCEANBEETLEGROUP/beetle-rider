@@ -210,7 +210,7 @@ const faqItems = faqKeys.map(key => ({
       <!-- Header -->
       <div class="text-center mb-16 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/40 mb-4">{t(lang, 'ebike.dest.label')}</p>
-        <h2 class="font-[family-name:var(--font-serif-jp)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t(lang, 'ebike.dest.heading')}</h2>
+        <h2 class={`${lang === 'ja' ? 'font-[family-name:var(--font-serif-jp)]' : 'font-[family-name:var(--font-heading)]'} text-[clamp(24px,3vw,40px)] text-white tracking-tight`}>{t(lang, 'ebike.dest.heading')}</h2>
         <p class="font-[family-name:var(--font-body)] text-[clamp(14px,1.5vw,18px)] text-white/40 mt-2 font-medium tracking-wide">{t(lang, 'ebike.dest.sub')}</p>
       </div>
       <!-- Grid -->
