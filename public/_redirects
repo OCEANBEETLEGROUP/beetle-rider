@@ -54,7 +54,6 @@
 /feed/                                    /                               301
 /feed                                     /                               301
 /comments/feed/                           /                               301
-/?feed=*                                  /                               301
 /author/*                                 /                               301
 /tag/*                                    /                               301
 /category/*                               /chopper                        301
