@@ -17,5 +17,8 @@
     "astro": "^6.0.6",
     "microcms-js-sdk": "^3.3.0",
     "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }
