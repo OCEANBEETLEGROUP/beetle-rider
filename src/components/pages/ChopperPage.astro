@@ -7,9 +7,9 @@ import { t } from '../../i18n/index';
 const lang = getLangFromUrl(Astro.url);
 
 const { contents: vehiclesRaw } = await getVehicles();
-// Filter: only show active vehicles (maintenance/hidden excluded from list)
-const activeVehicles = vehiclesRaw.filter(v => (v.status?.[0] || 'active') === 'active');
-const vehicles = activeVehicles.map((v, i) => ({
+// Filter: hide only "hidden" vehicles. "maintenance" vehicles are shown (with badge)
+const visibleVehicles = vehiclesRaw.filter(v => (v.status?.[0] || 'active') !== 'hidden');
+const vehicles = visibleVehicles.map((v, i) => ({
   slug: v.slug,
   name: v.name,
   specs: `${v.base} — Hard Tail ${v.style || 'Chopper'}`,

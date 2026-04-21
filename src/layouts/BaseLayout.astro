@@ -39,6 +39,10 @@ const {
 const altUrl = alternateUrl(Astro.url);
 const altLang = lang === 'ja' ? 'en' : 'ja';
 
+// Canonical URL — always use apex domain (prevents www.* and pages.dev duplicate indexing)
+const canonicalUrl = `https://beetlerider.com${Astro.url.pathname}`;
+const ogUrl = canonicalUrl;
+
 // JSON-LD structured data — only on homepage (Organization + WebSite)
 const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === '/en/' || Astro.url.pathname === '/en';
 
@@ -117,8 +121,8 @@ const websiteLd = {
   <title>{title}</title>
   <meta name="description" content={description}>
 
-  <!-- Canonical -->
-  <link rel="canonical" href={Astro.url.href}>
+  <!-- Canonical (always apex domain to prevent www/pages.dev duplicates) -->
+  <link rel="canonical" href={canonicalUrl}>
 
   <!-- Favicon (Google search results require square, min 48x48) -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -136,7 +140,7 @@ const websiteLd = {
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:image" content="https://beetlerider.com/ogp.png">
-  <meta property="og:url" content={Astro.url.href}>
+  <meta property="og:url" content={ogUrl}>
   <meta property="og:site_name" content="BEETLE RIDER">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
@@ -155,7 +159,7 @@ const websiteLd = {
 
   <!-- i18n (absolute URLs required for hreflang) -->
   <link rel="alternate" hreflang={altLang} href={`https://beetlerider.com${altUrl}`} />
-  <link rel="alternate" hreflang={lang} href={Astro.url.href} />
+  <link rel="alternate" hreflang={lang} href={canonicalUrl} />
   <link rel="alternate" hreflang="x-default" href={`https://beetlerider.com${lang === 'ja' ? Astro.url.pathname : Astro.url.pathname.replace(/^\/en/, '') || '/'}`} />
 
   <!-- JSON-LD Structured Data -->
