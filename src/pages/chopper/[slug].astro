@@ -4,8 +4,8 @@ import { getVehicles } from '../../lib/microcms';
 
 export async function getStaticPaths() {
   const { contents } = await getVehicles();
-  // Generate pages for active + maintenance vehicles (hidden → no page)
-  const visible = contents.filter(v => (v.status?.[0] || 'active') !== 'hidden');
+  // Exclude 公開終了 + hidden. Only active/maintenance get detail pages.
+  const visible = contents.filter(v => !(v as any).closedAt && (v.status?.[0] || 'active') !== 'hidden');
   return visible.map((v, i) => ({
     params: { slug: v.slug },
     props: { vehicle: v, index: i + 1 },

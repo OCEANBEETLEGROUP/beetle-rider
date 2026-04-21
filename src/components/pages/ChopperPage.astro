@@ -7,9 +7,10 @@ import { t } from '../../i18n/index';
 const lang = getLangFromUrl(Astro.url);
 
 const { contents: vehiclesRaw } = await getVehicles();
-// microCMS API returns only published (公開中) items — no filter needed.
+// Exclude 公開終了 items (closedAt present = ended publication, even if API key returns them)
+const published = vehiclesRaw.filter(v => !(v as any).closedAt);
 // Display logic: active → normal, maintenance → viewable/no booking, hidden → COMING SOON
-const vehicles = vehiclesRaw.map((v, i) => ({
+const vehicles = published.map((v, i) => ({
   slug: v.slug,
   name: v.name,
   specs: `${v.base} — Hard Tail ${v.style || 'Chopper'}`,
