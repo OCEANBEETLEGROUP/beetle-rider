@@ -367,7 +367,33 @@ const faqItems = faqKeys.map(key => ({
     }
   </style>
 
-  <!-- Bokun Widget Loader (required for button + calendar widgets) -->
-  <script type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3" async></script>
+  <!-- Bokun Widget Loader: lazy-loaded on first BOOK NOW interaction or scroll-into-view -->
+  <script>
+    (function() {
+      let loaded = false;
+      function loadBokun() {
+        if (loaded) return;
+        loaded = true;
+        const s = document.createElement('script');
+        s.src = 'https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3';
+        s.async = true;
+        document.body.appendChild(s);
+      }
+      document.querySelectorAll('.bokunButton').forEach((btn) => {
+        ['pointerenter', 'click', 'focus'].forEach(ev => btn.addEventListener(ev, loadBokun, { once: false, passive: true }));
+      });
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some(e => e.isIntersecting)) {
+            loadBokun();
+            io.disconnect();
+          }
+        }, { rootMargin: '200px' });
+        document.querySelectorAll('.bokunButton').forEach((btn) => io.observe(btn));
+      } else {
+        setTimeout(loadBokun, 3000);
+      }
+    })();
+  </script>
 
 </BaseLayout>
