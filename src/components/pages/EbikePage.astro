@@ -397,16 +397,10 @@ const faqItems = faqKeys.map(key => ({
   </script>
 
   <!-- Google Ads Conversion: fire on E-BIKE BOOK NOW click (Phase 1: site click CV) -->
-  <script is:inline define:vars={{
-    gadsId: import.meta.env.PUBLIC_GADS_CONVERSION_ID || '',
-    gadsLabel: import.meta.env.PUBLIC_GADS_BOOKNOW_LABEL || ''
-  }}>
+  <!-- Site_BookNow_Click action — defined in api_config.json (google.gads_conversions.site_booknow_click) -->
+  <script>
     (function() {
-      if (!gadsId || !gadsLabel) {
-        console.log('[GAds CV] PUBLIC_GADS_CONVERSION_ID or LABEL not set, skipping');
-        return;
-      }
-      const sendTo = gadsId + '/' + gadsLabel;
+      const sendTo = 'AW-17694685527/CUJHCP_b_aMcENfyvfVB';
       document.querySelectorAll('.ebike-cv-btn').forEach((btn) => {
         btn.addEventListener('click', function() {
           if (!window.gtag) {

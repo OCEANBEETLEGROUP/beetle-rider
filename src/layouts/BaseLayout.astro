@@ -148,14 +148,15 @@ const websiteLd = {
   <meta name="twitter:image" content="https://beetlerider.com/ogp.png">
 
   <!-- Google Analytics (GA4) + Google Tag + Google Ads -->
+  <!-- AW-IDs are publicly visible in HTML anyway; no secrecy benefit from env vars -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7BY8Q8C33D"></script>
-  <script is:inline define:vars={{ gadsId: import.meta.env.PUBLIC_GADS_CONVERSION_ID || '' }}>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-7BY8Q8C33D');
     gtag('config', 'GT-P3JXZPBB');
-    if (gadsId) gtag('config', gadsId);
+    gtag('config', 'AW-17694685527');
   </script>
 
   <!-- i18n (absolute URLs required for hreflang) -->
