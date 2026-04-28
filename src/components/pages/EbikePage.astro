@@ -181,7 +181,7 @@ const faqItems = faqKeys.map(key => ({
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">{t(lang, 'ebike.plans.quick.price')}</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.quick.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.quick.desc')}</p>
-          <button class="bokunButton block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.quickRide}?partialView=1`} data-testid="widget-book-button" disabled>BOOK NOW</button>
+          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.quickRide}?partialView=1`} data-testid="widget-book-button" data-cv-plan="quick" data-cv-value="3500" disabled>BOOK NOW</button>
         </div>
         <!-- CRUISE (POPULAR) -->
         <div class="relative bg-light border-2 border-[#2D0A0A] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-2">
@@ -190,7 +190,7 @@ const faqItems = faqKeys.map(key => ({
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">{t(lang, 'ebike.plans.cruise.price')}</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.cruise.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.cruise.desc')}</p>
-          <button class="bokunButton block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.cruise}?partialView=1`} data-testid="widget-book-button" disabled>BOOK NOW</button>
+          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.cruise}?partialView=1`} data-testid="widget-book-button" data-cv-plan="cruise" data-cv-value="5000" disabled>BOOK NOW</button>
         </div>
         <!-- ALL DAY -->
         <div class="relative bg-light border-2 border-black/[0.08] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-3">
@@ -198,7 +198,7 @@ const faqItems = faqKeys.map(key => ({
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">{t(lang, 'ebike.plans.allday.price')}</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.allday.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.allday.desc')}</p>
-          <button class="bokunButton block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.allDay}?partialView=1`} data-testid="widget-book-button" disabled>BOOK NOW</button>
+          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.allDay}?partialView=1`} data-testid="widget-book-button" data-cv-plan="allday" data-cv-value="7500" disabled>BOOK NOW</button>
         </div>
       </div>
     </div>
@@ -393,6 +393,36 @@ const faqItems = faqKeys.map(key => ({
       } else {
         setTimeout(loadBokun, 3000);
       }
+    })();
+  </script>
+
+  <!-- Google Ads Conversion: fire on E-BIKE BOOK NOW click (Phase 1: site click CV) -->
+  <script is:inline define:vars={{
+    gadsId: import.meta.env.PUBLIC_GADS_CONVERSION_ID || '',
+    gadsLabel: import.meta.env.PUBLIC_GADS_BOOKNOW_LABEL || ''
+  }}>
+    (function() {
+      if (!gadsId || !gadsLabel) {
+        console.log('[GAds CV] PUBLIC_GADS_CONVERSION_ID or LABEL not set, skipping');
+        return;
+      }
+      const sendTo = gadsId + '/' + gadsLabel;
+      document.querySelectorAll('.ebike-cv-btn').forEach((btn) => {
+        btn.addEventListener('click', function() {
+          if (!window.gtag) {
+            console.warn('[GAds CV] gtag not loaded');
+            return;
+          }
+          const value = parseFloat(this.dataset.cvValue || '3000');
+          window.gtag('event', 'conversion', {
+            send_to: sendTo,
+            value: value,
+            currency: 'JPY',
+            transaction_id: '',
+          });
+          console.log('[GAds CV] sent:', sendTo, 'plan=' + this.dataset.cvPlan, 'value=¥' + value);
+        }, { passive: true });
+      });
     })();
   </script>
 
