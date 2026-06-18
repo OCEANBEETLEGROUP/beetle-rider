@@ -26,6 +26,7 @@ interface Props {
   bodyClass?: string;
   activePage?: 'home' | 'chopper' | 'ebike' | 'about';
   headerLogo?: 'chopper' | 'ebike' | 'corporate';
+  schema?: any[];
 }
 
 const {
@@ -34,6 +35,7 @@ const {
   bodyClass = '',
   activePage = 'home',
   headerLogo = 'chopper',
+  schema = [],
 } = Astro.props;
 
 const altUrl = alternateUrl(Astro.url);
@@ -171,6 +173,7 @@ const websiteLd = {
   <script type="application/ld+json" set:html={JSON.stringify(organizationLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(localBusinessLd)} />
   {isHomepage && <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />}
+  {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 
   <!-- Fonts (non-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

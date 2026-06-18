@@ -37,9 +37,35 @@ const protocolItems = faqKeys.map(key => ({
   title: t(lang, `chopper.faq.${key}.title` as any) as string,
   content: t(lang, `chopper.faq.${key}.content` as any) as string,
 }));
+
+// SEO structured data (Service + FAQPage)
+const chopperPageUrl = `https://beetlerider.com${Astro.url.pathname}`;
+const chopperSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'Motorcycle Rental',
+    name: lang === 'en' ? 'Kamakura Chopper Rental' : '鎌倉 チョッパー・ハーレーレンタル',
+    description: lang === 'en'
+      ? 'Vintage chopper (Harley-based) motorcycle rental in Kamakura, Japan. License + IDP required.'
+      : '鎌倉でのヴィンテージ・チョッパー（ハーレー）レンタル。要二輪免許。',
+    provider: { '@id': 'https://beetlerider.com/#localbusiness' },
+    areaServed: { '@type': 'City', name: 'Kamakura' },
+    url: chopperPageUrl,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: protocolItems.map(f => ({
+      '@type': 'Question',
+      name: f.title,
+      acceptedAnswer: { '@type': 'Answer', text: f.content.replace(/<[^>]+>/g, '') },
+    })),
+  },
+];
 ---
 
-<BaseLayout title={t(lang, 'meta.chopper.title') as string} description={t(lang, 'meta.chopper.desc') as string} activePage="chopper" headerLogo="chopper">
+<BaseLayout title={t(lang, 'meta.chopper.title') as string} description={t(lang, 'meta.chopper.desc') as string} activePage="chopper" headerLogo="chopper" schema={chopperSchema}>
 
   <!-- ============================
        Section 1: Hero — Cinematic

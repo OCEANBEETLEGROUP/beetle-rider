@@ -74,9 +74,35 @@ const faqItems = faqKeys.map(key => ({
   title: t(lang, `ebike.faq.${key}.title` as any) as string,
   content: t(lang, `ebike.faq.${key}.content` as any) as string,
 }));
+
+// SEO structured data (Service + FAQPage)
+const ebikePageUrl = `https://beetlerider.com${Astro.url.pathname}`;
+const ebikeSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'E-Bike Rental',
+    name: lang === 'en' ? 'Kamakura E-Bike Rental' : '鎌倉 eバイク・電動自転車レンタル',
+    description: lang === 'en'
+      ? 'Electric bike (e-bike) rental in Kamakura, Japan. No license required; helmet & insurance included.'
+      : '鎌倉でのeバイク（電動自転車）レンタル。免許不要、ヘルメット・保険込み。',
+    provider: { '@id': 'https://beetlerider.com/#localbusiness' },
+    areaServed: { '@type': 'City', name: 'Kamakura' },
+    url: ebikePageUrl,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(f => ({
+      '@type': 'Question',
+      name: f.title,
+      acceptedAnswer: { '@type': 'Answer', text: f.content.replace(/<[^>]+>/g, '') },
+    })),
+  },
+];
 ---
 
-<BaseLayout title={t(lang, 'meta.ebike.title') as string} description={t(lang, 'meta.ebike.desc') as string} activePage="ebike" headerLogo="ebike">
+<BaseLayout title={t(lang, 'meta.ebike.title') as string} description={t(lang, 'meta.ebike.desc') as string} activePage="ebike" headerLogo="ebike" schema={ebikeSchema}>
 
   <!-- Section 1: Hero (Video) -->
   <section class="relative h-screen max-lg:h-[100svh] min-h-[600px] max-lg:min-h-0 flex items-end justify-start overflow-hidden">
