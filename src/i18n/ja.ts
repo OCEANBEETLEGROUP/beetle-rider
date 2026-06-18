@@ -1,13 +1,13 @@
 export default {
   // === Meta ===
-  'meta.home.title': 'BEETLE RIDER — Not Just a Rental',
-  'meta.home.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
-  'meta.chopper.title': 'CHOPPER RENTAL — BEETLE RIDER',
-  'meta.chopper.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper rental in Kamakura.',
-  'meta.ebike.title': 'E-BIKE RENTAL — BEETLE RIDER',
-  'meta.ebike.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. E-Bike rental in Kamakura.',
-  'meta.about.title': 'ABOUT — BEETLE RIDER',
-  'meta.about.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
+  'meta.home.title': 'BEETLE RIDER｜鎌倉 チョッパー・eバイクレンタル',
+  'meta.home.desc': '鎌倉でヴィンテージ・チョッパー（ハーレー）とeバイク（電動自転車）をレンタル。免許不要のeバイクは当日予約OK。鎌倉駅徒歩圏から湘南の海へ。BEETLE RIDER by OCEANBEETLE。',
+  'meta.chopper.title': '鎌倉 チョッパー・ハーレーレンタル｜BEETLE RIDER',
+  'meta.chopper.desc': '鎌倉でヴィンテージ・チョッパー（ハーレー）をレンタル。134号線を独占するライド体験。要二輪免許、鎌倉駅徒歩圏。BEETLE RIDER。',
+  'meta.ebike.title': '鎌倉 eバイク・電動自転車レンタル｜BEETLE RIDER',
+  'meta.ebike.desc': '鎌倉・江ノ島をeバイク（電動自転車）で巡る。免許不要・当日予約OK、ヘルメット＆保険込み。坂道もラクラク、鎌倉駅徒歩圏のBEETLE RIDER。',
+  'meta.about.title': 'BEETLE RIDERについて｜鎌倉のバイク・eバイクレンタル',
+  'meta.about.desc': 'BEETLE RIDERは鎌倉のチョッパー・eバイクレンタル。OCEANBEETLEが手がける「ただのレンタルではない」ライド体験。',
 
   // === Header ===
   'nav.ebike': 'E-Bike',

@@ -1,13 +1,13 @@
 export default {
   // === Meta ===
-  'meta.home.title': 'BEETLE RIDER — Not Just a Rental',
-  'meta.home.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
-  'meta.chopper.title': 'CHOPPER RENTAL — BEETLE RIDER',
-  'meta.chopper.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper rental in Kamakura.',
-  'meta.ebike.title': 'E-BIKE RENTAL — BEETLE RIDER',
-  'meta.ebike.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. E-Bike rental in Kamakura.',
-  'meta.about.title': 'ABOUT — BEETLE RIDER',
-  'meta.about.desc': 'BEETLE RIDER — A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
+  'meta.home.title': 'BEETLE RIDER｜Chopper & E-Bike Rental in Kamakura, Japan',
+  'meta.home.desc': 'Rent a vintage chopper (Harley) or e-bike in Kamakura, Japan. No license needed for e-bikes — book today, ride today. Walking distance from Kamakura Station. BEETLE RIDER by OCEANBEETLE.',
+  'meta.chopper.title': 'Chopper Rental in Kamakura, Japan｜BEETLE RIDER',
+  'meta.chopper.desc': 'Rent a vintage chopper (Harley-based) in Kamakura, Japan. Ride the legendary Route 134 coastline. Motorcycle license + IDP required. BEETLE RIDER.',
+  'meta.ebike.title': 'Kamakura E-Bike Rental｜BEETLE RIDER',
+  'meta.ebike.desc': 'Explore Kamakura & Enoshima by e-bike. No license, helmet & insurance included, same-day booking. Climbs every Kamakura hill. BEETLE RIDER by OCEANBEETLE.',
+  'meta.about.title': 'About｜BEETLE RIDER — Kamakura Bike Rental',
+  'meta.about.desc': 'BEETLE RIDER — chopper & e-bike rental in Kamakura, Japan. A rental experience by OCEANBEETLE. Not just a rental.',
 
   // === Header ===
   'nav.ebike': 'E-Bike',
