@@ -237,7 +237,7 @@ export default {
   'footer.privacy': 'Privacy Policy',
   'footer.tokushoho': 'Legal Notice (Tokushoho)',
   'footer.important': 'Important Information',
-  'footer.copyright': '© 2026 OCEANBEETLE Ltd. All rights reserved.',
+  'footer.copyright': '© 2026 OCEANBEETLE Inc. All rights reserved.',
 
   // === Common ===
   'common.bookNow': 'BOOK NOW',
