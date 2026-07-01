@@ -151,10 +151,14 @@ const websiteLd = {
 
   <!-- Google Analytics (GA4) + Google Tag + Google Ads -->
   <!-- AW-IDs are publicly visible in HTML anyway; no secrecy benefit from env vars -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7BY8Q8C33D"></script>
-  <script>
+  <!-- ⚠️ is:inline 必須: Astroは通常の<script>をモジュールとしてバンドル・スコープ化するため、
+       is:inlineが無いと function gtag(){} がグローバル(window.gtag)にならず、
+       別スクリプトからの gtag('event','conversion',...) が発火しない（Site_BookNow_Click 30日発火0の真因） -->
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7BY8Q8C33D"></script>
+  <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
     gtag('js', new Date());
     gtag('config', 'G-7BY8Q8C33D');
     gtag('config', 'GT-P3JXZPBB');
