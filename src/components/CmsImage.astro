@@ -1,0 +1,39 @@
+---
+/**
+ * CmsImage — microCMS画像を「ビルド時に取り込み・最適化」してCloudflareから配信するラッパー。
+ * 目的: 訪問者ブラウザがmicroCMS CDN(images.microcms-assets.io)から直接画像を取らないようにし、
+ *       microCMSのデータ転送量超過を根治する（2026-06-29）。
+ *
+ * 使い方: <CmsImage src={img.url} width={800} alt={img.alt} class="..." />
+ *  - src: microCMS画像URL（?w=&q= 等のクエリは内部で除去。最適化はAstroが行う）
+ *  - width: 出力したい表示幅(px)。高さはinferSize(ビルド時に元画像を取得)で自動算出。
+ *  - 編集ワークフローは不変: microCMSで公開→Webhook→再ビルド時にAstroが最新画像を取り込む。
+ *
+ * 注意(deploy当日): astro:assets のremote画像はビルド時に各URLをfetchする。
+ *  microCMS APIが生きている状態で `npm run build` が通ることを必ず確認すること。
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  width: number;
+  alt?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  quality?: number;
+}
+
+const { src, width, alt = '', class: className, loading = 'lazy', quality = 80 } = Astro.props;
+// microCMSの変換クエリ(?w=&q=)は除去。サイズ/圧縮はAstro側で行う。
+const cleanSrc = src.split('?')[0];
+---
+
+<Image
+  src={cleanSrc}
+  inferSize
+  width={width}
+  alt={alt}
+  class={className}
+  loading={loading}
+  quality={quality}
+/>

@@ -206,5 +206,26 @@ const websiteLd = {
     );
     document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => observer.observe(el));
   </script>
+
+  <!-- Google Ads Conversion: Site_BookNow_Click を全ページ・全予約ボタン(.bokunButton=E-BIKE/Chopper共通)で発火 -->
+  <!-- P-MAXの最適化信号の本体。イベント委譲で遅延描画ボタンも捕捉。重複発火防止のためここに一元化 -->
+  <script>
+    (function () {
+      var SEND_TO = 'AW-17694685527/CUJHCP_b_aMcENfyvfVB';
+      document.addEventListener('click', function (e) {
+        var btn = (e.target as HTMLElement)?.closest?.('.bokunButton');
+        if (!btn) return;
+        if (!(window as any).gtag) { console.warn('[GAds CV] gtag not loaded'); return; }
+        var value = parseFloat((btn as HTMLElement).dataset.cvValue || '15000');
+        (window as any).gtag('event', 'conversion', {
+          send_to: SEND_TO,
+          value: value,
+          currency: 'JPY',
+          transaction_id: '',
+        });
+        console.log('[GAds CV] Site_BookNow_Click sent:', (btn as HTMLElement).dataset.cvPlan || 'chopper/site', 'value=¥' + value);
+      }, { passive: true, capture: true });
+    })();
+  </script>
 </body>
 </html>

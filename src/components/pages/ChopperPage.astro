@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CmsImage from '../../components/CmsImage.astro';
 import { getVehicles, getDestinations } from '../../lib/microcms';
 import { getLangFromUrl, localePath } from '../../i18n/config';
 import { t } from '../../i18n/index';
@@ -123,7 +124,7 @@ const chopperSchema = [
           v.status === 'hidden' ? (
             <div class="flex-none w-[400px] max-lg:w-[340px] max-md:w-[320px] aspect-[3/4] rounded-2xl overflow-hidden relative snap-center cursor-not-allowed select-none">
               <div class="absolute inset-0 bg-[#111]">
-                <img src={v.img} alt={v.name} loading="lazy" class="w-full h-full object-cover blur-[6px] brightness-50" />
+                <CmsImage src={v.img} width={800} alt={v.name} loading="lazy" class="w-full h-full object-cover blur-[6px] brightness-50" />
               </div>
               <div class="absolute inset-0 bg-black/40 z-[1]"></div>
               <div class="absolute inset-0 flex flex-col items-center justify-center z-[2]">
@@ -134,7 +135,7 @@ const chopperSchema = [
           ) : (
             <a href={localePath('/chopper/' + v.slug, lang)} class="group flex-none w-[400px] max-lg:w-[340px] max-md:w-[320px] aspect-[3/4] rounded-2xl overflow-hidden relative snap-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-2 cursor-pointer">
               <div class="absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06]">
-                <img src={v.img} alt={v.name} loading="lazy" class={`w-full h-full object-cover${v.status === 'maintenance' ? ' brightness-75 saturate-50' : ''}`} />
+                <CmsImage src={v.img} width={800} alt={v.name} loading="lazy" class={`w-full h-full object-cover${v.status === 'maintenance' ? ' brightness-75 saturate-50' : ''}`} />
               </div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-black/20 z-[1]"></div>
               {v.status === 'maintenance' && (
@@ -228,7 +229,7 @@ const chopperSchema = [
         {destinations.map((d, i) => (
           <div class={`dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-lg:aspect-[4/3] cursor-pointer reveal reveal-delay-${i + 1}`} data-dest-card>
             <div class="absolute inset-0 bg-[#111] transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover-parent-scale">
-              <img src={d.img} alt={d.name} loading="lazy" class="w-full h-full object-cover" />
+              <CmsImage src={d.img} width={800} alt={d.name} loading="lazy" class="w-full h-full object-cover" />
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-deep-red/85 via-deep-red/10 to-transparent z-[1]"></div>
             <!-- Time Badge -->

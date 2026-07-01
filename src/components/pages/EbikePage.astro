@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookNowButton from '../../components/BookNowButton.astro';
+import CmsImage from '../../components/CmsImage.astro';
 import { EBIKE_WIDGETS } from '../../lib/bokun';
 import { getDestinations } from '../../lib/microcms';
 import { getLangFromUrl } from '../../i18n/config';
@@ -244,7 +245,7 @@ const ebikeSchema = [
         {destinations.map((d, i) => (
           <div class={`dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-video cursor-pointer reveal reveal-delay-${i + 1}`}>
             <div class="dest-card__bg absolute inset-0 bg-[#111] transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-              <img src={d.img} alt={d.name} class="w-full h-full object-cover" loading="lazy" />
+              <CmsImage src={d.img} width={800} alt={d.name} class="w-full h-full object-cover" loading="lazy" />
             </div>
             <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to top, rgba(45,10,10,0.85) 0%, rgba(45,10,10,0.1) 50%, rgba(0,0,0,0) 100%);"></div>
             <!-- Time Badge -->
@@ -422,28 +423,7 @@ const ebikeSchema = [
     })();
   </script>
 
-  <!-- Google Ads Conversion: fire on E-BIKE BOOK NOW click (Phase 1: site click CV) -->
-  <!-- Site_BookNow_Click action — defined in api_config.json (google.gads_conversions.site_booknow_click) -->
-  <script>
-    (function() {
-      const sendTo = 'AW-17694685527/CUJHCP_b_aMcENfyvfVB';
-      document.querySelectorAll('.ebike-cv-btn').forEach((btn) => {
-        btn.addEventListener('click', function() {
-          if (!window.gtag) {
-            console.warn('[GAds CV] gtag not loaded');
-            return;
-          }
-          const value = parseFloat(this.dataset.cvValue || '3000');
-          window.gtag('event', 'conversion', {
-            send_to: sendTo,
-            value: value,
-            currency: 'JPY',
-            transaction_id: '',
-          });
-          console.log('[GAds CV] sent:', sendTo, 'plan=' + this.dataset.cvPlan, 'value=¥' + value);
-        }, { passive: true });
-      });
-    })();
-  </script>
+  <!-- Site_BookNow_Click は BaseLayout の委譲ハンドラ(.bokunButton)で一元発火するため個別実装は撤去。 -->
+  <!-- E-BIKEボタンは .ebike-cv-btn(=.bokunButton) かつ data-cv-value/data-cv-plan 保持なのでプラン別CV値もそのまま送られる。 -->
 
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookNowButton from '../../components/BookNowButton.astro';
+import CmsImage from '../../components/CmsImage.astro';
 import { getLangFromUrl, localePath } from '../../i18n/config';
 import { useTranslations } from '../../i18n/index';
 import type { Vehicle } from '../../lib/microcms';
@@ -105,8 +106,9 @@ const faqItems = faqKeys.map(key => ({
         <div class="flex h-full transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" id="sliderTrack" style={`width: ${allImages.length * 100}%`}>
           {allImages.map((img, i) => (
             <div class="h-full relative" style={`width: ${100 / allImages.length}%`}>
-              <img
-                src={`${img.url}?w=1600&q=80`}
+              <CmsImage
+                src={img.url}
+                width={1600}
                 alt={img.alt}
                 class="w-full h-full object-cover"
                 loading={i === 0 ? "eager" : "lazy"}
@@ -156,7 +158,7 @@ const faqItems = faqKeys.map(key => ({
             ]}
             data-thumb-index={i}
           >
-            <img src={`${img.url}?w=200&q=60`} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
+            <CmsImage src={img.url} width={200} quality={60} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
           </button>
         ))}
       </div>
