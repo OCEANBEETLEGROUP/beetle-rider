@@ -1,7 +1,8 @@
 ---
 /**
  * Reviews — Google実レビューセクション（データ: src/data/reviews.ts）
- * product でチョッパー/E-BIKEのレビューを出し分け（'all'=混載・ホーム用）。
+ * product: 'ebike'|'chopper'=専用 / 'all'=ホーム用ミックス（E-bike2件+チョッパー1件）
+ * theme: 'dark'=deep-red系ページ / 'pink'=E-BIKEページ（茶帯禁止→bg-ebike）
  * 該当productのレビューが0件の間は、総合評価ヘッダー＋Google誘導CTAのみ表示。
  */
 import type { Lang } from '../i18n/config';
@@ -9,29 +10,35 @@ import { REVIEWS, GOOGLE_RATING, GOOGLE_REVIEW_COUNT, GOOGLE_MAPS_URL, REVIEWS_A
 
 interface Props {
   lang: Lang;
-  accent?: 'brand' | 'ebike' | 'white';
   product?: 'ebike' | 'chopper' | 'all';
+  theme?: 'dark' | 'pink';
 }
-const { lang, accent = 'brand', product = 'all' } = Astro.props;
+const { lang, product = 'all', theme = 'dark' } = Astro.props;
 const en = lang === 'en';
 
-const shown = product === 'all' ? REVIEWS : REVIEWS.filter((r) => r.product === product);
+const ebike = REVIEWS.filter((r) => r.product === 'ebike');
+const chopper = REVIEWS.filter((r) => r.product === 'chopper');
+// ホーム用ミックス: E-bike2 + チョッパー1（TAKE指定比率）。不足分は他方で補完し最大3件。
+const mixed = [...ebike.slice(0, 2), ...chopper.slice(0, 1)];
+if (mixed.length < 3) mixed.push(...[...ebike.slice(2), ...chopper.slice(1)].slice(0, 3 - mixed.length));
 
-const starColor = accent === 'ebike' ? 'text-ebike' : accent === 'white' ? 'text-white' : 'text-brand';
-const hoverBtn =
-  accent === 'ebike' ? 'hover:bg-ebike hover:border-ebike'
-  : accent === 'white' ? 'hover:bg-white/25 hover:border-white/40'
-  : 'hover:bg-brand hover:border-brand';
+const shown = product === 'all' ? mixed : product === 'ebike' ? ebike.slice(0, 3) : chopper.slice(0, 3);
+
+const pink = theme === 'pink';
+const sectionBg = pink ? 'bg-ebike' : '';
+const starColor = pink ? 'text-white' : 'text-brand';
+const hoverBtn = pink ? 'hover:bg-white/25 hover:border-white/40' : 'hover:bg-brand hover:border-brand';
+const cardBorder = pink ? 'border-white/[0.14] bg-white/[0.06]' : 'border-white/[0.08] bg-white/[0.03]';
 ---
 
-<section class="py-24 px-6 md:px-10" id="reviews">
+<section class={`py-24 px-6 md:px-10 ${sectionBg}`} id="reviews">
   <div class="max-w-[1100px] mx-auto">
     <div class="text-center mb-12 reveal">
-      <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">RIDER REVIEWS</p>
+      <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/40 mb-4">RIDER REVIEWS</p>
       <h2 class="font-[family-name:var(--font-heading)] text-[clamp(26px,3.5vw,44px)] text-white tracking-[-0.01em]">
         {GOOGLE_RATING.toFixed(1)} <span class={starColor}>★</span> on Google.
       </h2>
-      <p class="text-[13px] text-white/40 mt-2 font-medium">
+      <p class="text-[13px] text-white/50 mt-2 font-medium">
         {en ? `${GOOGLE_REVIEW_COUNT} reviews from riders around the world` : `世界中のライダーから ${GOOGLE_REVIEW_COUNT} 件のレビュー`}
       </p>
     </div>
@@ -39,16 +46,16 @@ const hoverBtn =
     {shown.length > 0 && (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal reveal-delay-1">
         {shown.map((r) => (
-          <figure class="flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
+          <figure class={`flex flex-col rounded-2xl border ${cardBorder} p-7`}>
             <div class={`${starColor} text-[13px] tracking-[0.2em] mb-4`} aria-label={`${r.rating} stars`}>
               {'★'.repeat(r.rating)}
             </div>
-            <blockquote class="text-[13.5px] leading-[1.85] text-white/70 font-medium flex-1">
+            <blockquote class="text-[13.5px] leading-[1.85] text-white/75 font-medium flex-1">
               “{r.text}”
             </blockquote>
             <figcaption class="mt-5 flex items-center justify-between">
-              <span class="text-[12px] font-bold text-white/80 tracking-wide">{r.author}</span>
-              <span class="text-[9.5px] font-semibold tracking-[0.15em] uppercase text-white/30">{r.source} Review</span>
+              <span class="text-[12px] font-bold text-white/85 tracking-wide">{r.author}</span>
+              <span class="text-[9.5px] font-semibold tracking-[0.15em] uppercase text-white/35">{r.source} Review</span>
             </figcaption>
           </figure>
         ))}
@@ -56,7 +63,7 @@ const hoverBtn =
     )}
 
     <div class="text-center mt-10 reveal reveal-delay-2">
-      <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener" class={`inline-flex items-center gap-2 px-7 py-3 rounded-full border border-white/15 bg-white/[0.05] text-[11px] font-bold tracking-[0.18em] uppercase text-white/80 ${hoverBtn} hover:text-white transition-all`}>
+      <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener" class={`inline-flex items-center gap-2 px-7 py-3 rounded-full border border-white/20 bg-white/[0.05] text-[11px] font-bold tracking-[0.18em] uppercase text-white/85 ${hoverBtn} hover:text-white transition-all`}>
         {en ? `Read all ${GOOGLE_REVIEW_COUNT} reviews` : `レビュー${GOOGLE_REVIEW_COUNT}件をすべて見る`}
         <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>

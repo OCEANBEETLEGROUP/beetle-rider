@@ -96,7 +96,11 @@ export default {
 
   // === E-BIKE Accordion ===
   'ebike.faq.license.title': 'License & Age Requirements',
-  'ebike.faq.license.content': 'No license required for riders aged 16 and over. Our e-bikes are classified as electric-assist bicycles with a maximum speed of 20 km/h.',
+  'ebike.faq.license.content': '<strong class="text-white/80">No driver\'s license required.</strong> Our e-bikes are classified as specified small motorized bicycles, so anyone can ride without a license.<br><br>However, <strong class="text-white/80">riders under 16 cannot ride — this is Japanese law</strong> (we may ask for ID). Top speed is limited to 20 km/h.',
+  'ebike.faq.helmet.title': 'Do I Need a Helmet?',
+  'ebike.faq.helmet.content': '<strong class="text-white/80">Helmets are optional by law</strong> for this vehicle class. We lend them for free at the shop and recommend wearing one for your safety.',
+  'ebike.faq.tandem.title': 'Can Two People Share One E-Bike?',
+  'ebike.faq.tandem.content': '<strong class="text-white/80">No — one rider per e-bike.</strong> Tandem riding is prohibited by law, and children cannot ride as passengers. Please book one e-bike per person.',
   'ebike.faq.alcohol.title': 'Absolutely No Drinking & Riding',
   'ebike.faq.alcohol.content': 'Riding under the influence is illegal in Japan. If alcohol is detected, your ride will be cancelled immediately with no refund.',
   'ebike.faq.weather.title': 'Weather Cancellations',
@@ -121,8 +125,8 @@ export default {
   'chopper.fleet.label': 'THE FLEET',
   'chopper.fleet.heading': 'Choose Your Machine.',
 
-  'chopper.route.label': 'RIDING RADIUS',
-  'chopper.route.heading': 'How Far Can You Go?',
+  'chopper.route.label': 'THE ROAD',
+  'chopper.route.heading': 'Route 134. Sacred Ground.',
 
   'chopper.dest.label': 'Where the Road Takes You',
   'chopper.dest.heading': 'ROUTE 134.',

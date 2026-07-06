@@ -18,12 +18,11 @@ const logoSrc = {
   corporate: '/assets/logo/OB_CORPORATE.svg',
 }[logo];
 
+// ヘッダーは予約導線の3項目に絞る（Access/FAQ/Journal等はフッター＋文脈リンクから: TAKE方針 2026-07-06）
 const navItems = [
   { href: localePath('/ebike', lang), label: t('nav.ebike'), key: 'ebike' as const },
   { href: localePath('/chopper', lang), label: t('nav.chopper'), key: 'chopper' as const },
   { href: localePath('/about', lang), label: t('nav.about'), key: 'about' as const },
-  { href: localePath('/access', lang), label: t('nav.access'), key: 'access' as const },
-  { href: localePath('/faq', lang), label: t('nav.faq'), key: 'faq' as const },
 ];
 
 const altUrl = alternateUrl(Astro.url);

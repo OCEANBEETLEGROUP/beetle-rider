@@ -96,7 +96,11 @@ export default {
 
   // === E-BIKE Accordion ===
   'ebike.faq.license.title': '免許・年齢制限について',
-  'ebike.faq.license.content': '16歳以上であれば免許不要でご利用いただけます。電動アシスト自転車（特定小型原動機付自転車）に該当するため、運転免許は必要ありません。最高速度は20km/hに制限されています。',
+  'ebike.faq.license.content': '<strong class="text-white/80">運転免許は不要です。</strong>特定小型原動機付自転車に該当するため、どなたでも免許なしで乗れます。<br><br>ただし<strong class="text-white/80">16歳未満の方は法律により運転できません</strong>（年齢確認をさせていただく場合があります）。最高速度は20km/hに制限されています。',
+  'ebike.faq.helmet.title': 'ヘルメットは必要？',
+  'ebike.faq.helmet.content': '<strong class="text-white/80">法律上、着用は任意です</strong>（特定小型原動機付自転車のため義務ではありません）。店舗で無料でお貸ししていますので、安全のため着用をおすすめしています。',
+  'ebike.faq.tandem.title': '二人乗りはできますか？',
+  'ebike.faq.tandem.content': '<strong class="text-white/80">できません。1台につき1名です。</strong>二人乗りは法律で禁止されています。お子様を乗せることもできません。人数分の台数をご予約ください。',
   'ebike.faq.alcohol.title': '飲酒運転は厳禁です',
   'ebike.faq.alcohol.content': '飲酒後の乗車は法律で禁止されています。飲酒が確認された場合、理由を問わず乗車をお断りします（返金不可）。',
   'ebike.faq.weather.title': '雨天時の対応について',
@@ -121,8 +125,8 @@ export default {
   'chopper.fleet.label': 'THE FLEET',
   'chopper.fleet.heading': 'Choose Your Machine.',
 
-  'chopper.route.label': 'RIDING RADIUS',
-  'chopper.route.heading': '鎌倉から、どこまで行ける？',
+  'chopper.route.label': 'THE ROAD',
+  'chopper.route.heading': '134号線という、聖域。',
 
   'chopper.dest.label': 'Where the Road Takes You',
   'chopper.dest.heading': 'ROUTE 134.',

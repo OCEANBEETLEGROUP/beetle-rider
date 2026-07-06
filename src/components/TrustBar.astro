@@ -1,6 +1,7 @@
 ---
 /**
  * TrustBar — BR固有の信頼証明チップ帯（OB本体の実績は使わない: TAKE裁定 2026-07-06）
+ * theme: 'dark'=deep-red系ページ用 / 'pink'=E-BIKEページ用（茶色禁止・bg-ebikeで帯を出す）
  */
 import type { Lang } from '../i18n/config';
 import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT, REVIEWS_ARE_REAL } from '../data/reviews';
@@ -8,10 +9,10 @@ import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT, REVIEWS_ARE_REAL } from '../data/re
 interface Props {
   lang: Lang;
   variant?: 'chopper' | 'ebike' | 'home';
-  accent?: string; // tailwind text color class for stars
+  theme?: 'dark' | 'pink';
 }
 
-const { lang, variant = 'home', accent = 'text-brand' } = Astro.props;
+const { lang, variant = 'home', theme = 'dark' } = Astro.props;
 const en = lang === 'en';
 
 const google = REVIEWS_ARE_REAL
@@ -25,19 +26,23 @@ if (variant === 'chopper') {
   chips.push(en ? 'LIABILITY INSURANCE INCLUDED' : '対人・対物保険込み');
 } else if (variant === 'ebike') {
   chips.push(en ? 'NO LICENSE REQUIRED' : '免許不要');
-  chips.push(en ? 'HELMET & INSURANCE INCLUDED' : 'ヘルメット・保険込み');
+  chips.push(en ? 'INSURANCE INCLUDED' : '保険込み');
 } else {
   chips.push(en ? 'ONE-OF-ONE CUSTOM MACHINES' : '世界に1台のカスタム車両');
   chips.push(en ? 'NO LICENSE — E-BIKE' : 'E-BIKEは免許不要');
 }
-chips.push(en ? '5 MIN FROM KAMAKURA STA.' : '鎌倉駅から徒歩5分');
+chips.push(en ? '4 MIN FROM KAMAKURA STA.' : '鎌倉駅から徒歩4分');
+
+const wrap = theme === 'pink' ? 'bg-ebike border-y border-black/[0.08]' : 'border-y border-white/[0.07] bg-white/[0.015]';
+const chipText = theme === 'pink' ? 'text-white/75' : 'text-white/45';
+const starText = theme === 'pink' ? 'text-white' : 'text-brand';
 ---
 
-<div class="border-y border-white/[0.07] bg-white/[0.015]">
+<div class={wrap}>
   <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
     {chips.map((c, i) => (
-      <span class="flex items-center gap-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase text-white/45 whitespace-nowrap">
-        {i === 0 && google ? <span class={accent}>{c}</span> : c}
+      <span class={`flex items-center gap-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase ${chipText} whitespace-nowrap`}>
+        {i === 0 && google ? <span class={starText}>{c}</span> : c}
       </span>
     ))}
   </div>

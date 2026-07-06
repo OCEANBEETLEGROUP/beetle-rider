@@ -6,7 +6,7 @@ import TrustBar from '../../components/TrustBar.astro';
 import Reviews from '../../components/Reviews.astro';
 import { EBIKE_WIDGETS } from '../../lib/bokun';
 import { getDestinations } from '../../lib/microcms';
-import { getLangFromUrl } from '../../i18n/config';
+import { getLangFromUrl, localePath } from '../../i18n/config';
 import { t } from '../../i18n/index';
 
 const lang = getLangFromUrl(Astro.url);
@@ -76,7 +76,7 @@ const destinations = destinationsRaw.length > 0
       detail: lang === 'en' ? d.detailEn : d.detailJp,
     }));
 
-const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'insurance', 'luggage', 'extension', 'cancel'] as const;
+const faqKeys = ['license', 'helmet', 'tandem', 'alcohol', 'weather', 'checkin', 'insurance', 'luggage', 'extension', 'cancel'] as const;
 const faqItems = faqKeys.map(key => ({
   title: t(lang, `ebike.faq.${key}.title` as any) as string,
   content: t(lang, `ebike.faq.${key}.content` as any) as string,
@@ -136,7 +136,7 @@ const ebikeSchema = [
     </div>
   </section>
 
-  <TrustBar lang={lang} variant="ebike" accent="text-white" />
+  <TrustBar lang={lang} variant="ebike" theme="pink" />
 
   <!-- Section 2: Specs -->
   <section id="specs" class="py-32 px-10 bg-ebike max-md:py-24 max-md:px-6">
@@ -217,7 +217,7 @@ const ebikeSchema = [
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.quick.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.quick.desc')}</p>
           <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.quickRide}?partialView=1`} data-testid="widget-book-button" data-cv-plan="quick" data-cv-value="3500">BOOK NOW</button>
-          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-[#2D0A0A]/55">{t(lang, 'common.freeCancelEbike')}</p>
+          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-ebike/80">{t(lang, 'common.freeCancelEbike')}</p>
         </div>
         <!-- CRUISE (POPULAR) -->
         <div class="relative bg-light border-2 border-[#2D0A0A] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-2">
@@ -227,7 +227,7 @@ const ebikeSchema = [
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.cruise.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.cruise.desc')}</p>
           <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.cruise}?partialView=1`} data-testid="widget-book-button" data-cv-plan="cruise" data-cv-value="5000">BOOK NOW</button>
-          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-[#2D0A0A]/55">{t(lang, 'common.freeCancelEbike')}</p>
+          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-ebike/80">{t(lang, 'common.freeCancelEbike')}</p>
         </div>
         <!-- ALL DAY -->
         <div class="relative bg-light border-2 border-black/[0.08] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-3">
@@ -236,7 +236,7 @@ const ebikeSchema = [
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.allday.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.allday.desc')}</p>
           <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.allDay}?partialView=1`} data-testid="widget-book-button" data-cv-plan="allday" data-cv-value="7500">BOOK NOW</button>
-          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-[#2D0A0A]/55">{t(lang, 'common.freeCancelEbike')}</p>
+          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-ebike/80">{t(lang, 'common.freeCancelEbike')}</p>
         </div>
       </div>
     </div>
@@ -282,7 +282,7 @@ const ebikeSchema = [
     </div>
   </section>
 
-  <Reviews lang={lang} accent="white" product="ebike" />
+  <Reviews lang={lang} product="ebike" theme="pink" />
 
   <!-- Section 5: Rules (Accordion) -->
   <section id="rules" class="py-32 px-10 bg-ebike max-md:py-24 max-md:px-6">
@@ -291,6 +291,9 @@ const ebikeSchema = [
       <div class="text-center mb-16 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/40 mb-4">{t(lang, 'ebike.faq.label')}</p>
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t(lang, 'ebike.faq.heading')}</h2>
+        <a href={localePath('/ebike-rules', lang)} class="inline-flex items-center gap-1.5 mt-4 text-[11px] font-bold tracking-[0.15em] uppercase text-white/60 hover:text-white transition-colors underline underline-offset-4">
+          {lang === 'en' ? 'Full riding rules — 3 min read' : '交通ルールの詳細（3分で読めます）'}
+        </a>
       </div>
       <!-- Accordion -->
       <div class="flex flex-col reveal reveal-delay-1" id="accordion">

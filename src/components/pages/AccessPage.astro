@@ -1,90 +1,111 @@
 ---
+/**
+ * Access v2 — サービス特化型（TAKE指示 2026-07-06）
+ * 参考にした型: 観光施設・体験系サイトの定石
+ *  - japan-guide / 国内観光施設: 「駅から◯分」を最上部でバッジ化、交通手段別（電車/徒歩/車）に分割
+ *  - Klook/GetYourGuide: 地図を情報より先に、集合場所の「目印写真」を1枚だけ明示
+ *  - Airbnb体験: 最後は必ず予約CTAで閉じる
+ * → カード3枚の羅列を廃止し、ヒーロー内バッジ＋地図直下の1行インフォバーに統合。
+ *   道順は「駅→通り→目印」の3語で終わる形に圧縮。最後はCHOPPER/E-BIKEの二択CTA。
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getSiteConfig } from '../../lib/microcms';
 import { getLangFromUrl, localePath } from '../../i18n/config';
+import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT } from '../../data/reviews';
 
 const lang = getLangFromUrl(Astro.url);
 const en = lang === 'en';
 const siteConfig = await getSiteConfig();
 const mapUrl = siteConfig?.mapUrl || 'https://maps.app.goo.gl/BiByu9Q6iXXFKN9E9';
 const phone = siteConfig?.phone || '0467-37-9926';
+const hours = siteConfig?.businessHours || '10:00 - 18:00';
 
 const L = en ? {
-  metaTitle: 'Access & Shop Info｜BEETLE RIDER Kamakura',
-  metaDesc: 'How to find BEETLE RIDER in Kamakura: 4 min walk from Kamakura Station, along Komachi Street. Hours, phone, luggage storage and directions from Tokyo.',
+  metaTitle: 'Access — 4 Min from Kamakura Station｜BEETLE RIDER',
+  metaDesc: 'BEETLE RIDER is a 4-minute walk from Kamakura Station (60 min direct from Tokyo). Address, dark-mode map, walking directions, luggage storage and parking.',
   label: 'ACCESS',
   heading: 'Find the Garage.',
-  sub: '4 minutes from Kamakura Station.',
-  infoHours: 'HOURS', infoTel: 'PHONE', infoAddr: 'ADDRESS',
+  badges: ['4 MIN FROM KAMAKURA STA.', `★ ${GOOGLE_RATING.toFixed(1)} GOOGLE (${GOOGLE_REVIEW_COUNT})`, hours],
   addr: '1-15-2 Komachi, Kamakura, Kanagawa 248-0006',
   mapBtn: 'OPEN IN GOOGLE MAPS',
-  fromSta: 'From Kamakura Station',
-  steps: [
-    ['01', 'Exit EAST', 'Take the East Exit of Kamakura Station (JR Yokosuka Line / Enoden).'],
-    ['02', 'Komachi Street', 'Walk into Komachi-dori, the lively shopping street just left of the square.'],
-    ['03', '4 min walk', 'We are along the Komachi area at 1-15-2. Look for the bikes out front.'],
+  modes: [
+    { icon: 'train', title: 'FROM TOKYO — 60 MIN DIRECT', body: 'JR Yokosuka Line from Tokyo / Shinagawa straight to Kamakura. From Shinjuku or Shibuya, take the Shonan-Shinjuku Line. No transfers.' },
+    { icon: 'walk', title: 'FROM KAMAKURA STATION — 4 MIN', body: 'East Exit → toward Komachi-dori → 4 minutes. You’ll see the bikes lined up out front — that’s us.' },
+    { icon: 'car', title: 'BY CAR', body: 'Yokohama-Yokosuka Road, Asahina IC, then 15 minutes. No private lot — coin parking within a 2-minute walk.' },
   ],
-  fromTokyo: 'From Tokyo',
-  fromTokyoBody: 'JR Yokosuka Line direct from Tokyo / Shinagawa Station to Kamakura — about 60 minutes. From Shinjuku, take the Shonan-Shinjuku Line. By car: Yokohama-Yokosuka Road, Asahina IC, then 15 minutes.',
-  luggage: 'Luggage',
-  luggageBody: 'We store your luggage free while you ride. Traveling with big bags before check-in? Our shop is also a Bounce luggage-storage partner.',
-  parking: 'Parking',
-  parkingBody: 'No private car park — coin parking lots are available within a 2-minute walk.',
-  cta: 'BOOK YOUR RIDE',
+  landmarkCap: 'Look for this storefront — bikes out front.',
+  luggage: 'Luggage? We store it free while you ride. Big bags before check-in: we’re also a Bounce partner location.',
+  ctaLabel: 'YOU’RE 4 MINUTES AWAY.',
+  ctaHeading: 'Pick Your Ride.',
+  chopperCta: 'BOOK CHOPPER', chopperSub: 'License + IDP required',
+  ebikeCta: 'BOOK E-BIKE', ebikeSub: 'No license needed',
 } : {
-  metaTitle: 'アクセス・店舗案内｜BEETLE RIDER 鎌倉',
-  metaDesc: 'BEETLE RIDER 鎌倉店へのアクセス。鎌倉駅から徒歩約4分・小町通りエリア。営業時間・電話・荷物預かり・東京からの行き方。',
+  metaTitle: 'アクセス — 鎌倉駅から徒歩4分｜BEETLE RIDER',
+  metaDesc: 'BEETLE RIDERは鎌倉駅から徒歩4分（東京から直通60分）。住所・地図・駅からの道順・荷物預かり・駐車場情報。',
   label: 'ACCESS',
   heading: 'Find the Garage.',
-  sub: '鎌倉駅から徒歩4分。',
-  infoHours: '営業時間', infoTel: '電話', infoAddr: '住所',
+  badges: ['鎌倉駅から徒歩4分', `★ ${GOOGLE_RATING.toFixed(1)} GOOGLE (${GOOGLE_REVIEW_COUNT})`, hours],
   addr: '〒248-0006 神奈川県鎌倉市小町1-15-2',
   mapBtn: 'GoogleMapで開く',
-  fromSta: '鎌倉駅からの道順',
-  steps: [
-    ['01', '東口を出る', 'JR横須賀線・江ノ電「鎌倉駅」東口を出ます。'],
-    ['02', '小町通りへ', '駅前広場の左手、小町通り方面へ進みます。'],
-    ['03', '徒歩約4分', '小町1-15-2。店頭に並ぶバイクが目印です。'],
+  modes: [
+    { icon: 'train', title: '東京から — 直通60分', body: 'JR横須賀線で東京駅・品川駅から鎌倉駅まで直通。新宿・渋谷からは湘南新宿ラインで。乗り換えなしで着きます。' },
+    { icon: 'walk', title: '鎌倉駅から — 徒歩4分', body: '東口を出て小町通り方面へ、歩いて4分。店頭に並んだバイクが見えたら、そこがガレージです。' },
+    { icon: 'car', title: '車の場合', body: '横浜横須賀道路・朝比奈ICから約15分。専用駐車場はありません——徒歩2分圏内のコインパーキングへ。' },
   ],
-  fromTokyo: '東京から',
-  fromTokyoBody: 'JR横須賀線で東京駅・品川駅から直通約60分。新宿からは湘南新宿ラインで。車の場合は横浜横須賀道路・朝比奈ICから約15分。',
-  luggage: '荷物預かり',
-  luggageBody: 'ライド中のお荷物は無料でお預かりします。チェックイン前の大きな荷物は、Bounce提携店舗としてもご利用いただけます。',
-  parking: '駐車場',
-  parkingBody: '専用駐車場はありません。徒歩2分圏内のコインパーキングをご利用ください。',
-  cta: 'ライドを予約する',
+  landmarkCap: 'この店構えが目印。店頭にバイクが並んでいます。',
+  luggage: '荷物はライド中、無料でお預かりします。チェックイン前の大きな荷物はBounce提携店舗としても利用できます。',
+  ctaLabel: 'ここから4分。',
+  ctaHeading: 'どっちで走る？',
+  chopperCta: 'CHOPPERを予約', chopperSub: '要免許・IDP',
+  ebikeCta: 'E-BIKEを予約', ebikeSub: '免許不要',
+};
+
+const icons: Record<string, string> = {
+  train: 'M4 15.5A3.5 3.5 0 0 0 7.5 19L6 20.5v.5h12v-.5L16.5 19a3.5 3.5 0 0 0 3.5-3.5V5c0-3-8-3-8-3s-8 0-8 3v10.5zM8 6h8M4 11h16M7.5 15.5h.01M16.5 15.5h.01',
+  walk: 'M13 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM10 22l2-5 1.5 2V22M8 12l2-4 3 1 2.5 3M10 8l-2 9',
+  car: 'M5 17h14M6 12l1.5-4.5A2 2 0 0 1 9.4 6h5.2a2 2 0 0 1 1.9 1.5L18 12M5 12h14a1 1 0 0 1 1 1v4h-2a2 2 0 1 1-4 0H10a2 2 0 1 1-4 0H4v-4a1 1 0 0 1 1-1zM7 17h.01M17 17h.01',
 };
 ---
 
 <BaseLayout title={L.metaTitle} description={L.metaDesc} activePage="access" headerLogo="chopper">
-  <!-- Hero -->
-  <section class="relative h-[46vh] min-h-[340px] flex items-end overflow-hidden">
+  <!-- Hero: 事実バッジ統合型（カード3枚を廃止） -->
+  <section class="relative h-[44vh] min-h-[340px] flex items-end overflow-hidden">
     <div class="absolute inset-0 bg-[#111]">
-      <img src="/assets/chopper/promo/beetle_shop_brc_008.webp" alt="BEETLE RIDER Kamakura shop" class="w-full h-full object-cover" loading="eager" />
+      <img src="/assets/chopper/promo/beetle_shop_brc_008.webp" alt="BEETLE RIDER Kamakura garage" class="w-full h-full object-cover" loading="eager" />
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-[rgba(45,10,10,0.96)]"></div>
-    <div class="relative z-[2] px-6 md:px-10 pb-12 max-w-[1100px] mx-auto w-full">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-[rgba(45,10,10,0.97)]"></div>
+    <div class="relative z-[2] px-6 md:px-10 pb-10 max-w-[1000px] mx-auto w-full">
       <p class="text-[11px] font-bold tracking-[0.35em] uppercase text-brand mb-3">{L.label}</p>
-      <h1 class="font-[family-name:var(--font-heading)] text-[clamp(36px,6vw,72px)] text-white tracking-tight leading-none mb-2">{L.heading}</h1>
-      <p class="font-[family-name:var(--font-heading-jp)] text-[14px] text-white/50 font-medium">{L.sub}</p>
+      <h1 class="font-[family-name:var(--font-heading)] text-[clamp(34px,5.5vw,64px)] text-white tracking-tight leading-none mb-5">{L.heading}</h1>
+      <div class="flex flex-wrap gap-2">
+        {L.badges.map((b, i) => (
+          <span class:list={['px-4 py-2 rounded-full text-[10.5px] font-bold tracking-[0.14em] uppercase border', i === 0 ? 'bg-brand border-brand text-white' : 'bg-black/40 border-white/15 text-white/80 backdrop-blur-sm']}>{b}</span>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- Info -->
-  <section class="py-16 px-6 md:px-10 bg-deep-red">
-    <div class="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
-        <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/30 mb-2">{L.infoHours}</p>
-        <p class="font-[family-name:var(--font-heading)] text-xl text-white">{siteConfig?.businessHours || '10:00 - 18:00'}</p>
+  <!-- 地図 + 1行インフォバー -->
+  <section class="px-6 md:px-10 pt-6 bg-deep-red">
+    <div class="max-w-[1000px] mx-auto">
+      <div class="rounded-2xl overflow-hidden border border-white/[0.08]">
+        <iframe
+          src={`https://www.google.com/maps?q=BEETLE%20RIDER%20OCEANBEETLE%20KAMAKURA&output=embed&hl=${lang}`}
+          width="100%"
+          height="360"
+          style="border:0; filter: grayscale(1) invert(0.92) contrast(0.9);"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Map to BEETLE RIDER Kamakura"
+        ></iframe>
       </div>
-      <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
-        <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/30 mb-2">{L.infoTel}</p>
-        <a href={`tel:${phone.replace(/-/g, '')}`} class="font-[family-name:var(--font-heading)] text-xl text-white hover:text-brand transition-colors">{phone}</a>
-      </div>
-      <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
-        <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/30 mb-2">{L.infoAddr}</p>
-        <p class="text-[13.5px] text-white/75 font-medium leading-relaxed">{L.addr}</p>
-        <a href={mapUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full bg-brand text-white text-[10.5px] font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] transition-colors">
+      <div class="flex flex-wrap items-center justify-between gap-3 px-1 py-4">
+        <p class="text-[12.5px] text-white/60 font-medium">
+          {L.addr}
+          <span class="text-white/25 mx-2">|</span>
+          <a href={`tel:${phone.replace(/-/g, '')}`} class="hover:text-white transition-colors">{phone}</a>
+        </p>
+        <a href={mapUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand text-white text-[10.5px] font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] transition-colors">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           {L.mapBtn}
         </a>
@@ -92,64 +113,65 @@ const L = en ? {
     </div>
   </section>
 
-  <!-- Map embed（ダークテーマ調整済み） -->
-  <section class="px-6 md:px-10 pb-4 bg-deep-red">
-    <div class="max-w-[1100px] mx-auto rounded-2xl overflow-hidden border border-white/[0.08]">
-      <iframe
-        src={`https://www.google.com/maps?q=BEETLE%20RIDER%20OCEANBEETLE%20KAMAKURA&output=embed&hl=${lang}`}
-        width="100%"
-        height="380"
-        style="border:0; filter: grayscale(1) invert(0.92) contrast(0.9);"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Map to BEETLE RIDER Kamakura"
-      ></iframe>
-    </div>
-  </section>
-
-  <!-- Directions -->
-  <section class="py-16 px-6 md:px-10 bg-deep-red">
-    <div class="max-w-[1100px] mx-auto">
-      <h2 class="font-[family-name:var(--font-heading)] text-[clamp(22px,3vw,36px)] text-white tracking-tight mb-10 reveal">{L.fromSta}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
-        {L.steps.map(([num, title, body], i) => (
-          <div class={`rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 reveal reveal-delay-${i + 1}`}>
-            <p class="font-[family-name:var(--font-heading)] text-[13px] text-brand tracking-[0.15em] mb-3">{num}</p>
-            <h3 class="font-[family-name:var(--font-heading)] text-lg text-white mb-2">{title}</h3>
-            <p class="text-[13px] text-white/55 leading-[1.8]">{body}</p>
+  <!-- Getting Here: 交通手段別（アイコン行・余白圧縮） + 目印写真 -->
+  <section class="py-10 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_340px] gap-8 items-start">
+      <div class="flex flex-col divide-y divide-white/[0.07] border-y border-white/[0.07]">
+        {L.modes.map((m) => (
+          <div class="flex gap-5 py-6 items-start">
+            <div class="w-11 h-11 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d={icons[m.icon]} /></svg>
+            </div>
+            <div>
+              <h2 class="text-[12.5px] font-bold tracking-[0.14em] uppercase text-white mb-1.5">{m.title}</h2>
+              <p class="text-[13px] text-white/55 leading-[1.85]">{m.body}</p>
+            </div>
           </div>
         ))}
+        <p class="py-5 text-[12.5px] text-white/45 leading-relaxed">{L.luggage}</p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 reveal">
-        <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
-          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-2">{L.fromTokyo}</h3>
-          <p class="text-[13px] text-white/55 leading-[1.9]">{L.fromTokyoBody}</p>
-        </div>
-        <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
-          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-2">{L.luggage}</h3>
-          <p class="text-[13px] text-white/55 leading-[1.9]">{L.luggageBody}</p>
-        </div>
-        <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
-          <h3 class="font-[family-name:var(--font-heading)] text-base text-white mb-2">{L.parking}</h3>
-          <p class="text-[13px] text-white/55 leading-[1.9]">{L.parkingBody}</p>
-        </div>
-      </div>
+      <figure class="rounded-2xl overflow-hidden border border-white/[0.08]">
+        <img src="/assets/chopper/promo/beetle_shop_brc_044.webp" alt={L.landmarkCap} class="w-full aspect-[4/3] object-cover" loading="lazy" />
+        <figcaption class="px-5 py-3.5 text-[11.5px] font-semibold text-white/60 bg-white/[0.03]">📍 {L.landmarkCap}</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- Shop photos -->
-  <section class="pb-20 px-6 md:px-10 bg-deep-red">
-    <div class="max-w-[1100px] mx-auto grid grid-cols-2 md:grid-cols-3 gap-3 reveal">
-      <div class="aspect-[4/3] rounded-2xl overflow-hidden"><img src="/assets/chopper/promo/beetle_shop_brc_044.webp" alt="Shop" class="w-full h-full object-cover" loading="lazy" /></div>
-      <div class="aspect-[4/3] rounded-2xl overflow-hidden"><img src="/assets/chopper/promo/MECHANIC.webp" alt="Mechanic" class="w-full h-full object-cover" loading="lazy" /></div>
-      <div class="aspect-[4/3] rounded-2xl overflow-hidden max-md:hidden"><img src="/assets/chopper/promo/R0006459.webp" alt="Ride" class="w-full h-full object-cover" loading="lazy" /></div>
-    </div>
-    <div class="text-center mt-12">
-      <a href={localePath('/chopper', lang)} class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:-translate-y-0.5 transition-all">
-        {L.cta}
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+  <!-- デュアルCTA: どちらの予約に進むかを明確に -->
+  <section class="py-16 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[1000px] mx-auto">
+      <div class="text-center mb-8">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-3">{L.ctaLabel}</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(26px,4vw,44px)] text-white tracking-tight">{L.ctaHeading}</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href={localePath('/chopper', lang)} class="group relative rounded-2xl overflow-hidden aspect-[16/8] flex items-end">
+          <img src="/assets/chopper/promo/R0006459.webp" alt="Chopper" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+          <div class="relative z-[2] p-7 w-full flex items-end justify-between">
+            <div>
+              <p class="font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] text-white">{L.chopperCta}</p>
+              <p class="text-[11px] font-semibold text-white/55 tracking-wide mt-1">{L.chopperSub}</p>
+            </div>
+            <span class="w-11 h-11 rounded-full bg-brand flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
+              <svg class="w-4.5 h-4.5 w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+        <a href={localePath('/ebike', lang)} class="group relative rounded-2xl overflow-hidden aspect-[16/8] flex items-end">
+          <img src="/assets/ebike/ebike0035.webp" alt="E-Bike" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+          <div class="relative z-[2] p-7 w-full flex items-end justify-between">
+            <div>
+              <p class="font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] text-white">{L.ebikeCta}</p>
+              <p class="text-[11px] font-semibold text-white/55 tracking-wide mt-1">{L.ebikeSub}</p>
+            </div>
+            <span class="w-11 h-11 rounded-full bg-ebike flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
+              <svg class="w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -1,0 +1,116 @@
+---
+/**
+ * E-BIKE RULES — 交通ルール説明ページ（TAKE発案 2026-07-06）
+ * 予約前のハードルにならないよう、トップ導線では控えめに（FAQ・E-BIKEページ下部からリンク）。
+ * 店舗のルール資料（改修版）を受領したら、ここに反映する。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLangFromUrl, localePath } from '../../i18n/config';
+
+const lang = getLangFromUrl(Astro.url);
+const en = lang === 'en';
+
+const L = en ? {
+  metaTitle: 'E-Bike Riding Rules｜BEETLE RIDER Kamakura',
+  metaDesc: 'The riding rules for BEETLE RIDER e-bikes in Kamakura: age 16+, no license needed, helmet optional, no tandem riding, no drinking, ride on the left side of the road.',
+  label: 'RIDE RULES',
+  heading: 'Ride Right.',
+  sub: 'Five rules. Three minutes. Then the coast is yours.',
+  rules: [
+    ['16 OR OLDER', 'No license needed — but riders must be 16+. This is Japanese law, not our policy. We may check ID.'],
+    ['HELMET: OPTIONAL, SMART', 'Not legally required for this vehicle class. We lend helmets for free — most riders take one.'],
+    ['ONE RIDER PER BIKE', 'No tandem riding, no children as passengers. Book one e-bike per person.'],
+    ['ZERO ALCOHOL', 'Drinking and riding is a crime in Japan. If we detect alcohol, the ride ends immediately — no refund.'],
+    ['RIDE LEFT, MAX 20KM/H', 'Stay on the left side of the road. No riding on sidewalks. Speed is capped at 20 km/h automatically.'],
+  ],
+  mannersTitle: 'And two bits of local manners',
+  manners: [
+    ['PARK SMART', 'Use designated bicycle parking and lock up. Never leave the bike blocking a path or gate.'],
+    ['PHOTO STOPS', 'Pull fully off the road before reaching for your camera. The view isn’t going anywhere.'],
+  ],
+  breakTitle: 'If rules are broken',
+  breakBody: 'Traffic violations and accidents are the rider’s legal responsibility. Serious rule violations end the rental on the spot, without refund. We say this once here — so the ride stays fun for everyone.',
+  cta: 'RULES CLEAR? BOOK YOUR E-BIKE',
+  faqLink: 'More questions? Read the FAQ',
+} : {
+  metaTitle: 'E-BIKEの交通ルール｜BEETLE RIDER 鎌倉',
+  metaDesc: 'BEETLE RIDERのE-BIKEに乗る前のルールまとめ。16歳以上・免許不要・ヘルメット任意・二人乗り禁止・飲酒禁止・車道左側通行。3分で読めます。',
+  label: 'RIDE RULES',
+  heading: 'Ride Right.',
+  sub: '5つのルール、3分で読めます。読んだら海はあなたのものです。',
+  rules: [
+    ['16歳以上', '免許は不要ですが、16歳未満は法律により運転できません。年齢確認をさせていただく場合があります。'],
+    ['ヘルメットは任意・でも賢い選択', 'この車両区分では法的義務はありません。無料でお貸ししています——多くの方が着けて走ります。'],
+    ['1台に1人', '二人乗りは禁止。お子様の同乗もできません。人数分の台数をご予約ください。'],
+    ['アルコールはゼロ', '飲酒運転は犯罪です。飲酒が確認された時点でライドは即終了・返金はありません。'],
+    ['車道の左側・最高20KM/H', '車道の左側を走行してください。歩道走行は禁止です。速度は自動的に20km/hに制限されています。'],
+  ],
+  mannersTitle: 'あと2つ、鎌倉のマナー',
+  manners: [
+    ['駐輪は指定場所に', '駐輪場を利用し、施錠を。通路や門の前に停めるのはNGです。'],
+    ['撮影は停めてから', 'カメラを構える前に、完全に道路の外へ。景色は逃げません。'],
+  ],
+  breakTitle: 'ルールが守られなかった場合',
+  breakBody: '交通違反・事故の法的責任はライダーご本人にあります。重大なルール違反はその場でレンタル終了（返金なし）となります。ここで一度だけお伝えします——全員が気持ちよく走るためのルールです。',
+  cta: 'ルールOK？ E-BIKEを予約する',
+  faqLink: 'ほかの疑問はFAQへ',
+};
+---
+
+<BaseLayout title={L.metaTitle} description={L.metaDesc} activePage="ebike" headerLogo="ebike">
+  <!-- Hero (pink) -->
+  <section class="pt-36 pb-14 px-6 md:px-10 bg-ebike text-center">
+    <p class="text-[11px] font-bold tracking-[0.35em] uppercase text-white/60 mb-4">{L.label}</p>
+    <h1 class="font-[family-name:var(--font-heading)] text-[clamp(38px,6vw,72px)] text-white tracking-tight leading-none mb-3">{L.heading}</h1>
+    <p class="font-[family-name:var(--font-heading-jp)] text-[14px] text-white/65 font-medium">{L.sub}</p>
+  </section>
+
+  <!-- 5 Rules -->
+  <section class="py-14 px-6 md:px-10 bg-ebike">
+    <div class="max-w-[760px] mx-auto flex flex-col gap-3">
+      {L.rules.map(([title, body], i) => (
+        <div class="flex gap-5 rounded-2xl bg-white/[0.08] border border-white/[0.14] p-6 md:p-7 items-start">
+          <span class="font-[family-name:var(--font-heading)] text-[26px] leading-none text-white/35 shrink-0 w-12">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h2 class="font-[family-name:var(--font-heading)] text-[15.5px] md:text-[17px] text-white tracking-wide mb-1.5">{title}</h2>
+            <p class="text-[13px] text-white/70 leading-[1.85]">{body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Manners -->
+  <section class="py-10 px-6 md:px-10 bg-ebike">
+    <div class="max-w-[760px] mx-auto">
+      <h2 class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,24px)] text-white tracking-tight mb-5">{L.mannersTitle}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {L.manners.map(([title, body]) => (
+          <div class="rounded-2xl bg-white/[0.08] border border-white/[0.14] p-6">
+            <h3 class="text-[12px] font-bold tracking-[0.15em] uppercase text-white mb-2">{title}</h3>
+            <p class="text-[13px] text-white/70 leading-[1.85]">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 違反時 -->
+  <section class="py-10 px-6 md:px-10 bg-ebike">
+    <div class="max-w-[760px] mx-auto rounded-2xl border border-white/25 p-7">
+      <h2 class="text-[12px] font-bold tracking-[0.2em] uppercase text-white mb-2">{L.breakTitle}</h2>
+      <p class="text-[13px] text-white/75 leading-[1.9]">{L.breakBody}</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 px-6 md:px-10 bg-ebike text-center">
+    <a href={localePath('/ebike', lang) + '#plans'} class="inline-flex items-center gap-2.5 px-9 py-4 rounded-full bg-white text-ebike text-[12.5px] font-bold tracking-[0.15em] uppercase hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition-all">
+      {L.cta}
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <p class="mt-6">
+      <a href={localePath('/faq', lang) + '#ebike'} class="text-[12px] font-semibold text-white/60 underline hover:text-white transition-colors">{L.faqLink}</a>
+    </p>
+  </section>
+</BaseLayout>
