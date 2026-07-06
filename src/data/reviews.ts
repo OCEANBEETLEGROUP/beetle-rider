@@ -4,8 +4,8 @@
  * 更新手順: Googleマップのレビューから転記 → rating/count を最新化
  * ※実在レビューのみ掲載すること（創作は絶対禁止）
  *
- * TODO(TAKE): チョッパーのレビュー本文2〜3件をGoogleマップから指定してください
- * （Mapsの遅延読込のため自動取得不可・2026-07-06）。product:'chopper' で追記します。
+ * chopperレビュー3件はGoogle Maps実レビューより転記（2026-07-06取得: Tyler Porter/Peter Giang/
+ * Pedro Henrique Lobão Mariano、いずれも★5・総合5.0×111件時点）。
  */
 
 export const GOOGLE_RATING = 5.0;
@@ -44,6 +44,25 @@ export const REVIEWS: Review[] = [
     text: "We used the E-bikes — such a great option if you're only coming for the day! They really helped us save time since we wanted to visit several places. Plus, they were super comfortable, easy to use, and had the perfect speed for sightseeing. Highly recommend!",
     source: 'Google',
   },
-  // chopperレビューはTAKE指定待ち（上のTODO参照）。追加例:
-  // { author: '...', rating: 5, product: 'chopper', text: '...', source: 'Google' },
+  {
+    author: 'Tyler P.',
+    rating: 5,
+    product: 'chopper',
+    text: 'Rented 4 of the choppers for 8 hours. Absolutely amazing experience. Took them all through Hakone turnpike. Definitely give these guys a look. Good English too so very foreigner friendly.',
+    source: 'Google',
+  },
+  {
+    author: 'Peter G.',
+    rating: 5,
+    product: 'chopper',
+    text: "If you're an avid motorcycle rider and enjoy spending time by the beach with a breathtaking view of Mt. Fuji, Beetle Rider is the perfect place to rent some cool Harley-Davidson chopper motorcycles.",
+    source: 'Google',
+  },
+  {
+    author: 'Pedro M.',
+    rating: 5,
+    product: 'chopper',
+    text: 'Absolutely stunning experience with those guys. They really rocked with this project of renting a chopper in Japan. Awesome vibes around Kamakura coast.',
+    source: 'Google',
+  },
 ];
