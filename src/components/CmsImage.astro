@@ -4,10 +4,18 @@
  * 目的: 訪問者ブラウザがmicroCMS CDN(images.microcms-assets.io)から直接画像を取らないようにし、
  *       microCMSのデータ転送量超過を根治する（2026-06-29）。
  *
- * 使い方: <CmsImage src={img.url} width={800} alt={img.alt} class="..." />
+ * 使い方: <CmsImage src={img.url} width={800} naturalWidth={img.width} naturalHeight={img.height} alt={img.alt} class="..." />
  *  - src: microCMS画像URL（?w=&q= 等のクエリは内部で除去。最適化はAstroが行う）
- *  - width: 出力したい表示幅(px)。高さはinferSize(ビルド時に元画像を取得)で自動算出。
- *  - 編集ワークフローは不変: microCMSで公開→Webhook→再ビルド時にAstroが最新画像を取り込む。
+ *  - width: 出力したい表示幅(px)。
+ *  - naturalWidth / naturalHeight: 元画像の自然寸法（microCMSの画像オブジェクトが保持）。
+ *    渡すと height を比率通りに算出し、width/height を明示指定する（inferSize不使用）。
+ *
+ * ⚠️ 崩れ修正(2026-07-05): astro:assets の `inferSize` + `width` 併用には、height を
+ *  元画像の自然値のまま残す不具合がある（例: 横長 4000x2667 に width=800 を指定しても
+ *  height=533 にならず height=2667 のまま → `/_image?w=800&h=2667` で sharp が縦帯に
+ *  クロップ → 画像が極端にズームして崩れる）。これを避けるため、自然寸法が渡された場合は
+ *  width/height を比率通りに明示し inferSize を使わない。自然寸法が無い場合（ローカルの
+ *  /assets 等）のみ従来どおり inferSize に退避する。
  *
  * 注意(deploy当日): astro:assets のremote画像はビルド時に各URLをfetchする。
  *  microCMS APIが生きている状態で `npm run build` が通ることを必ず確認すること。
@@ -17,23 +25,55 @@ import { Image } from 'astro:assets';
 interface Props {
   src: string;
   width: number;
+  naturalWidth?: number;
+  naturalHeight?: number;
   alt?: string;
   class?: string;
   loading?: 'lazy' | 'eager';
   quality?: number;
 }
 
-const { src, width, alt = '', class: className, loading = 'lazy', quality = 80 } = Astro.props;
+const {
+  src,
+  width,
+  naturalWidth,
+  naturalHeight,
+  alt = '',
+  class: className,
+  loading = 'lazy',
+  quality = 80,
+} = Astro.props;
+
 // microCMSの変換クエリ(?w=&q=)は除去。サイズ/圧縮はAstro側で行う。
 const cleanSrc = src.split('?')[0];
+
+// 元画像の自然寸法が分かる場合は、比率を保った高さを明示指定する（inferSizeの不具合回避）。
+const height =
+  naturalWidth && naturalHeight
+    ? Math.round((width * naturalHeight) / naturalWidth)
+    : undefined;
 ---
 
-<Image
-  src={cleanSrc}
-  inferSize
-  width={width}
-  alt={alt}
-  class={className}
-  loading={loading}
-  quality={quality}
-/>
+{
+  height !== undefined ? (
+    <Image
+      src={cleanSrc}
+      width={width}
+      height={height}
+      alt={alt}
+      class={className}
+      loading={loading}
+      quality={quality}
+    />
+  ) : (
+    <Image
+      src={cleanSrc}
+      inferSize
+      width={width}
+      alt={alt}
+      class={className}
+      loading={loading}
+      quality={quality}
+    />
+  )
+}

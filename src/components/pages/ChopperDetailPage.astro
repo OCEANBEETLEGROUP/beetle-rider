@@ -43,9 +43,11 @@ const specs = [
 
 // Gallery: hero (thumbnail) + gallery images
 const allImages = [
-  { url: vehicle.thumbnail.url, alt: `${vehicle.name} — Main` },
+  { url: vehicle.thumbnail.url, w: vehicle.thumbnail.width, h: vehicle.thumbnail.height, alt: `${vehicle.name} — Main` },
   ...(vehicle.gallery || []).map((img, i) => ({
     url: img.url,
+    w: img.width,
+    h: img.height,
     alt: `${vehicle.name} — ${i + 2}`,
   })),
 ];
@@ -109,6 +111,8 @@ const faqItems = faqKeys.map(key => ({
               <CmsImage
                 src={img.url}
                 width={1600}
+                naturalWidth={img.w}
+                naturalHeight={img.h}
                 alt={img.alt}
                 class="w-full h-full object-cover"
                 loading={i === 0 ? "eager" : "lazy"}
@@ -158,7 +162,7 @@ const faqItems = faqKeys.map(key => ({
             ]}
             data-thumb-index={i}
           >
-            <CmsImage src={img.url} width={200} quality={60} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
+            <CmsImage src={img.url} width={200} naturalWidth={img.w} naturalHeight={img.h} quality={60} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
           </button>
         ))}
       </div>

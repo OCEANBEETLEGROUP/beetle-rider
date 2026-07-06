@@ -19,8 +19,8 @@ interface Props {
     importantNoticesUrl?: string;
   };
   igPhotos?: {
-    ebike: { src: string; alt: string }[];
-    chopper: { src: string; alt: string }[];
+    ebike: { src: string; alt: string; w?: number; h?: number }[];
+    chopper: { src: string; alt: string; w?: number; h?: number }[];
   };
 }
 
@@ -37,13 +37,14 @@ const showEbike = true;
 const showChopper = true;
 
 // Instagram photos from props (fetched in BaseLayout)
-const ebikePhotos = (Astro.props.igPhotos?.ebike ?? [
+type IgPhoto = { src: string; alt: string; w?: number; h?: number };
+const ebikePhotos: IgPhoto[] = (Astro.props.igPhotos?.ebike ?? [
   { src: '/assets/ebike/ebike0010.webp', alt: 'E-BIKE Kamakura' },
   { src: '/assets/ebike/ebike0023.webp', alt: 'E-BIKE coastal ride' },
   { src: '/assets/ebike/ebike0026.webp', alt: 'E-BIKE temple' },
 ]);
 
-const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
+const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
   { src: '/assets/chopper/promo/R0006459.webp', alt: 'Chopper ride' },
   { src: '/assets/chopper/promo/R0006463.webp', alt: 'Chopper sunset' },
   { src: '/assets/chopper/promo/2512080004.webp', alt: 'Chopper Kamakura' },
@@ -69,7 +70,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
             <div class="grid grid-cols-3 gap-1">
               {ebikePhotos.map((photo) => (
                 <a href={igEbike} target="_blank" class="aspect-[4/5] rounded-lg overflow-hidden relative cursor-pointer group block">
-                  <CmsImage src={photo.src} width={400} alt={photo.alt} class="w-full h-full object-cover" loading="lazy" />
+                  <CmsImage src={photo.src} width={400} naturalWidth={photo.w} naturalHeight={photo.h} alt={photo.alt} class="w-full h-full object-cover" loading="lazy" />
                   <div class="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-colors"></div>
                 </a>
               ))}
@@ -86,7 +87,7 @@ const chopperPhotos = (Astro.props.igPhotos?.chopper ?? [
             <div class="grid grid-cols-3 gap-1">
               {chopperPhotos.map((photo) => (
                 <a href={igChopper} target="_blank" class="aspect-[4/5] rounded-lg overflow-hidden relative cursor-pointer group block">
-                  <CmsImage src={photo.src} width={400} alt={photo.alt} class="w-full h-full object-cover" loading="lazy" />
+                  <CmsImage src={photo.src} width={400} naturalWidth={photo.w} naturalHeight={photo.h} alt={photo.alt} class="w-full h-full object-cover" loading="lazy" />
                   <div class="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-colors"></div>
                 </a>
               ))}
