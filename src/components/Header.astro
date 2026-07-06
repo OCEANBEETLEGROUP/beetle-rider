@@ -4,7 +4,7 @@ import { useTranslations } from '../i18n/index';
 import type { Lang } from '../i18n/config';
 
 interface Props {
-  activePage: 'home' | 'chopper' | 'ebike' | 'about';
+  activePage: 'home' | 'chopper' | 'ebike' | 'about' | 'access' | 'faq' | 'touring' | 'journal';
   logo: 'chopper' | 'ebike' | 'corporate';
   lang: Lang;
 }
@@ -22,6 +22,8 @@ const navItems = [
   { href: localePath('/ebike', lang), label: t('nav.ebike'), key: 'ebike' as const },
   { href: localePath('/chopper', lang), label: t('nav.chopper'), key: 'chopper' as const },
   { href: localePath('/about', lang), label: t('nav.about'), key: 'about' as const },
+  { href: localePath('/access', lang), label: t('nav.access'), key: 'access' as const },
+  { href: localePath('/faq', lang), label: t('nav.faq'), key: 'faq' as const },
 ];
 
 const altUrl = alternateUrl(Astro.url);

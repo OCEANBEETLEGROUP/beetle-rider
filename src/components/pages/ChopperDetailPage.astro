@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getImage } from 'astro:assets';
 import BookNowButton from '../../components/BookNowButton.astro';
 import CmsImage from '../../components/CmsImage.astro';
 import { getLangFromUrl, localePath } from '../../i18n/config';
@@ -52,6 +53,16 @@ const allImages = [
   })),
 ];
 
+// 車両別OGP画像（1200×630・SNS/DMシェア時にこの車両の写真が出る）
+const ogGen = await getImage({
+  src: vehicle.thumbnail.url.split('?')[0],
+  inferSize: true,
+  width: 1200,
+  height: 630,
+  fit: 'cover',
+  format: 'jpeg',
+});
+
 // FAQ items using chopper.faq.* keys
 const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
 const faqItems = faqKeys.map(key => ({
@@ -69,7 +80,7 @@ const faqItems = faqKeys.map(key => ({
     <body></body>
   </html>
 ) : (
-<BaseLayout title={vehicle.name + " — BEETLE RIDER"} activePage="chopper" headerLogo="chopper">
+<BaseLayout title={vehicle.name + " — BEETLE RIDER"} activePage="chopper" headerLogo="chopper" ogImage={ogGen.src}>
 
   <!-- Back Link -->
   <div class="pt-[calc(80px+24px)] px-6 md:px-10 max-w-[1200px] mx-auto">
@@ -179,6 +190,7 @@ const faqItems = faqKeys.map(key => ({
       <div class="text-center mb-8 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t('detail.plans.label')}</p>
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t('detail.plans.heading')}</h2>
+        <p class="mt-3 text-[11px] font-semibold tracking-[0.08em] text-white/40">✓ {t('common.freeCancelChopper')}</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="planCards">
@@ -204,7 +216,7 @@ const faqItems = faqKeys.map(key => ({
           {isMaintenance ? (
             <button class="flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-white/10 text-white/40 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed border-none" disabled>MAINTENANCE</button>
           ) : vehicle.bokunDayRideId ? (
-            <button class="bokunButton flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:translate-y-[-2px] transition-all cursor-pointer border-none" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${vehicle.bokunDayRideId}?partialView=1`} data-testid="widget-book-button" disabled>BOOK NOW</button>
+            <button class="bokunButton flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-brand text-white text-xs font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] hover:translate-y-[-2px] transition-all cursor-pointer border-none" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${vehicle.bokunDayRideId}?partialView=1`} data-testid="widget-book-button">BOOK NOW</button>
           ) : (
             <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-brand/50 text-white/60 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed border-none" disabled>
               <span>{t('common.comingSoon')}</span>
@@ -233,7 +245,7 @@ const faqItems = faqKeys.map(key => ({
           {isMaintenance ? (
             <button class="flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-white/10 text-white/40 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed border-none" disabled>MAINTENANCE</button>
           ) : vehicle.bokunMultiDayId ? (
-            <button class="bokunButton flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-transparent border border-white/15 text-white text-xs font-bold tracking-[0.15em] uppercase group-hover/multi:bg-brand group-hover/multi:border-brand hover:translate-y-[-2px] transition-all cursor-pointer" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${vehicle.bokunMultiDayId}?partialView=1`} data-testid="widget-book-button" disabled>BOOK NOW</button>
+            <button class="bokunButton flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-transparent border border-white/15 text-white text-xs font-bold tracking-[0.15em] uppercase group-hover/multi:bg-brand group-hover/multi:border-brand hover:translate-y-[-2px] transition-all cursor-pointer" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${vehicle.bokunMultiDayId}?partialView=1`} data-testid="widget-book-button">BOOK NOW</button>
           ) : (
             <button class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-transparent border border-white/10 text-white/40 text-xs font-bold tracking-[0.15em] uppercase cursor-not-allowed" disabled>
               <span>{t('common.comingSoon')}</span>
@@ -501,6 +513,17 @@ const faqItems = faqKeys.map(key => ({
         ['pointerenter', 'click', 'focus'].forEach(ev => btn.addEventListener(ev, loadBokun, { once: false, passive: true }));
       });
       // Trigger 2: booking buttons scrolled into viewport
+      // フォールバック: ローダー未初期化のままクリックされたらBokun直ページを開く
+      document.querySelectorAll('.bokunButton').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          loadBokun();
+          const src = (btn as HTMLElement).dataset.src;
+          if (!src) return;
+          setTimeout(() => {
+            if (!(window as any).BokunWidgets) window.open(src, '_blank', 'noopener');
+          }, 1800);
+        });
+      });
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver((entries) => {
           if (entries.some(e => e.isIntersecting)) {

@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookNowButton from '../../components/BookNowButton.astro';
 import CmsImage from '../../components/CmsImage.astro';
+import TrustBar from '../../components/TrustBar.astro';
+import Reviews from '../../components/Reviews.astro';
 import { EBIKE_WIDGETS } from '../../lib/bokun';
 import { getDestinations } from '../../lib/microcms';
 import { getLangFromUrl } from '../../i18n/config';
@@ -134,6 +136,8 @@ const ebikeSchema = [
     </div>
   </section>
 
+  <TrustBar lang={lang} variant="ebike" accent="text-[#2D0A0A]" />
+
   <!-- Section 2: Specs -->
   <section id="specs" class="py-32 px-10 bg-ebike max-md:py-24 max-md:px-6">
     <div class="max-w-[1100px] mx-auto">
@@ -212,7 +216,8 @@ const ebikeSchema = [
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">{t(lang, 'ebike.plans.quick.price')}</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.quick.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.quick.desc')}</p>
-          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.quickRide}?partialView=1`} data-testid="widget-book-button" data-cv-plan="quick" data-cv-value="3500" disabled>BOOK NOW</button>
+          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.quickRide}?partialView=1`} data-testid="widget-book-button" data-cv-plan="quick" data-cv-value="3500">BOOK NOW</button>
+          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-[#2D0A0A]/55">{t(lang, 'common.freeCancelEbike')}</p>
         </div>
         <!-- CRUISE (POPULAR) -->
         <div class="relative bg-light border-2 border-[#2D0A0A] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-2">
@@ -221,7 +226,8 @@ const ebikeSchema = [
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">{t(lang, 'ebike.plans.cruise.price')}</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.cruise.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.cruise.desc')}</p>
-          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.cruise}?partialView=1`} data-testid="widget-book-button" data-cv-plan="cruise" data-cv-value="5000" disabled>BOOK NOW</button>
+          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.cruise}?partialView=1`} data-testid="widget-book-button" data-cv-plan="cruise" data-cv-value="5000">BOOK NOW</button>
+          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-[#2D0A0A]/55">{t(lang, 'common.freeCancelEbike')}</p>
         </div>
         <!-- ALL DAY -->
         <div class="relative bg-light border-2 border-black/[0.08] rounded-2xl p-10 h-full flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-400 hover:-translate-y-1 hover:border-4 hover:border-[#2D0A0A] reveal reveal-delay-3">
@@ -229,7 +235,8 @@ const ebikeSchema = [
           <p class="font-[family-name:var(--font-heading)] text-[clamp(36px,4vw,48px)] text-[#2D0A0A] tracking-tight leading-none mb-1">{t(lang, 'ebike.plans.allday.price')}</p>
           <p class="text-sm font-semibold text-[#2D0A0A]/40 tracking-wide mb-6">{t(lang, 'ebike.plans.allday.time')}</p>
           <p class="text-sm text-[#2D0A0A]/70 leading-relaxed mb-auto pb-6">{t(lang, 'ebike.plans.allday.desc')}</p>
-          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.allDay}?partialView=1`} data-testid="widget-book-button" data-cv-plan="allday" data-cv-value="7500" disabled>BOOK NOW</button>
+          <button class="bokunButton ebike-cv-btn block w-full py-3.5 px-6 bg-ebike text-white text-[13px] font-bold tracking-[0.15em] uppercase text-center border-none rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#8e1d40] hover:-translate-y-0.5" data-src={`https://widgets.bokun.io/online-sales/44a9a7f7-bf0a-4945-ab64-57a5d5ebbaf3/experience/${EBIKE_WIDGETS.allDay}?partialView=1`} data-testid="widget-book-button" data-cv-plan="allday" data-cv-value="7500">BOOK NOW</button>
+          <p class="mt-3 text-center text-[10.5px] font-semibold tracking-[0.04em] text-[#2D0A0A]/55">{t(lang, 'common.freeCancelEbike')}</p>
         </div>
       </div>
     </div>
@@ -274,6 +281,8 @@ const ebikeSchema = [
       </div>
     </div>
   </section>
+
+  <Reviews lang={lang} accent="dark" />
 
   <!-- Section 5: Rules (Accordion) -->
   <section id="rules" class="py-32 px-10 bg-ebike max-md:py-24 max-md:px-6">
@@ -412,6 +421,17 @@ const ebikeSchema = [
       }
       document.querySelectorAll('.bokunButton').forEach((btn) => {
         ['pointerenter', 'click', 'focus'].forEach(ev => btn.addEventListener(ev, loadBokun, { once: false, passive: true }));
+      });
+      // フォールバック: ローダー未初期化のままクリックされたらBokun直ページを開く
+      document.querySelectorAll('.bokunButton').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          loadBokun();
+          const src = (btn as HTMLElement).dataset.src;
+          if (!src) return;
+          setTimeout(() => {
+            if (!(window as any).BokunWidgets) window.open(src, '_blank', 'noopener');
+          }, 1800);
+        });
       });
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver((entries) => {

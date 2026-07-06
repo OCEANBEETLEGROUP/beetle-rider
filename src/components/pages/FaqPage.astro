@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import IdpChecker from '../../components/IdpChecker.astro';
+import { getLangFromUrl } from '../../i18n/config';
+import { t } from '../../i18n/index';
+
+const lang = getLangFromUrl(Astro.url);
+const en = lang === 'en';
+
+const chopperKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const ebikeKeys = ['license', 'alcohol', 'weather', 'checkin', 'insurance', 'luggage', 'extension', 'cancel'] as const;
+
+const chopperFaq = chopperKeys.map(k => ({
+  title: t(lang, `chopper.faq.${k}.title` as any) as string,
+  content: t(lang, `chopper.faq.${k}.content` as any) as string,
+}));
+const ebikeFaq = ebikeKeys.map(k => ({
+  title: t(lang, `ebike.faq.${k}.title` as any) as string,
+  content: t(lang, `ebike.faq.${k}.content` as any) as string,
+}));
+
+const metaTitle = en ? 'FAQ — Chopper & E-Bike Rental｜BEETLE RIDER Kamakura' : 'よくある質問（FAQ）｜BEETLE RIDER 鎌倉';
+const metaDesc = en
+  ? 'Everything you need to know before riding in Kamakura: license & IDP rules, cancellation policy, insurance, weather, luggage storage and more.'
+  : '鎌倉でのライド前に知っておきたいこと。免許・IDP、キャンセルポリシー、保険、雨天対応、荷物預かりなどを網羅。';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [...chopperFaq, ...ebikeFaq].map(f => ({
+    '@type': 'Question',
+    name: f.title,
+    acceptedAnswer: { '@type': 'Answer', text: f.content.replace(/<[^>]+>/g, '') },
+  })),
+};
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} activePage="faq" headerLogo="chopper" schema={[faqSchema]}>
+  <section class="pt-36 pb-10 px-6 md:px-10 bg-deep-red text-center">
+    <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">BEFORE YOU RIDE</p>
+    <h1 class="font-[family-name:var(--font-heading)] text-[clamp(32px,5vw,60px)] text-white tracking-tight">FAQ</h1>
+    <p class="text-[13px] text-white/45 mt-3 font-medium">{en ? 'Everything you need to know, in one place.' : 'ライド前の疑問を、ここで全部。'}</p>
+  </section>
+
+  <section class="pb-16 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[800px] mx-auto">
+      <IdpChecker lang={lang} />
+    </div>
+  </section>
+
+  <section class="pb-24 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[800px] mx-auto">
+      {[
+        { id: 'chopper', label: 'CHOPPER', color: 'text-brand', items: chopperFaq },
+        { id: 'ebike', label: 'E-BIKE', color: 'text-ebike', items: ebikeFaq },
+      ].map((group) => (
+        <div class="mb-14">
+          <h2 class={`font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] ${group.color} tracking-[0.06em] mb-6`} id={group.id}>{group.label}</h2>
+          <div class="flex flex-col">
+            {group.items.map((item, i) => (
+              <div class:list={['border-b border-white/10 overflow-hidden', i === 0 && 'border-t border-white/10']} data-faq-item>
+                <button class="w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] max-md:text-sm font-bold text-white tracking-[0.02em] transition-colors duration-300 hover:text-brand" data-faq-trigger>
+                  <span>{item.title}</span>
+                  <div class="shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300" data-faq-icon>
+                    <svg class="w-4 h-4 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  </div>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" data-faq-body>
+                  <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm text-white/50 leading-[1.9]" set:html={item.content}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <p class="text-center text-[13px] text-white/40">
+        {en ? 'Still have a question? ' : 'ほかに聞きたいことがあれば '}
+        <a href="https://ig.me/m/beetlerider_japan" target="_blank" rel="noopener" class="text-white/70 underline hover:text-white transition-colors">
+          {en ? 'DM us on Instagram' : 'InstagramでDM'}
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <style>
+    [data-faq-item].active [data-faq-icon] { transform: rotate(45deg); }
+    [data-faq-item].active [data-faq-body] { max-height: 600px; }
+  </style>
+
+  <script>
+    document.querySelectorAll('[data-faq-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('[data-faq-item]');
+        if (!item) return;
+        const wasActive = item.classList.contains('active');
+        document.querySelectorAll('[data-faq-item]').forEach((el) => el.classList.remove('active'));
+        if (!wasActive) item.classList.add('active');
+      });
+    });
+  </script>
+</BaseLayout>

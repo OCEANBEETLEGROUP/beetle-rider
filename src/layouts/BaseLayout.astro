@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageLoader from '../components/PageLoader.astro';
 import { getSiteConfig, getInstagramPosts } from '../lib/microcms';
+import ContactFloat from '../components/ContactFloat.astro';
+import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT, REVIEWS_ARE_REAL } from '../data/reviews';
 import { getLangFromUrl } from '../i18n/config';
 import { alternateUrl } from '../i18n/config';
 
@@ -24,9 +26,11 @@ interface Props {
   title: string;
   description?: string;
   bodyClass?: string;
-  activePage?: 'home' | 'chopper' | 'ebike' | 'about';
+  activePage?: 'home' | 'chopper' | 'ebike' | 'about' | 'access' | 'faq' | 'touring' | 'journal';
   headerLogo?: 'chopper' | 'ebike' | 'corporate';
   schema?: any[];
+  /** ページ固有OG画像（相対パス可・省略時は共通ogp.png） */
+  ogImage?: string;
 }
 
 const {
@@ -36,6 +40,7 @@ const {
   activePage = 'home',
   headerLogo = 'chopper',
   schema = [],
+  ogImage,
 } = Astro.props;
 
 const altUrl = alternateUrl(Astro.url);
@@ -44,6 +49,21 @@ const altLang = lang === 'ja' ? 'en' : 'ja';
 // Canonical URL — always use apex domain (prevents www.* and pages.dev duplicate indexing)
 const canonicalUrl = `https://beetlerider.com${Astro.url.pathname}`;
 const ogUrl = canonicalUrl;
+const ogImageUrl = ogImage ? new URL(ogImage, 'https://beetlerider.com').href : 'https://beetlerider.com/ogp.png';
+
+// Google実評価の構造化データ（検索結果の★表示用）。実レビュー時のみ出力。
+const ratingLd = REVIEWS_ARE_REAL
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      '@id': 'https://beetlerider.com/#localbusiness',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: GOOGLE_RATING,
+        reviewCount: GOOGLE_REVIEW_COUNT,
+      },
+    }
+  : null;
 
 // JSON-LD structured data — only on homepage (Organization + WebSite)
 const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === '/en/' || Astro.url.pathname === '/en';
@@ -141,13 +161,13 @@ const websiteLd = {
   <meta property="og:type" content="website">
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
-  <meta property="og:image" content="https://beetlerider.com/ogp.png">
+  <meta property="og:image" content={ogImageUrl}>
   <meta property="og:url" content={ogUrl}>
   <meta property="og:site_name" content="BEETLE RIDER">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
-  <meta name="twitter:image" content="https://beetlerider.com/ogp.png">
+  <meta name="twitter:image" content={ogImageUrl}>
 
   <!-- Google Analytics (GA4) + Google Tag + Google Ads -->
   <!-- AW-IDs are publicly visible in HTML anyway; no secrecy benefit from env vars -->
@@ -176,6 +196,7 @@ const websiteLd = {
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify(organizationLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(localBusinessLd)} />
+  {ratingLd && <script type="application/ld+json" set:html={JSON.stringify(ratingLd)} />}
   {isHomepage && <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />}
   {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 
@@ -195,6 +216,26 @@ const websiteLd = {
   </main>
 
   <Footer activePage={activePage} siteConfig={siteConfig} igPhotos={igPhotos} lang={lang} />
+
+  <ContactFloat lang={lang} phone={siteConfig?.phone} />
+
+  {siteConfig?.announcement && (
+    <div id="announceBar" class="hidden fixed bottom-0 inset-x-0 z-[95] bg-brand text-white px-10 py-2.5 text-center">
+      <span class="text-[12px] font-semibold tracking-wide" set:html={siteConfig.announcement} />
+      <button id="announceClose" aria-label="Close" class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white/70 hover:text-white cursor-pointer bg-transparent border-none text-base leading-none">×</button>
+      <script is:inline>
+        (function () {
+          var bar = document.getElementById('announceBar');
+          if (!bar) return;
+          if (!sessionStorage.getItem('br_announce_closed')) bar.classList.remove('hidden');
+          document.getElementById('announceClose').addEventListener('click', function () {
+            bar.classList.add('hidden');
+            sessionStorage.setItem('br_announce_closed', '1');
+          });
+        })();
+      </script>
+    </div>
+  )}
 
   <!-- Scroll Reveal -->
   <script>

@@ -4,8 +4,8 @@ export default {
   'meta.home.desc': '鎌倉でヴィンテージ・チョッパー（ハーレー）とeバイク（電動自転車）をレンタル。免許不要のeバイクは当日予約OK。鎌倉駅徒歩圏から湘南の海へ。BEETLE RIDER by OCEANBEETLE。',
   'meta.chopper.title': '鎌倉 チョッパー・ハーレーレンタル｜BEETLE RIDER',
   'meta.chopper.desc': '鎌倉でヴィンテージ・チョッパー（ハーレー）をレンタル。134号線を独占するライド体験。要二輪免許、鎌倉駅徒歩圏。BEETLE RIDER。',
-  'meta.ebike.title': '鎌倉 eバイク・電動自転車レンタル｜BEETLE RIDER',
-  'meta.ebike.desc': '鎌倉・江ノ島をeバイク（電動自転車）で巡る。免許不要・当日予約OK、ヘルメット＆保険込み。坂道もラクラク、鎌倉駅徒歩圏のBEETLE RIDER。',
+  'meta.ebike.title': '鎌倉 レンタサイクル・eバイク（電動自転車）レンタル｜BEETLE RIDER',
+  'meta.ebike.desc': '鎌倉のレンタサイクルならeバイク（電動アシスト自転車）のBEETLE RIDER。免許不要・当日予約OK、ヘルメット＆保険込み。坂道もラクラク、鎌倉駅徒歩4分から江ノ島・大仏へ。',
   'meta.about.title': 'BEETLE RIDERについて｜鎌倉のバイク・eバイクレンタル',
   'meta.about.desc': 'BEETLE RIDERは鎌倉のチョッパー・eバイクレンタル。OCEANBEETLEが手がける「ただのレンタルではない」ライド体験。',
 
@@ -13,6 +13,8 @@ export default {
   'nav.ebike': 'E-Bike',
   'nav.chopper': 'Chopper',
   'nav.about': 'About',
+  'nav.access': 'Access',
+  'nav.faq': 'FAQ',
 
   // === HOME: Section 1 Split Hero ===
   'home.hero.ebike.label': 'E-BIKE RENTAL',
@@ -248,4 +250,6 @@ export default {
   'common.scroll': 'SCROLL',
   'common.perDay': '/ day',
   'common.per2days': '/ 2days',
+  'common.freeCancelChopper': '5日前まで無料キャンセル',
+  'common.freeCancelEbike': '24時間前まで無料キャンセル',
 } as const;

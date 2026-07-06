@@ -4,8 +4,8 @@ export default {
   'meta.home.desc': 'Rent a vintage chopper (Harley) or e-bike in Kamakura, Japan. No license needed for e-bikes — book today, ride today. Walking distance from Kamakura Station. BEETLE RIDER by OCEANBEETLE.',
   'meta.chopper.title': 'Chopper Rental in Kamakura, Japan｜BEETLE RIDER',
   'meta.chopper.desc': 'Rent a vintage chopper (Harley-based) in Kamakura, Japan. Ride the legendary Route 134 coastline. Motorcycle license + IDP required. BEETLE RIDER.',
-  'meta.ebike.title': 'Kamakura E-Bike Rental｜BEETLE RIDER',
-  'meta.ebike.desc': 'Explore Kamakura & Enoshima by e-bike. No license, helmet & insurance included, same-day booking. Climbs every Kamakura hill. BEETLE RIDER by OCEANBEETLE.',
+  'meta.ebike.title': 'Kamakura Bike Rental — E-Bike & Bicycle Rental｜BEETLE RIDER',
+  'meta.ebike.desc': 'Bike rental in Kamakura, Japan: explore Kamakura & Enoshima by e-bike. No license, helmet & insurance included, same-day booking. 4 min from Kamakura Station.',
   'meta.about.title': 'About｜BEETLE RIDER — Kamakura Bike Rental',
   'meta.about.desc': 'BEETLE RIDER — chopper & e-bike rental in Kamakura, Japan. A rental experience by OCEANBEETLE. Not just a rental.',
 
@@ -13,6 +13,8 @@ export default {
   'nav.ebike': 'E-Bike',
   'nav.chopper': 'Chopper',
   'nav.about': 'About',
+  'nav.access': 'Access',
+  'nav.faq': 'FAQ',
 
   // === HOME: Section 1 Split Hero ===
   'home.hero.ebike.label': 'E-BIKE RENTAL',
@@ -248,4 +250,6 @@ export default {
   'common.scroll': 'SCROLL',
   'common.perDay': '/ day',
   'common.per2days': '/ 2days',
+  'common.freeCancelChopper': 'Free cancellation until 5 days before',
+  'common.freeCancelEbike': 'Free cancellation until 24h before',
 } as const;

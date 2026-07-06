@@ -1,0 +1,104 @@
+---
+/**
+ * IdpChecker — 外国免許でチョッパーに乗れるかの事前判定ウィジェット。
+ * 判定区分:
+ *  ok  = 1949ジュネーブ条約加盟国 → IDP(1949)+母国免許+パスポートでOK（IDPはCategory A必須）
+ *  tr  = 日本が「母国免許＋公式日本語翻訳(JAF等)」を認める国・地域
+ *  ng  = IDP(1949)が無効な国（ウィーン条約のみ等）→ チョッパー不可 → E-BIKE誘導
+ * それ以外 = 要問い合わせ。最終判断は当日の書類確認。
+ */
+import type { Lang } from '../i18n/config';
+import { localePath } from '../i18n/config';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const en = lang === 'en';
+
+const OK = [
+  ['US','United States'],['CA','Canada'],['GB','United Kingdom'],['IE','Ireland'],['AU','Australia'],['NZ','New Zealand'],
+  ['KR','South Korea'],['TH','Thailand'],['SG','Singapore'],['MY','Malaysia'],['PH','Philippines'],['HK','Hong Kong'],['MO','Macau'],
+  ['IN','India'],['LK','Sri Lanka'],['KH','Cambodia'],['LA','Laos'],['BD','Bangladesh'],['PK','Pakistan'],
+  ['FR','France'],['BE','Belgium'],['IT','Italy'],['ES','Spain'],['PT','Portugal'],['NL','Netherlands'],['LU','Luxembourg'],
+  ['AT','Austria'],['DK','Denmark'],['NO','Norway'],['SE','Sweden'],['FI','Finland'],['IS','Iceland'],
+  ['PL','Poland'],['CZ','Czechia'],['SK','Slovakia'],['HU','Hungary'],['RO','Romania'],['BG','Bulgaria'],['GR','Greece'],['MT','Malta'],['CY','Cyprus'],
+  ['RU','Russia'],['TR','Türkiye'],['IL','Israel'],['AE','UAE'],['ZA','South Africa'],['EG','Egypt'],['MA','Morocco'],
+  ['AR','Argentina'],['CL','Chile'],['PE','Peru'],['EC','Ecuador'],['DO','Dominican Republic'],['JM','Jamaica'],['TT','Trinidad & Tobago'],
+  ['FJ','Fiji'],['PG','Papua New Guinea'],
+];
+const TR = [['DE','Germany'],['CH','Switzerland'],['TW','Taiwan'],['MC','Monaco'],['EE','Estonia'],['SI','Slovenia']];
+const NG = [['CN','China (Mainland)'],['VN','Vietnam'],['ID','Indonesia'],['BR','Brazil'],['UA','Ukraine'],['KZ','Kazakhstan'],['MN','Mongolia'],['MM','Myanmar']];
+
+const all = [
+  ...OK.map(([c, n]) => ({ c, n, b: 'ok' })),
+  ...TR.map(([c, n]) => ({ c, n, b: 'tr' })),
+  ...NG.map(([c, n]) => ({ c, n, b: 'ng' })),
+].sort((a, b2) => a.n.localeCompare(b2.n));
+---
+
+<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-7 md:p-9" id="idpChecker">
+  <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-3">LICENSE CHECK</p>
+  <h3 class="font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] text-white tracking-tight mb-2">
+    {en ? 'Can You Ride in Japan?' : 'あなたの免許で乗れる？'}
+  </h3>
+  <p class="text-[13px] text-white/50 leading-relaxed mb-6">
+    {en
+      ? 'Select the country that issued your license. We’ll tell you what documents you need to ride a chopper in Japan.'
+      : '免許を発行した国を選ぶと、日本でチョッパーに乗るために必要な書類がわかります。'}
+  </p>
+
+  <select
+    id="idpSelect"
+    class="w-full md:max-w-[380px] px-4 py-3.5 rounded-lg bg-[#1c0507] border border-white/15 text-white text-sm font-medium focus:border-brand focus:outline-none cursor-pointer"
+  >
+    <option value="">{en ? '— Select your country —' : '— 国を選択 —'}</option>
+    {all.map((o) => <option value={o.b}>{o.n}</option>)}
+    <option value="other">{en ? 'Other / Not listed' : 'その他・リストにない'}</option>
+  </select>
+
+  <div id="idpResult" class="mt-6 hidden">
+    <div data-verdict="ok" class="hidden rounded-xl border border-green-500/25 bg-green-500/[0.07] p-5">
+      <p class="text-[13px] font-bold text-green-400 tracking-wide mb-2">{en ? '✓ YOU CAN RIDE' : '✓ 乗れます'}</p>
+      <p class="text-[13px] text-white/70 leading-[1.9]" set:html={en
+        ? 'Bring these 3 items: <strong>① IDP (1949 Geneva Convention) with Category A</strong> ② your home-country license (original) ③ passport. No Category A on the IDP = no chopper — but the e-bike needs no license at all.'
+        : '次の3点をご持参ください: <strong>① IDP（1949年ジュネーブ条約様式・Category A記載必須）</strong> ② 母国の運転免許証（原本） ③ パスポート。IDPにCategory Aが無い場合チョッパーは不可ですが、E-BIKEは免許不要で乗れます。'} />
+    </div>
+    <div data-verdict="tr" class="hidden rounded-xl border border-yellow-500/25 bg-yellow-500/[0.07] p-5">
+      <p class="text-[13px] font-bold text-yellow-400 tracking-wide mb-2">{en ? '△ TRANSLATION REQUIRED' : '△ 翻訳文が必要'}</p>
+      <p class="text-[13px] text-white/70 leading-[1.9]" set:html={en
+        ? 'Your country’s IDP is not valid in Japan, but you can ride with: <strong>① your home license (original) + ② an official Japanese translation (JAF)</strong> + ③ passport. The license must cover large motorcycles.'
+        : 'IDPは日本では無効ですが、<strong>①母国免許（原本）＋②公式日本語翻訳文（JAF発行）</strong>＋③パスポートで乗車可能です。大型二輪相当の免許区分が必要です。'} />
+    </div>
+    <div data-verdict="ng" class="hidden rounded-xl border border-brand/40 bg-brand/[0.08] p-5">
+      <p class="text-[13px] font-bold text-brand tracking-wide mb-2">{en ? '✕ CHOPPER NOT AVAILABLE' : '✕ チョッパーは不可'}</p>
+      <p class="text-[13px] text-white/70 leading-[1.9] mb-4">{en
+        ? 'Japan does not accept IDPs or licenses from this country (Vienna Convention only). But your Kamakura ride isn’t over —'
+        : 'この国の免許・IDPは日本では認められていません（ウィーン条約のみ加盟のため）。でも、鎌倉の旅はここで終わりません——'}</p>
+      <a href={localePath('/ebike', lang)} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-ebike text-white text-[11px] font-bold tracking-[0.15em] uppercase hover:opacity-90 transition-opacity">
+        {en ? 'RIDE THE E-BIKE — NO LICENSE NEEDED' : 'E-BIKEなら免許不要 →'}
+      </a>
+    </div>
+    <div data-verdict="other" class="hidden rounded-xl border border-white/15 bg-white/[0.04] p-5">
+      <p class="text-[13px] font-bold text-white/80 tracking-wide mb-2">{en ? '? LET US CHECK FOR YOU' : '? 確認します'}</p>
+      <p class="text-[13px] text-white/70 leading-[1.9]">{en
+        ? 'Rules vary by country. DM us on Instagram (@beetlerider_japan) with your country and license type — we’ll confirm within a day.'
+        : '国によって扱いが異なります。Instagram（@beetlerider_japan）のDMで国名と免許種別を送ってください。1日以内に確認して返信します。'}</p>
+    </div>
+    <p class="mt-4 text-[10.5px] text-white/30 leading-relaxed">{en
+      ? '* Final confirmation is made at check-in with your physical documents. IDP must be issued in your home country before travel.'
+      : '※最終確認は当日の原本チェックで行います。IDPは渡航前に母国で取得してください。'}</p>
+  </div>
+</div>
+
+<script>
+  const sel = document.getElementById('idpSelect') as HTMLSelectElement | null;
+  const result = document.getElementById('idpResult');
+  sel?.addEventListener('change', () => {
+    if (!result) return;
+    const v = sel.value;
+    if (!v) { result.classList.add('hidden'); return; }
+    result.classList.remove('hidden');
+    result.querySelectorAll('[data-verdict]').forEach((el) => {
+      el.classList.toggle('hidden', el.getAttribute('data-verdict') !== v);
+    });
+  });
+</script>

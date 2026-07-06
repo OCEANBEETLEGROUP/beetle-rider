@@ -1,10 +1,11 @@
 ---
 import type { Lang } from '../i18n/config';
+import { localePath } from '../i18n/config';
 import { useTranslations } from '../i18n/index';
 import CmsImage from './CmsImage.astro';
 
 interface Props {
-  activePage: 'home' | 'chopper' | 'ebike' | 'about';
+  activePage: 'home' | 'chopper' | 'ebike' | 'about' | 'access' | 'faq' | 'touring' | 'journal';
   lang: Lang;
   siteConfig?: {
     instagramChopper?: string;
@@ -157,6 +158,20 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
           <li><a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a></li>
         </ul>
       </div>
+    </div>
+  </div>
+
+  <!-- Site Links -->
+  <div class="border-t border-white/[0.06] px-10 py-5">
+    <div class="max-w-[1200px] mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+      {[
+        { href: localePath('/access', lang), label: 'ACCESS' },
+        { href: localePath('/touring', lang), label: 'MULTI-DAY / TOURING' },
+        { href: localePath('/faq', lang), label: 'FAQ' },
+        { href: localePath('/journal', lang), label: 'RIDE JOURNAL' },
+      ].map((l) => (
+        <a href={l.href} class="text-[10.5px] font-bold tracking-[0.18em] uppercase text-white/35 hover:text-white transition-colors">{l.label}</a>
+      ))}
     </div>
   </div>
 

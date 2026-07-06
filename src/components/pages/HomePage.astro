@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getLangFromUrl, localePath } from '../../i18n/config';
 import { useTranslations } from '../../i18n/index';
+import TrustBar from '../../components/TrustBar.astro';
+import Reviews from '../../components/Reviews.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -72,6 +74,8 @@ const t = useTranslations(lang);
       } />
     </div>
   </section>
+
+  <TrustBar lang={lang} variant="home" />
 
   <!-- Section 3: Access Map -->
   <section class="py-16 px-10 bg-deep-red">
@@ -246,6 +250,8 @@ const t = useTranslations(lang);
       </div>
     </div>
   </section>
+
+  <Reviews lang={lang} accent="brand" />
 
   <!-- Access Map v2 styles -->
   <style>
