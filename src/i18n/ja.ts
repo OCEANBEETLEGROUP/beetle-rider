@@ -121,8 +121,8 @@ export default {
   'chopper.fleet.label': 'THE FLEET',
   'chopper.fleet.heading': 'Choose Your Machine.',
 
-  'chopper.route.label': 'YOUR COASTLINE',
-  'chopper.route.heading': 'ROUTE 134 — SHONAN COAST',
+  'chopper.route.label': 'RIDING RADIUS',
+  'chopper.route.heading': '鎌倉から、どこまで行ける？',
 
   'chopper.dest.label': 'Where the Road Takes You',
   'chopper.dest.heading': 'ROUTE 134.',
@@ -137,7 +137,7 @@ export default {
 
   // === CHOPPER Accordion ===
   'chopper.faq.license.title': '大型二輪免許が必要です',
-  'chopper.faq.license.content': '普通二輪免許では乗れません。大型自動二輪免許（排気量制限なし）が必要です。当日、免許証の確認を行います。忘れた場合、乗車をお断りします。例外はありません。<br><br><strong class="text-white/70">外国人の方：</strong>以下の書類が必要です。<br>① IDP（国際運転免許証）— 大型二輪相当の「Aタイプ」の記載が必要<br>② 母国の運転免許証（原本）<br>③ パスポート<br>※ IDPにAタイプの記載がない場合、乗車はできません。',
+  'chopper.faq.license.content': '普通二輪免許では乗れません。大型自動二輪免許（排気量制限なし）が必要です。当日、免許証の確認を行います。忘れた場合、乗車をお断りします。例外はありません。<br><br><strong class="text-white/70">外国人の方：</strong>以下の書類が必要です。<br>① IDP（国際運転免許証）— 大型二輪相当の「Aタイプ」の記載が必要<br>② 母国の運転免許証（原本）<br>③ パスポート<br>※ IDPにAタイプの記載がない場合、乗車はできません。<br><br><strong class="text-white/70">翻訳文で運転できる国・地域：</strong>ドイツ・スイス・台湾・モナコ・エストニア・スロベニアの方は、IDPの代わりに「母国免許（原本）＋公式日本語翻訳文（JAF発行）」で乗車できます。フランス・ベルギーはIDP／翻訳文のどちらでも可。',
   'chopper.faq.alcohol.title': '飲酒後の乗車は厳禁です',
   'chopper.faq.alcohol.content': '飲酒が確認された場合、理由を問わず乗車をお断りします。キャンセル料が発生します。',
   'chopper.faq.weather.title': '雨天時の対応について',
@@ -172,7 +172,7 @@ export default {
   'detail.dayride.note': '車両により料金が異なります',
   'detail.dayride.items': ['ヘルメット・グローブ等貸し出し', '対人・対物賠償保険', '出発前レクチャー', 'おすすめルートマップ'],
   'detail.multiday.name': 'MULTI-DAY',
-  'detail.multiday.desc': '2日以上の長期レンタル。泊まりがけのツーリングに。予約リクエスト制。',
+  'detail.multiday.desc': '2日以上の長期レンタル。箱根・富士・首都高ナイトなど泊まりがけのツーリングに。予約リクエスト制。',
   'detail.multiday.items': ['DAY RIDEの全内容を含む', '長距離ツーリング向け'],
   'detail.multiday.note': '予約リクエスト制 — 承認後に確定',
   'detail.multiday.cta': 'BOOK MULTI-DAY',

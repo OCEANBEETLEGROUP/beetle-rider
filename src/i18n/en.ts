@@ -121,8 +121,8 @@ export default {
   'chopper.fleet.label': 'THE FLEET',
   'chopper.fleet.heading': 'Choose Your Machine.',
 
-  'chopper.route.label': 'YOUR COASTLINE',
-  'chopper.route.heading': 'ROUTE 134 — SHONAN COAST',
+  'chopper.route.label': 'RIDING RADIUS',
+  'chopper.route.heading': 'How Far Can You Go?',
 
   'chopper.dest.label': 'Where the Road Takes You',
   'chopper.dest.heading': 'ROUTE 134.',
@@ -137,7 +137,7 @@ export default {
 
   // === CHOPPER Accordion ===
   'chopper.faq.license.title': 'Large Motorcycle License Required',
-  'chopper.faq.license.content': 'A valid large motorcycle license (unrestricted displacement) is required. License verification will be conducted on the day of your ride. No exceptions.<br><br><strong class="text-white/70">International Riders:</strong> The following documents are required:<br>① IDP (International Driving Permit) — must include "Category A" for large motorcycles<br>② Your home country driver\'s license (original)<br>③ Passport<br>※ Without Category A on your IDP, you cannot ride.',
+  'chopper.faq.license.content': 'A valid large motorcycle license (unrestricted displacement) is required. License verification will be conducted on the day of your ride. No exceptions.<br><br><strong class="text-white/70">International Riders:</strong> The following documents are required:<br>① IDP (International Driving Permit) — must include "Category A" for large motorcycles<br>② Your home country driver\'s license (original)<br>③ Passport<br>※ Without Category A on your IDP, you cannot ride.<br><br><strong class="text-white/70">Riding with a translation instead of an IDP:</strong> Riders from Germany, Switzerland, Taiwan, Monaco, Estonia and Slovenia can ride with their home license (original) + an official Japanese translation (issued by JAF). France and Belgium may use either an IDP or a translation.',
   'chopper.faq.alcohol.title': 'Absolutely No Drinking & Riding',
   'chopper.faq.alcohol.content': 'If alcohol is detected, your ride will be cancelled immediately. Cancellation fees apply.',
   'chopper.faq.weather.title': 'Weather Cancellations',
@@ -172,7 +172,7 @@ export default {
   'detail.dayride.note': 'Price varies by vehicle',
   'detail.dayride.items': ['Helmet & gloves available', 'Liability insurance included', 'Pre-ride briefing', 'Recommended route map'],
   'detail.multiday.name': 'MULTI-DAY',
-  'detail.multiday.desc': '2+ day rentals for extended touring. Request-based booking.',
+  'detail.multiday.desc': '2+ day rentals for touring — Hakone, Fuji, Shuto night runs. Request-based booking.',
   'detail.multiday.items': ['Everything in DAY RIDE', 'For long-distance touring'],
   'detail.multiday.note': 'Request-based — confirmed after approval',
   'detail.multiday.cta': 'BOOK MULTI-DAY',

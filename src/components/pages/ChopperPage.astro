@@ -206,118 +206,120 @@ const chopperSchema = [
     <div class="max-w-[1200px] mx-auto text-center">
       <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t(lang, 'chopper.route.label')}</p>
       <h2 class="font-[family-name:var(--font-heading)] text-[clamp(20px,3.5vw,36px)] text-white tracking-[-0.02em] mb-16">{t(lang, 'chopper.route.heading')}</h2>
-      <!-- Route 134 Map v2 — 相模湾の実地形・ロードリボン・実距離入り -->
+      <!-- Riding Radius v3 — 鎌倉ハブのレーダー式レンジマップ（30分/1時間/2時間圏） -->
       <div class="w-full mx-auto max-md:overflow-x-auto max-md:-mx-2 max-md:px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-md:min-w-[640px]" aria-label="Route 134 coastal riding map, Sagami Bay">
+        <svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[860px] mx-auto block max-md:min-w-[640px]" aria-label="Riding radius from Kamakura: 30 min, 1 hour and 2 hour zones">
           <defs>
-            <filter id="rmGlow" x="-80%" y="-80%" width="260%" height="260%">
+            <filter id="rrGlow" x="-80%" y="-80%" width="260%" height="260%">
               <feGaussianBlur stdDeviation="4" result="b"/>
               <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
-            <linearGradient id="rmWater" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#ffffff" stop-opacity="0.03"/>
-              <stop offset="1" stop-color="#ffffff" stop-opacity="0.006"/>
-            </linearGradient>
+            <radialGradient id="rrSweep" gradientUnits="userSpaceOnUse" cx="430" cy="330" r="310">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.07"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
           </defs>
 
-          <!-- 海（相模湾） -->
-          <path class="rm-fade rm-d1" d="M -20,262 C 120,268 240,274 330,278 C 420,282 470,280 520,274 C 548,270 562,266 578,266 C 618,270 648,278 676,288 C 702,298 722,312 742,328 C 772,352 798,374 812,395 L 812,400 L -20,400 Z" fill="url(#rmWater)"/>
-          <path class="rm-coast" d="M -20,262 C 120,268 240,274 330,278 C 420,282 470,280 520,274 C 548,270 562,266 578,266 C 618,270 648,278 676,288 C 702,298 722,312 742,328 C 772,352 798,374 812,395"/>
+          <!-- クロスヘア + レーダースイープ -->
+          <line class="rr-cross" x1="430" y1="16" x2="430" y2="604"/>
+          <line class="rr-cross" x1="70" y1="330" x2="790" y2="330"/>
+          <path d="M430,330 L430,20 A310,310 0 0 1 585,62 Z" fill="url(#rrSweep)" opacity="0.6">
+            <animateTransform attributeName="transform" type="rotate" from="0 430 330" to="360 430 330" dur="18s" repeatCount="indefinite"/>
+          </path>
 
-          <!-- 夕陽アーチ + 富士山 -->
-          <g class="rm-fade rm-d2">
-            <path d="M 18,252 A 78,78 0 0 1 174,252" fill="none" stroke="white" stroke-opacity="0.05" stroke-width="2"/>
-            <path d="M 22,252 Q 88,168 96,168 Q 104,168 168,252" fill="none" stroke="white" stroke-opacity="0.15" stroke-width="2"/>
-            <path d="M 82,191 l 4.6,-5.5 4.6,5.5 4.6,-5.5 4.6,5.5" fill="none" stroke="white" stroke-opacity="0.22" stroke-width="1.3"/>
-            <text class="rm-t rm-micro" x="96" y="156" text-anchor="middle">MT. FUJI 3,776M</text>
+          <!-- レンジリング -->
+          <circle class="rr-ring" cx="430" cy="330" r="110"/>
+          <circle class="rr-ring rr-ring--2" cx="430" cy="330" r="210"/>
+          <circle class="rr-ring rr-ring--3" cx="430" cy="330" r="310"/>
+          <g class="rr-fade rr-d2">
+            <text class="rr-t rr-ringlabel" x="532" y="378">30 MIN</text>
+            <text class="rr-t rr-ringlabel" x="622" y="421">1 HOUR</text>
+            <text class="rr-t rr-ringlabel" x="713" y="463">2 HOURS</text>
+            <text class="rr-t rr-zone" x="317" y="219" text-anchor="middle">DAY RIDE</text>
+            <text class="rr-t rr-zone rr-zone--red" x="205" y="202" text-anchor="middle">MULTI-DAY ZONE</text>
           </g>
 
-          <!-- 波 -->
-          <g class="rm-wave rm-fade rm-d2">
-            <path d="M 190,330 h 48 M 202,340 h 44 M 194,350 h 36"/>
-            <path d="M 380,348 h 44 M 392,358 h 38"/>
-            <path d="M 560,340 h 44 M 572,350 h 38"/>
-            <path d="M 700,362 h 40 M 712,372 h 32"/>
+          <!-- スポーク（白=日帰り / 赤=連泊・ツーリング対象） -->
+          <path class="rr-spoke" pathLength="1" style="--d:.3s" d="M430,330 L367,347"/>
+          <path class="rr-spoke" pathLength="1" style="--d:.35s" d="M430,330 L475,390"/>
+          <path class="rr-spoke" pathLength="1" style="--d:.4s" d="M430,330 L466,465"/>
+          <path class="rr-spoke" pathLength="1" style="--d:.45s" d="M430,330 L526,445"/>
+          <path class="rr-spoke" pathLength="1" style="--d:.5s" d="M430,330 L234,372"/>
+          <path class="rr-spoke rr-spoke--red" pathLength="1" style="--d:.55s" d="M430,330 L536,178"/>
+          <path class="rr-spoke rr-spoke--red" pathLength="1" style="--d:.65s" d="M430,330 L585,62"/>
+          <path class="rr-spoke rr-spoke--red" pathLength="1" style="--d:.75s" d="M430,330 L178,412"/>
+          <path class="rr-spoke rr-spoke--red" pathLength="1" style="--d:.85s" d="M430,330 L131,250"/>
+          <path class="rr-spoke rr-spoke--red rr-spoke--faint" pathLength="1" style="--d:.95s" d="M430,330 L167,494"/>
+
+          <!-- 日帰りノード -->
+          <g class="rr-fade rr-d3">
+            <circle class="rr-node" cx="367" cy="347" r="4"/>
+            <text class="rr-t rr-town" x="351" y="326" text-anchor="end">ENOSHIMA</text>
+            <text class="rr-t rr-time" x="351" y="342" text-anchor="end">15 MIN</text>
+            <circle class="rr-node" cx="475" cy="390" r="4"/>
+            <text class="rr-t rr-town" x="489" y="394">ZUSHI · HAYAMA</text>
+            <text class="rr-t rr-time" x="489" y="410">15–20 MIN</text>
+            <circle class="rr-node" cx="466" cy="465" r="3"/>
+            <text class="rr-t rr-time" x="466" y="486" text-anchor="middle">MIURA · 45 MIN</text>
+            <circle class="rr-node" cx="526" cy="445" r="4"/>
+            <text class="rr-t rr-town" x="541" y="449">YOKOSUKA</text>
+            <text class="rr-t rr-time" x="541" y="465">40 MIN</text>
+            <circle class="rr-node" cx="234" cy="372" r="4"/>
+            <text class="rr-t rr-town" x="222" y="368" text-anchor="end">ODAWARA</text>
+            <text class="rr-t rr-time" x="222" y="384" text-anchor="end">60 MIN</text>
           </g>
 
-          <!-- HAKONE 支線（ODAWARAから内陸へ・山はFUJIに一本化） -->
-          <g class="rm-fade rm-d3">
-            <path d="M 140,256 C 116,242 90,230 62,220" fill="none" stroke="white" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="5 5"/>
-            <text class="rm-t rm-town" x="50" y="208" text-anchor="middle">HAKONE</text>
-            <text class="rm-t rm-dist" x="118" y="246">45 KM</text>
-          </g>
+          <!-- 連泊・ツーリングノード（クリックで /touring へ） -->
+          <a href={localePath('/touring', lang)} aria-label="Multi-day touring">
+            <g class="rr-fade rr-d3">
+              <circle class="rr-node--red" cx="536" cy="178" r="5"/>
+              <text class="rr-t rr-town rr-town--red" x="551" y="174">YOKOHAMA</text>
+              <text class="rr-t rr-time" x="551" y="190">40 MIN · NIGHT RUN</text>
+              <circle class="rr-node--red" cx="585" cy="62" r="6" filter="url(#rrGlow)"/>
+              <text class="rr-t rr-city" x="600" y="58">TOKYO</text>
+              <text class="rr-t rr-time" x="600" y="76">SHUTO EXPWY · 70 MIN</text>
+              <path d="M150,392 l9,-12 7,8 6,-10 9,14" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1.5"/>
+              <circle class="rr-node--red" cx="178" cy="412" r="5" filter="url(#rrGlow)"/>
+              <text class="rr-t rr-town rr-town--red" x="178" y="436" text-anchor="middle">HAKONE</text>
+              <text class="rr-t rr-time" x="178" y="452" text-anchor="middle">90 MIN · ONSEN</text>
+              <path d="M104,248 Q129,214 131,214 Q133,214 158,248" fill="none" stroke="white" stroke-opacity="0.28" stroke-width="1.6"/>
+              <path d="M120,234 l4,-5 4,5 4,-5 4,5" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1.1"/>
+              <circle class="rr-node--red" cx="131" cy="250" r="5" filter="url(#rrGlow)"/>
+              <text class="rr-t rr-town rr-town--red" x="131" y="282" text-anchor="middle">MT. FUJI</text>
+              <text class="rr-t rr-time" x="131" y="298" text-anchor="middle">2 HRS · OVERNIGHT</text>
+              <circle class="rr-node--red" cx="167" cy="494" r="4" opacity="0.6"/>
+              <text class="rr-t rr-town rr-town--red" x="181" y="498" opacity="0.75">IZU · SHIZUOKA</text>
+              <text class="rr-t rr-time" x="181" y="514">OVERNIGHT</text>
+            </g>
+          </a>
 
-          <!-- ROUTE 134 ロードリボン（casing + core 二層） -->
-          <path class="rm-casing" d="M -10,252 C 120,258 240,264 330,268 C 420,272 468,270 520,264 C 546,260 562,256 578,256 C 616,260 646,268 674,278 C 700,288 720,302 740,318 C 764,338 786,356 800,370"/>
-          <path class="route-map__road" d="M -10,252 C 120,258 240,264 330,268 C 420,272 468,270 520,264 C 546,260 562,256 578,256 C 616,260 646,268 674,278 C 700,288 720,302 740,318 C 764,338 786,356 800,370"/>
-
-          <!-- YOKOSUKA 支線 -->
-          <path class="route-map__branch" d="M 674,278 C 730,240 780,196 852,150"/>
-
-          <!-- 距離チップ -->
-          <g class="rm-fade rm-d4">
-            <text class="rm-t rm-dist" x="232" y="242" text-anchor="middle">30 KM</text>
-            <text class="rm-t rm-dist" x="452" y="244" text-anchor="middle">7 KM</text>
-            <text class="rm-t rm-micro" x="462" y="298" text-anchor="middle">SHICHIRIGAHAMA</text>
+          <!-- ハブ: KAMAKURA BASE -->
+          <g filter="url(#rrGlow)">
+            <path class="route-map__star" transform="translate(430,330)" d="M 0,-13 L 3.6,-4 L 13,-4 L 5.6,2.2 L 8.4,11.4 L 0,6 L -8.4,11.4 L -5.6,2.2 L -13,-4 L -3.6,-4 Z"/>
           </g>
-
-          <!-- ODAWARA -->
-          <g class="rm-fade rm-d3">
-            <circle class="rm-node" cx="140" cy="256" r="6.5"/>
-            <circle class="rm-node-core" cx="140" cy="256" r="2.6"/>
-            <text class="rm-t rm-town" x="140" y="292" text-anchor="middle">ODAWARA</text>
-          </g>
-
-          <!-- ENOSHIMA（島シルエット＋橋） -->
-          <g class="rm-fade rm-d3">
-            <line x1="329" y1="280" x2="331" y2="308" stroke="white" stroke-opacity="0.22" stroke-width="1.2" stroke-dasharray="3 3"/>
-            <path d="M 314,322 Q 321,308 332,306 Q 345,305 351,320 Q 337,325 314,322 Z" fill="white" fill-opacity="0.1"/>
-            <line x1="334" y1="306" x2="334" y2="297" stroke="white" stroke-opacity="0.3" stroke-width="1.2"/>
-            <circle class="rm-node" cx="330" cy="268" r="6.5"/>
-            <circle class="rm-node-core" cx="330" cy="268" r="2.6"/>
-            <text class="rm-t rm-town" x="330" y="246" text-anchor="middle">ENOSHIMA</text>
-          </g>
-
-          <!-- KAMAKURA — BEETLE RIDER BASE -->
-          <text class="rm-t rm-kamakura" x="578" y="208" text-anchor="middle">KAMAKURA</text>
-          <g class="rm-fade rm-d2">
-            <rect x="514" y="218" width="128" height="18" rx="9" fill="var(--color-brand)"/>
-            <text class="rm-t rm-chip" x="578" y="230.5" text-anchor="middle">BEETLE RIDER — BASE</text>
-          </g>
-          <g filter="url(#rmGlow)">
-            <path class="route-map__star" transform="translate(578,256)" d="M 0,-13 L 3.6,-4 L 13,-4 L 5.6,2.2 L 8.4,11.4 L 0,6 L -8.4,11.4 L -5.6,2.2 L -13,-4 L -3.6,-4 Z"/>
-          </g>
-          <circle cx="578" cy="256" r="15" fill="none" stroke="var(--color-brand)" stroke-opacity="0.45" stroke-width="1.5"/>
-          <circle cx="578" cy="256" r="22" fill="none" stroke="var(--color-brand)" stroke-width="1.2" opacity="0.25">
-            <animate attributeName="r" from="17" to="38" dur="2.6s" repeatCount="indefinite"/>
+          <circle cx="430" cy="330" r="16" fill="none" stroke="var(--color-brand)" stroke-opacity="0.45" stroke-width="1.5"/>
+          <circle cx="430" cy="330" r="24" fill="none" stroke="var(--color-brand)" stroke-width="1.2" opacity="0.25">
+            <animate attributeName="r" from="18" to="42" dur="2.6s" repeatCount="indefinite"/>
             <animate attributeName="opacity" from="0.3" to="0" dur="2.6s" repeatCount="indefinite"/>
           </circle>
-
-          <!-- ZUSHI / HAYAMA / YOKOSUKA -->
-          <g class="rm-fade rm-d3">
-            <circle class="rm-node" cx="674" cy="278" r="6.5"/>
-            <circle class="rm-node-core" cx="674" cy="278" r="2.6"/>
-            <text class="rm-t rm-town" x="690" y="306">ZUSHI</text>
-            <circle class="rm-node" cx="740" cy="318" r="6.5"/>
-            <circle class="rm-node-core" cx="740" cy="318" r="2.6"/>
-            <text class="rm-t rm-town" x="758" y="344">HAYAMA</text>
-            <circle cx="852" cy="150" r="3.5" fill="white" fill-opacity="0.4"/>
-            <text class="rm-t rm-town" x="864" y="146">YOKOSUKA</text>
-            <text class="rm-t rm-micro" x="864" y="162">TOKYO BAY SIDE</text>
+          <text class="rr-t rr-kamakura" x="406" y="366" text-anchor="end">KAMAKURA</text>
+          <g class="rr-fade rr-d2">
+            <rect x="272" y="374" width="132" height="17" rx="8.5" fill="var(--color-brand)"/>
+            <text class="rr-t rr-chip" x="338" y="386" text-anchor="middle">BEETLE RIDER — BASE</text>
           </g>
 
-          <!-- 海域ウォーターマーク・コンパス・スケール -->
-          <text class="rm-t rm-bay" x="470" y="378" text-anchor="middle">SAGAMI BAY</text>
-          <g class="rm-fade rm-d4">
-            <g transform="translate(948,58)">
+          <!-- 凡例 + コンパス -->
+          <g class="rr-fade rr-d4">
+            <line x1="60" y1="588" x2="82" y2="588" stroke="var(--color-brand)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.7"/>
+            <text class="rr-t rr-legend" x="90" y="591">MULTI-DAY / TOURING TARGET</text>
+            <line x1="330" y1="588" x2="352" y2="588" stroke="white" stroke-opacity="0.4" stroke-width="2"/>
+            <text class="rr-t rr-legend" x="360" y="591">DAY RIDE</text>
+            <text class="rr-t rr-legend" x="840" y="591" text-anchor="end">RIDE TIMES FROM KAMAKURA BASE</text>
+            <g transform="translate(846,54)">
               <circle r="13" fill="none" stroke="white" stroke-opacity="0.18"/>
               <path d="M 0,-8 L 3,3.5 L 0,1.6 L -3,3.5 Z" fill="var(--color-brand)" fill-opacity="0.8"/>
-              <text class="rm-t rm-micro" y="-19" text-anchor="middle">N</text>
+              <text class="rr-t rr-legend" y="-19" text-anchor="middle">N</text>
             </g>
-            <line x1="48" y1="382" x2="121" y2="382" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
-            <line x1="48" y1="378" x2="48" y2="386" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
-            <line x1="121" y1="378" x2="121" y2="386" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
-            <text class="rm-t rm-micro" x="130" y="386">5 KM</text>
           </g>
         </svg>
       </div>
@@ -407,7 +409,7 @@ const chopperSchema = [
     </div>
   </section>
 
-  <Reviews lang={lang} accent="brand" />
+  <Reviews lang={lang} accent="brand" product="chopper" />
 
   <!-- Floating CTA -->
   <button class="fixed bottom-8 right-8 max-md:bottom-5 max-md:right-5 z-[90] inline-flex items-center gap-2.5 px-7 py-3.5 max-md:px-[22px] max-md:py-3 rounded-full bg-brand text-white text-xs max-md:text-[11px] font-bold tracking-[0.15em] uppercase shadow-[0_4px_16px_rgba(195,13,35,0.35),0_2px_8px_rgba(0,0,0,0.2)] cursor-pointer border-none transition-all duration-400 hover:bg-[#a80b1e] hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(195,13,35,0.45),0_4px_12px_rgba(0,0,0,0.25)]" id="floatingCta">
@@ -431,60 +433,60 @@ const chopperSchema = [
       50% { transform: translateY(6px); opacity: 0.8; }
     }
 
-    /* Route 134 SVG Map v2 */
-    .rm-coast { fill: none; stroke: #fff; stroke-opacity: 0.24; stroke-width: 1.6; }
-    .rm-wave path { stroke: #fff; stroke-opacity: 0.055; stroke-width: 1; fill: none; }
+    /* Riding Radius v3 — レーダー式レンジマップ */
+    .rr-ring { fill: none; stroke: #fff; stroke-opacity: 0.11; stroke-width: 1; stroke-dasharray: 3 7; }
+    .rr-ring--2 { stroke-opacity: 0.08; }
+    .rr-ring--3 { stroke-opacity: 0.06; }
+    .rr-cross { stroke: #fff; stroke-opacity: 0.045; stroke-width: 1; }
 
-    /* ロードリボン: casing（暗色下地）→ core（ブランド赤）の順で描画 */
-    .rm-casing {
-      fill: none; stroke: #5c0a12; stroke-width: 9; stroke-linecap: round;
-      stroke-dasharray: 1600; stroke-dashoffset: 1600;
-      transition: stroke-dashoffset 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* スポーク: pathLengthで正規化した描画アニメ（--dで時差） */
+    .rr-spoke {
+      fill: none; stroke: rgba(255, 255, 255, 0.16); stroke-width: 1.5; stroke-linecap: round;
+      stroke-dasharray: 1; stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--d, 0.3s);
     }
-    .visible .rm-casing { stroke-dashoffset: 0; }
-    .route-map__road {
-      fill: none; stroke: var(--color-brand); stroke-width: 5.5; stroke-linecap: round;
-      stroke-dasharray: 1600; stroke-dashoffset: 1600;
-      transition: stroke-dashoffset 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s;
-    }
-    .visible .route-map__road { stroke-dashoffset: 0; }
+    .visible .rr-spoke { stroke-dashoffset: 0; }
+    .rr-spoke--red { stroke: var(--color-brand); stroke-opacity: 0.55; stroke-width: 2.4; }
+    .rr-spoke--faint { stroke-opacity: 0.3; stroke-width: 1.8; }
 
-    .route-map__branch {
-      fill: none; stroke: var(--color-brand); stroke-width: 2.5; stroke-linecap: round;
-      stroke-dasharray: 7 7; opacity: 0; transition: opacity 1.2s ease 1.6s;
-    }
-    .visible .route-map__branch { opacity: 0.55; }
-
-    .rm-node { fill: none; stroke: rgba(255,255,255,0.55); stroke-width: 1.5; }
-    .rm-node-core { fill: rgba(255,255,255,0.85); }
+    .rr-node { fill: rgba(255,255,255,0.85); }
+    .rr-node--red { fill: var(--color-brand); }
     .route-map__star {
       fill: var(--color-brand);
       filter: drop-shadow(0 0 8px rgba(195, 13, 35, 0.65));
     }
 
     /* staged fade */
-    .rm-fade { opacity: 0; transition: opacity 0.9s ease; }
-    .visible .rm-fade { opacity: 1; }
-    .visible .rm-d1 { transition-delay: 0.1s; }
-    .visible .rm-d2 { transition-delay: 0.6s; }
-    .visible .rm-d3 { transition-delay: 1.1s; }
-    .visible .rm-d4 { transition-delay: 1.7s; }
+    .rr-fade { opacity: 0; transition: opacity 0.9s ease; }
+    .visible .rr-fade { opacity: 1; }
+    .visible .rr-d2 { transition-delay: 0.7s; }
+    .visible .rr-d3 { transition-delay: 1.0s; }
+    .visible .rr-d4 { transition-delay: 1.6s; }
 
     /* typography */
-    .rm-t { font-family: var(--font-body); fill: #fff; }
-    .rm-town { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; fill-opacity: 0.55; }
-    .rm-dist { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; fill-opacity: 0.35; }
-    .rm-micro { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; fill-opacity: 0.28; }
-    .rm-kamakura { font-family: var(--font-heading); font-size: 22px; letter-spacing: 0.12em; fill-opacity: 0.95; }
-    .rm-chip { font-size: 9px; font-weight: 800; letter-spacing: 0.14em; fill: #fff; }
-    .rm-bay { font-family: var(--font-heading); font-size: 46px; letter-spacing: 0.38em; fill-opacity: 0.05; }
+    .rr-t { font-family: var(--font-body); fill: #fff; }
+    .rr-city { font-family: var(--font-heading); font-size: 16px; letter-spacing: 0.08em; fill-opacity: 0.9; }
+    .rr-town { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; fill-opacity: 0.6; }
+    .rr-town--red { fill-opacity: 0.9; }
+    .rr-time { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; fill-opacity: 0.38; }
+    .rr-ringlabel { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; fill-opacity: 0.3; }
+    .rr-zone { font-family: var(--font-heading); font-size: 11px; letter-spacing: 0.32em; fill-opacity: 0.15; }
+    .rr-zone--red { fill: var(--color-brand); fill-opacity: 0.32; }
+    .rr-kamakura { font-family: var(--font-heading); font-size: 21px; letter-spacing: 0.1em; fill-opacity: 0.95; }
+    .rr-chip { font-size: 9px; font-weight: 800; letter-spacing: 0.14em; fill: #fff; }
+    .rr-legend { font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; fill-opacity: 0.32; }
 
-    /* mobile: min-w 640px + 横スクロール前提でラベル微拡大 */
+    /* 赤ノード(連泊対象)はクリック可能 */
+    a .rr-town--red:hover { fill-opacity: 1; }
+
+    /* mobile: min-w 640px 横スクロール前提でラベル拡大 */
     @media (max-width: 767px) {
-      .rm-town { font-size: 17px; }
-      .rm-dist { font-size: 12px; }
-      .rm-kamakura { font-size: 26px; }
-      .rm-chip { font-size: 10.5px; }
+      .rr-town { font-size: 16px; }
+      .rr-time { font-size: 12px; }
+      .rr-city { font-size: 19px; }
+      .rr-kamakura { font-size: 25px; }
+      .rr-ringlabel { font-size: 12px; }
+      .rr-legend { font-size: 11.5px; }
     }
 
     /* Destination Card Expand — handled by JS inline styles */

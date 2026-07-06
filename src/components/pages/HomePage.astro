@@ -105,107 +105,98 @@ const t = useTranslations(lang);
         </div>
       </div>
       <div class="reveal reveal-delay-2">
-        <!-- Access Map v2 — 相模湾・東京湾の実地形ベース / JR線60分＋ROUTE134 -->
-        <svg viewBox="0 0 560 520" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" aria-label="Access map: 60 minutes from Tokyo to Kamakura">
+        <!-- Access Radius v3 — 東京60分＋ライド圏レーダー -->
+        <svg viewBox="0 0 560 520" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" aria-label="Access radius: 60 minutes from Tokyo, ride range from Kamakura">
           <defs>
             <filter id="hmGlow" x="-80%" y="-80%" width="260%" height="260%">
               <feGaussianBlur stdDeviation="4" result="b"/>
               <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
-            <linearGradient id="hmWater" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#ffffff" stop-opacity="0.035"/>
-              <stop offset="1" stop-color="#ffffff" stop-opacity="0.008"/>
-            </linearGradient>
+            <radialGradient id="arSweep" gradientUnits="userSpaceOnUse" cx="230" cy="330" r="300">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.06"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
           </defs>
 
-          <!-- 海: 相模湾 / 東京湾 -->
-          <path class="hm-fade hm-d1" d="M -20,302 C 60,318 130,332 185,340 C 228,346 262,342 300,336 C 318,340 332,350 344,362 C 356,378 366,404 374,436 C 380,462 383,492 384,530 L -20,530 Z" fill="url(#hmWater)"/>
-          <path class="hm-fade hm-d1" d="M 432,530 C 436,478 442,428 450,388 C 456,356 460,322 456,290 C 452,258 444,226 434,196 C 428,178 434,148 442,118 C 448,96 452,78 454,64 L 600,36 L 600,540 Z" fill="url(#hmWater)"/>
-          <path class="hm-coast" d="M -20,302 C 60,318 130,332 185,340 C 228,346 262,342 300,336 C 318,340 332,350 344,362 C 356,378 366,404 374,436 C 380,462 383,492 384,530"/>
-          <path class="hm-coast" d="M 432,530 C 436,478 442,428 450,388 C 456,356 460,322 456,290 C 452,258 444,226 434,196 C 428,178 434,148 442,118 C 448,96 452,78 454,64"/>
+          <!-- クロスヘア + スイープ -->
+          <line x1="230" y1="24" x2="230" y2="500" stroke="#fff" stroke-opacity="0.045"/>
+          <line x1="16" y1="330" x2="544" y2="330" stroke="#fff" stroke-opacity="0.045"/>
+          <path d="M230,330 L230,34 A296,296 0 0 1 378,78 Z" fill="url(#arSweep)" opacity="0.6">
+            <animateTransform attributeName="transform" type="rotate" from="0 230 330" to="360 230 330" dur="18s" repeatCount="indefinite"/>
+          </path>
 
-          <!-- 波 -->
-          <g class="hm-wave hm-fade hm-d2">
-            <path d="M 48,412 h 44 M 60,421 h 44 M 52,430 h 36"/>
-            <path d="M 168,452 h 44 M 180,461 h 40 M 172,470 h 32"/>
-            <path d="M 268,462 h 40 M 278,471 h 34"/>
-            <path d="M 488,430 h 36 M 498,439 h 30"/>
-          </g>
-
-          <!-- 富士山 -->
+          <!-- レンジリング -->
+          <circle cx="230" cy="330" r="100" fill="none" stroke="#fff" stroke-opacity="0.11" stroke-dasharray="3 7"/>
+          <circle cx="230" cy="330" r="200" fill="none" stroke="#fff" stroke-opacity="0.07" stroke-dasharray="3 7"/>
           <g class="hm-fade hm-d2">
-            <path d="M 16,272 Q 50,224 57,224 Q 64,224 98,272" fill="none" stroke="white" stroke-opacity="0.22" stroke-width="1.6"/>
-            <path d="M 45,238 l 4,-5 4,5 4,-5 4,5" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1.2"/>
-            <text class="hm-t hm-micro" x="57" y="288" text-anchor="middle">MT. FUJI</text>
+            <text class="hm-t hm-micro" x="322" y="374">15 MIN RIDE</text>
+            <text class="hm-t hm-micro" x="413" y="417">90 MIN RIDE</text>
           </g>
 
-          <!-- ROUTE 134 海岸線ライン -->
-          <path class="hm-134" d="M 12,306 C 80,320 140,332 190,338 C 232,344 264,340 300,336 C 320,342 334,352 346,366"/>
-          <text class="hm-t hm-134label" x="118" y="362" transform="rotate(4 118 362)">ROUTE 134</text>
-
-          <!-- 江ノ島 -->
-          <g class="hm-fade hm-d3">
-            <path d="M 232,368 q 8,-9 17,0 q -9,5 -17,0 Z" fill="white" fill-opacity="0.22"/>
-            <line x1="242" y1="362" x2="246" y2="346" stroke="white" stroke-opacity="0.18" stroke-width="1"/>
-            <text class="hm-t hm-small" x="240" y="386" text-anchor="middle">ENOSHIMA</text>
+          <!-- 波・湾ラベル -->
+          <g class="hm-wave hm-fade hm-d2">
+            <path d="M 56,432 h 44 M 68,441 h 40 M 60,450 h 32"/>
+            <path d="M 150,462 h 40 M 160,471 h 34"/>
           </g>
+          <text class="hm-t hm-bay" x="52" y="490">SAGAMI BAY</text>
 
-          <!-- JR横須賀線: TOKYO → YOKOHAMA → KAMAKURA -->
-          <path class="hm-rail" d="M 452,66 C 442,116 430,158 416,196 C 398,244 366,280 336,304 C 324,314 312,324 303,332"/>
-          <path class="hm-rail-dash" d="M 452,66 C 442,116 430,158 416,196 C 398,244 366,280 336,304 C 324,314 312,324 303,332"/>
+          <!-- JR横須賀線: 鎌倉 → 東京 -->
+          <path class="hm-rail" d="M230,330 C 280,255 340,160 430,80"/>
+          <path class="hm-rail-dash" d="M230,330 C 280,255 340,160 430,80"/>
 
           <!-- 60 MIN カプセル -->
           <g class="hm-cap">
-            <g transform="translate(374,238)">
+            <g transform="translate(330,205)">
               <rect x="-40" y="-14" width="80" height="28" rx="14" fill="var(--color-brand)"/>
               <text class="hm-t hm-cap-t" x="0" y="4.5" text-anchor="middle">60 MIN</text>
             </g>
           </g>
 
-          <!-- 都市ノード -->
+          <!-- TOKYO / YOKOHAMA -->
           <g class="hm-fade hm-d2">
-            <circle cx="452" cy="66" r="6" fill="none" stroke="white" stroke-opacity="0.85" stroke-width="1.8"/>
-            <circle cx="452" cy="66" r="2.2" fill="white" fill-opacity="0.9"/>
-            <text class="hm-t hm-city" x="466" y="62">TOKYO</text>
-            <circle cx="352" cy="96" r="3" fill="white" fill-opacity="0.35"/>
-            <text class="hm-t hm-small" x="344" y="88" text-anchor="end">SHIBUYA</text>
-            <circle cx="416" cy="196" r="4" fill="none" stroke="white" stroke-opacity="0.6" stroke-width="1.5"/>
-            <circle cx="416" cy="196" r="1.6" fill="white" fill-opacity="0.7"/>
-            <text class="hm-t hm-city2" x="444" y="188">YOKOHAMA</text>
-          </g>
-          <g class="hm-fade hm-d3">
-            <circle cx="62" cy="316" r="3" fill="white" fill-opacity="0.4"/>
-            <text class="hm-t hm-small" x="66" y="338" text-anchor="middle">ODAWARA</text>
-            <circle cx="322" cy="346" r="2.6" fill="white" fill-opacity="0.4"/>
-            <text class="hm-t hm-small" x="334" y="351">ZUSHI</text>
-            <circle cx="338" cy="372" r="2.6" fill="white" fill-opacity="0.4"/>
-            <text class="hm-t hm-small" x="350" y="378">HAYAMA</text>
-            <circle cx="452" cy="330" r="3" fill="white" fill-opacity="0.4"/>
-            <text class="hm-t hm-small" x="440" y="334" text-anchor="end">YOKOSUKA</text>
+            <circle cx="430" cy="80" r="6.5" fill="none" stroke="white" stroke-opacity="0.85" stroke-width="1.8"/>
+            <circle cx="430" cy="80" r="2.3" fill="white" fill-opacity="0.9"/>
+            <text class="hm-t hm-city" x="446" y="76">TOKYO</text>
+            <text class="hm-t hm-small" x="446" y="94">JR DIRECT — 60 MIN</text>
+            <circle cx="355" cy="190" r="3.5" fill="white" fill-opacity="0.5"/>
+            <text class="hm-t hm-small" x="369" y="194">YOKOHAMA</text>
           </g>
 
-          <!-- KAMAKURA 目的地マーカー -->
-          <g filter="url(#hmGlow)">
-            <circle cx="303" cy="332" r="6" fill="var(--color-brand)"/>
+          <!-- ライド圏スポーク: 江ノ島(白) / 箱根(赤) -->
+          <g class="hm-fade hm-d3">
+            <line x1="230" y1="330" x2="140" y2="355" stroke="white" stroke-opacity="0.16" stroke-width="1.5"/>
+            <circle cx="140" cy="355" r="3.5" fill="white" fill-opacity="0.55"/>
+            <text class="hm-t hm-small" x="128" y="351" text-anchor="end">ENOSHIMA</text>
+            <text class="hm-t hm-micro" x="128" y="367" text-anchor="end">15 MIN RIDE</text>
           </g>
-          <circle cx="303" cy="332" r="12" fill="none" stroke="var(--color-brand)" stroke-opacity="0.55" stroke-width="1.5"/>
-          <circle cx="303" cy="332" r="18" fill="none" stroke="var(--color-brand)" stroke-width="1.2" opacity="0.3">
+          <path class="hm-134" d="M230,330 L52,398"/>
+          <g class="hm-fade hm-d3">
+            <path d="M 36,384 l 8,-11 6,7 5,-9 8,13" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1.4"/>
+            <circle cx="52" cy="398" r="4" fill="var(--color-brand)" filter="url(#hmGlow)"/>
+            <text class="hm-t hm-small" x="62" y="422" text-anchor="middle">HAKONE</text>
+            <text class="hm-t hm-micro" x="62" y="438" text-anchor="middle">90 MIN RIDE</text>
+            <path d="M 44,196 Q 68,164 70,164 Q 72,164 96,196" fill="none" stroke="white" stroke-opacity="0.2" stroke-width="1.4"/>
+            <text class="hm-t hm-micro" x="70" y="212" text-anchor="middle">MT. FUJI — 2 HRS</text>
+          </g>
+
+          <!-- ハブ: KAMAKURA -->
+          <g filter="url(#hmGlow)">
+            <circle cx="230" cy="330" r="6" fill="var(--color-brand)"/>
+          </g>
+          <circle cx="230" cy="330" r="12" fill="none" stroke="var(--color-brand)" stroke-opacity="0.55" stroke-width="1.5"/>
+          <circle cx="230" cy="330" r="18" fill="none" stroke="var(--color-brand)" stroke-width="1.2" opacity="0.3">
             <animate attributeName="r" from="14" to="34" dur="2.6s" repeatCount="indefinite"/>
             <animate attributeName="opacity" from="0.35" to="0" dur="2.6s" repeatCount="indefinite"/>
           </circle>
-          <text class="hm-t hm-kamakura" x="285" y="430" text-anchor="middle">KAMAKURA</text>
-
-          <!-- 海域ラベル -->
-          <text class="hm-t hm-bay" x="52" y="496">SAGAMI BAY</text>
-          <text class="hm-t hm-bay2" x="496" y="306" transform="rotate(78 496 306)">TOKYO BAY</text>
+          <text class="hm-t hm-kamakura" x="230" y="382" text-anchor="middle">KAMAKURA</text>
 
           <!-- 凡例・コンパス -->
           <g class="hm-fade hm-d4">
             <line x1="26" y1="514" x2="46" y2="514" stroke="var(--color-brand)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.8"/>
-            <text class="hm-t hm-legend" x="52" y="517">ROUTE 134 — COASTAL RIDE</text>
-            <line x1="240" y1="514" x2="260" y2="514" stroke="white" stroke-opacity="0.7" stroke-width="2.5"/>
-            <line x1="240" y1="514" x2="260" y2="514" stroke="#2D0A0A" stroke-width="2.5" stroke-dasharray="3 5"/>
-            <text class="hm-t hm-legend" x="266" y="517">JR LINE — 60 MIN FROM TOKYO</text>
+            <text class="hm-t hm-legend" x="52" y="517">CHOPPER RANGE</text>
+            <line x1="180" y1="514" x2="200" y2="514" stroke="white" stroke-opacity="0.7" stroke-width="2.5"/>
+            <line x1="180" y1="514" x2="200" y2="514" stroke="#2D0A0A" stroke-width="2.5" stroke-dasharray="3 5"/>
+            <text class="hm-t hm-legend" x="206" y="517">JR LINE — 60 MIN FROM TOKYO</text>
             <g transform="translate(532,466)">
               <circle r="11" fill="none" stroke="white" stroke-opacity="0.18"/>
               <path d="M 0,-7 L 2.6,3 L 0,1.4 L -2.6,3 Z" fill="var(--color-brand)" fill-opacity="0.8"/>
@@ -251,7 +242,7 @@ const t = useTranslations(lang);
     </div>
   </section>
 
-  <Reviews lang={lang} accent="brand" />
+  <Reviews lang={lang} accent="brand" product="all" />
 
   <!-- Access Map v2 styles -->
   <style>

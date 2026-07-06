@@ -180,7 +180,7 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
     <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
       <span class="text-[11px] text-white/20">{t('footer.copyright')}</span>
       <div class="flex flex-wrap items-center justify-center md:justify-end gap-4">
-        <a href={`mailto:${siteConfig?.email || 'info@beetlerider.com'}`} class="text-[11px] text-white/25 hover:text-white/50 transition-colors underline">{t('footer.contact')}</a>
+        <a href="https://ig.me/m/beetlerider_japan" target="_blank" rel="noopener" class="text-[11px] text-white/25 hover:text-white/50 transition-colors underline">{t('footer.contact')} (Instagram DM)</a>
         <span class="text-white/10">|</span>
         <a href={siteConfig?.privacyPolicyUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">{t('footer.privacy')}</a>
         <a href={siteConfig?.tokushohoUrl || '#'} target="_blank" class="text-[11px] text-white/25 hover:text-white/50 transition-colors">{t('footer.tokushoho')}</a>

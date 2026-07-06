@@ -54,6 +54,11 @@ const all = [
     {all.map((o) => <option value={o.b}>{o.n}</option>)}
     <option value="other">{en ? 'Other / Not listed' : 'その他・リストにない'}</option>
   </select>
+  <p class="mt-3 text-[10.5px] text-white/35 leading-relaxed">
+    {en
+      ? '* License + official Japanese translation (JAF): Germany, Switzerland, Taiwan, Monaco, Estonia, Slovenia. France & Belgium may use either an IDP or a translation.'
+      : '※ 翻訳文（JAF発行）で運転可: ドイツ・スイス・台湾・モナコ・エストニア・スロベニア。フランス・ベルギーはIDP／翻訳文のどちらでも可。'}
+  </p>
 
   <div id="idpResult" class="mt-6 hidden">
     <div data-verdict="ok" class="hidden rounded-xl border border-green-500/25 bg-green-500/[0.07] p-5">

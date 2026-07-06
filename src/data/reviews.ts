@@ -3,6 +3,9 @@
  * 出典: Google Maps「BEETLE RIDER | OCEANBEETLE KAMAKURA」2026-07-06 取得
  * 更新手順: Googleマップのレビューから転記 → rating/count を最新化
  * ※実在レビューのみ掲載すること（創作は絶対禁止）
+ *
+ * TODO(TAKE): チョッパーのレビュー本文2〜3件をGoogleマップから指定してください
+ * （Mapsの遅延読込のため自動取得不可・2026-07-06）。product:'chopper' で追記します。
  */
 
 export const GOOGLE_RATING = 5.0;
@@ -16,25 +19,31 @@ export type Review = {
   rating: number;
   text: string;
   source: 'Google';
+  product: 'ebike' | 'chopper';
 };
 
 export const REVIEWS: Review[] = [
   {
     author: 'Imperial',
     rating: 5,
+    product: 'ebike',
     text: 'Highly recommend for exploring Kamakura! The owner is very nice and helpful. We used the E-bikes and they were a blast to use along the coast of Kamakura to visit all the landmarks. Definitely rent it for the whole day to take your time riding and exploring.',
     source: 'Google',
   },
   {
     author: 'Robert P.',
     rating: 5,
+    product: 'ebike',
     text: 'I was in Japan for two weeks and this was the best experience I did hands down. The e-bikes are super easy to use and is the best way to see the city and surrounding area. Jose was the best, great customer service and super friendly! I could not recommend an experience more.',
     source: 'Google',
   },
   {
     author: 'Sofia P.',
     rating: 5,
+    product: 'ebike',
     text: "We used the E-bikes — such a great option if you're only coming for the day! They really helped us save time since we wanted to visit several places. Plus, they were super comfortable, easy to use, and had the perfect speed for sightseeing. Highly recommend!",
     source: 'Google',
   },
+  // chopperレビューはTAKE指定待ち（上のTODO参照）。追加例:
+  // { author: '...', rating: 5, product: 'chopper', text: '...', source: 'Google' },
 ];
