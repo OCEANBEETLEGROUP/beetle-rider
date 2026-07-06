@@ -182,39 +182,119 @@ const chopperSchema = [
     <div class="max-w-[1200px] mx-auto text-center">
       <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t(lang, 'chopper.route.label')}</p>
       <h2 class="font-[family-name:var(--font-heading)] text-[clamp(20px,3.5vw,36px)] text-white tracking-[-0.02em] mb-16">{t(lang, 'chopper.route.heading')}</h2>
-      <div class="w-full mx-auto">
-        <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
-          <!-- Sagami Bay coastline -->
-          <path class="fill-none stroke-white/[0.06] stroke-1" d="M 0,320 Q 120,310 250,305 Q 400,295 550,290 Q 650,285 750,295 Q 830,310 900,340 L 1000,370" />
-          <!-- Route 134 main road -->
-          <path class="route-map__road" d="M 80,240 C 150,235 200,230 250,225 C 350,215 380,210 420,205 C 480,198 520,195 550,195 C 620,195 650,200 680,210 C 720,222 750,240 780,260" />
-          <!-- Branch road to Yokosuka -->
-          <path class="route-map__branch" d="M 650,205 C 700,185 750,155 850,120" />
-          <!-- Hakone -->
-          <circle class="route-map__dot" cx="80" cy="240" r="5" />
-          <text class="route-map__label" x="80" y="270">HAKONE</text>
-          <!-- Odawara -->
-          <circle class="route-map__dot" cx="250" cy="225" r="5" />
-          <text class="route-map__label" x="250" y="255">ODAWARA</text>
-          <!-- Enoshima -->
-          <circle class="route-map__dot" cx="420" cy="205" r="5" />
-          <text class="route-map__label" x="420" y="190">ENOSHIMA</text>
-          <!-- Kamakura SHOP -->
-          <circle class="route-map__dot route-map__dot--shop" cx="550" cy="195" r="7" />
-          <polygon class="route-map__star" points="550,148 554,160 567,160 556,168 560,180 550,173 540,180 544,168 533,160 546,160" />
-          <text class="route-map__label route-map__label--shop" x="550" y="136">KAMAKURA SHOP</text>
-          <text class="route-map__label" x="550" y="228">KAMAKURA</text>
-          <!-- Zushi -->
-          <circle class="route-map__dot" cx="680" cy="210" r="5" />
-          <text class="route-map__label" x="680" y="240">ZUSHI</text>
-          <!-- Hayama -->
-          <circle class="route-map__dot" cx="780" cy="260" r="5" />
-          <text class="route-map__label" x="780" y="290">HAYAMA</text>
-          <!-- Yokosuka -->
-          <circle class="route-map__dot" cx="850" cy="120" r="5" />
-          <text class="route-map__label" x="850" y="108">YOKOSUKA</text>
-          <!-- Bay label -->
-          <text style="font-family: var(--font-heading); font-size: 16px; fill: rgba(255,255,255,0.08); letter-spacing: 0.3em;" x="350" y="350">SAGAMI BAY</text>
+      <!-- Route 134 Map v2 — 相模湾の実地形・ロードリボン・実距離入り -->
+      <div class="w-full mx-auto max-md:overflow-x-auto max-md:-mx-2 max-md:px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-md:min-w-[640px]" aria-label="Route 134 coastal riding map, Sagami Bay">
+          <defs>
+            <filter id="rmGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="4" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <linearGradient id="rmWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.03"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0.006"/>
+            </linearGradient>
+          </defs>
+
+          <!-- 海（相模湾） -->
+          <path class="rm-fade rm-d1" d="M -20,262 C 120,268 240,274 330,278 C 420,282 470,280 520,274 C 548,270 562,266 578,266 C 618,270 648,278 676,288 C 702,298 722,312 742,328 C 772,352 798,374 812,395 L 812,400 L -20,400 Z" fill="url(#rmWater)"/>
+          <path class="rm-coast" d="M -20,262 C 120,268 240,274 330,278 C 420,282 470,280 520,274 C 548,270 562,266 578,266 C 618,270 648,278 676,288 C 702,298 722,312 742,328 C 772,352 798,374 812,395"/>
+
+          <!-- 夕陽アーチ + 富士山 -->
+          <g class="rm-fade rm-d2">
+            <path d="M 18,252 A 78,78 0 0 1 174,252" fill="none" stroke="white" stroke-opacity="0.05" stroke-width="2"/>
+            <path d="M 22,252 Q 88,168 96,168 Q 104,168 168,252" fill="none" stroke="white" stroke-opacity="0.15" stroke-width="2"/>
+            <path d="M 82,191 l 4.6,-5.5 4.6,5.5 4.6,-5.5 4.6,5.5" fill="none" stroke="white" stroke-opacity="0.22" stroke-width="1.3"/>
+            <text class="rm-t rm-micro" x="96" y="156" text-anchor="middle">MT. FUJI 3,776M</text>
+          </g>
+
+          <!-- 波 -->
+          <g class="rm-wave rm-fade rm-d2">
+            <path d="M 190,330 h 48 M 202,340 h 44 M 194,350 h 36"/>
+            <path d="M 380,348 h 44 M 392,358 h 38"/>
+            <path d="M 560,340 h 44 M 572,350 h 38"/>
+            <path d="M 700,362 h 40 M 712,372 h 32"/>
+          </g>
+
+          <!-- HAKONE 支線（ODAWARAから内陸へ・山はFUJIに一本化） -->
+          <g class="rm-fade rm-d3">
+            <path d="M 140,256 C 116,242 90,230 62,220" fill="none" stroke="white" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="5 5"/>
+            <text class="rm-t rm-town" x="50" y="208" text-anchor="middle">HAKONE</text>
+            <text class="rm-t rm-dist" x="118" y="246">45 KM</text>
+          </g>
+
+          <!-- ROUTE 134 ロードリボン（casing + core 二層） -->
+          <path class="rm-casing" d="M -10,252 C 120,258 240,264 330,268 C 420,272 468,270 520,264 C 546,260 562,256 578,256 C 616,260 646,268 674,278 C 700,288 720,302 740,318 C 764,338 786,356 800,370"/>
+          <path class="route-map__road" d="M -10,252 C 120,258 240,264 330,268 C 420,272 468,270 520,264 C 546,260 562,256 578,256 C 616,260 646,268 674,278 C 700,288 720,302 740,318 C 764,338 786,356 800,370"/>
+
+          <!-- YOKOSUKA 支線 -->
+          <path class="route-map__branch" d="M 674,278 C 730,240 780,196 852,150"/>
+
+          <!-- 距離チップ -->
+          <g class="rm-fade rm-d4">
+            <text class="rm-t rm-dist" x="232" y="242" text-anchor="middle">30 KM</text>
+            <text class="rm-t rm-dist" x="452" y="244" text-anchor="middle">7 KM</text>
+            <text class="rm-t rm-micro" x="462" y="298" text-anchor="middle">SHICHIRIGAHAMA</text>
+          </g>
+
+          <!-- ODAWARA -->
+          <g class="rm-fade rm-d3">
+            <circle class="rm-node" cx="140" cy="256" r="6.5"/>
+            <circle class="rm-node-core" cx="140" cy="256" r="2.6"/>
+            <text class="rm-t rm-town" x="140" y="292" text-anchor="middle">ODAWARA</text>
+          </g>
+
+          <!-- ENOSHIMA（島シルエット＋橋） -->
+          <g class="rm-fade rm-d3">
+            <line x1="329" y1="280" x2="331" y2="308" stroke="white" stroke-opacity="0.22" stroke-width="1.2" stroke-dasharray="3 3"/>
+            <path d="M 314,322 Q 321,308 332,306 Q 345,305 351,320 Q 337,325 314,322 Z" fill="white" fill-opacity="0.1"/>
+            <line x1="334" y1="306" x2="334" y2="297" stroke="white" stroke-opacity="0.3" stroke-width="1.2"/>
+            <circle class="rm-node" cx="330" cy="268" r="6.5"/>
+            <circle class="rm-node-core" cx="330" cy="268" r="2.6"/>
+            <text class="rm-t rm-town" x="330" y="246" text-anchor="middle">ENOSHIMA</text>
+          </g>
+
+          <!-- KAMAKURA — BEETLE RIDER BASE -->
+          <text class="rm-t rm-kamakura" x="578" y="208" text-anchor="middle">KAMAKURA</text>
+          <g class="rm-fade rm-d2">
+            <rect x="514" y="218" width="128" height="18" rx="9" fill="var(--color-brand)"/>
+            <text class="rm-t rm-chip" x="578" y="230.5" text-anchor="middle">BEETLE RIDER — BASE</text>
+          </g>
+          <g filter="url(#rmGlow)">
+            <path class="route-map__star" transform="translate(578,256)" d="M 0,-13 L 3.6,-4 L 13,-4 L 5.6,2.2 L 8.4,11.4 L 0,6 L -8.4,11.4 L -5.6,2.2 L -13,-4 L -3.6,-4 Z"/>
+          </g>
+          <circle cx="578" cy="256" r="15" fill="none" stroke="var(--color-brand)" stroke-opacity="0.45" stroke-width="1.5"/>
+          <circle cx="578" cy="256" r="22" fill="none" stroke="var(--color-brand)" stroke-width="1.2" opacity="0.25">
+            <animate attributeName="r" from="17" to="38" dur="2.6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.3" to="0" dur="2.6s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- ZUSHI / HAYAMA / YOKOSUKA -->
+          <g class="rm-fade rm-d3">
+            <circle class="rm-node" cx="674" cy="278" r="6.5"/>
+            <circle class="rm-node-core" cx="674" cy="278" r="2.6"/>
+            <text class="rm-t rm-town" x="690" y="306">ZUSHI</text>
+            <circle class="rm-node" cx="740" cy="318" r="6.5"/>
+            <circle class="rm-node-core" cx="740" cy="318" r="2.6"/>
+            <text class="rm-t rm-town" x="758" y="344">HAYAMA</text>
+            <circle cx="852" cy="150" r="3.5" fill="white" fill-opacity="0.4"/>
+            <text class="rm-t rm-town" x="864" y="146">YOKOSUKA</text>
+            <text class="rm-t rm-micro" x="864" y="162">TOKYO BAY SIDE</text>
+          </g>
+
+          <!-- 海域ウォーターマーク・コンパス・スケール -->
+          <text class="rm-t rm-bay" x="470" y="378" text-anchor="middle">SAGAMI BAY</text>
+          <g class="rm-fade rm-d4">
+            <g transform="translate(948,58)">
+              <circle r="13" fill="none" stroke="white" stroke-opacity="0.18"/>
+              <path d="M 0,-8 L 3,3.5 L 0,1.6 L -3,3.5 Z" fill="var(--color-brand)" fill-opacity="0.8"/>
+              <text class="rm-t rm-micro" y="-19" text-anchor="middle">N</text>
+            </g>
+            <line x1="48" y1="382" x2="121" y2="382" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
+            <line x1="48" y1="378" x2="48" y2="386" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
+            <line x1="121" y1="378" x2="121" y2="386" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
+            <text class="rm-t rm-micro" x="130" y="386">5 KM</text>
+          </g>
         </svg>
       </div>
     </div>
@@ -320,57 +400,60 @@ const chopperSchema = [
       50% { transform: translateY(6px); opacity: 0.8; }
     }
 
-    /* Route 134 SVG Map */
-    .route-map__road {
-      fill: none;
-      stroke: var(--color-brand);
-      stroke-width: 4;
-      stroke-linecap: round;
-      stroke-dasharray: 2000;
-      stroke-dashoffset: 2000;
+    /* Route 134 SVG Map v2 */
+    .rm-coast { fill: none; stroke: #fff; stroke-opacity: 0.24; stroke-width: 1.6; }
+    .rm-wave path { stroke: #fff; stroke-opacity: 0.055; stroke-width: 1; fill: none; }
+
+    /* ロードリボン: casing（暗色下地）→ core（ブランド赤）の順で描画 */
+    .rm-casing {
+      fill: none; stroke: #5c0a12; stroke-width: 9; stroke-linecap: round;
+      stroke-dasharray: 1600; stroke-dashoffset: 1600;
       transition: stroke-dashoffset 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .visible .route-map__road {
-      stroke-dashoffset: 0;
+    .visible .rm-casing { stroke-dashoffset: 0; }
+    .route-map__road {
+      fill: none; stroke: var(--color-brand); stroke-width: 5.5; stroke-linecap: round;
+      stroke-dasharray: 1600; stroke-dashoffset: 1600;
+      transition: stroke-dashoffset 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s;
     }
+    .visible .route-map__road { stroke-dashoffset: 0; }
 
     .route-map__branch {
-      fill: none;
-      stroke: var(--color-brand);
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-dasharray: 8 6;
-      opacity: 0;
-      transition: opacity 1.5s ease 1s;
+      fill: none; stroke: var(--color-brand); stroke-width: 2.5; stroke-linecap: round;
+      stroke-dasharray: 7 7; opacity: 0; transition: opacity 1.2s ease 1.6s;
     }
-    .visible .route-map__branch {
-      opacity: 0.6;
-    }
+    .visible .route-map__branch { opacity: 0.55; }
 
-    .route-map__dot {
-      fill: rgba(255, 255, 255, 0.7);
-      transition: fill 0.3s;
-    }
-    .route-map__dot:hover {
-      fill: white;
-    }
-    .route-map__dot--shop {
-      fill: var(--color-brand);
-    }
+    .rm-node { fill: none; stroke: rgba(255,255,255,0.55); stroke-width: 1.5; }
+    .rm-node-core { fill: rgba(255,255,255,0.85); }
     .route-map__star {
       fill: var(--color-brand);
-      filter: drop-shadow(0 0 6px rgba(195, 13, 35, 0.6));
+      filter: drop-shadow(0 0 8px rgba(195, 13, 35, 0.65));
     }
-    .route-map__label {
-      font-family: var(--font-body);
-      font-size: 12px;
-      fill: rgba(255, 255, 255, 0.8);
-      text-anchor: middle;
-    }
-    .route-map__label--shop {
-      fill: white;
-      font-weight: 700;
-      font-size: 13px;
+
+    /* staged fade */
+    .rm-fade { opacity: 0; transition: opacity 0.9s ease; }
+    .visible .rm-fade { opacity: 1; }
+    .visible .rm-d1 { transition-delay: 0.1s; }
+    .visible .rm-d2 { transition-delay: 0.6s; }
+    .visible .rm-d3 { transition-delay: 1.1s; }
+    .visible .rm-d4 { transition-delay: 1.7s; }
+
+    /* typography */
+    .rm-t { font-family: var(--font-body); fill: #fff; }
+    .rm-town { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; fill-opacity: 0.55; }
+    .rm-dist { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; fill-opacity: 0.35; }
+    .rm-micro { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; fill-opacity: 0.28; }
+    .rm-kamakura { font-family: var(--font-heading); font-size: 22px; letter-spacing: 0.12em; fill-opacity: 0.95; }
+    .rm-chip { font-size: 9px; font-weight: 800; letter-spacing: 0.14em; fill: #fff; }
+    .rm-bay { font-family: var(--font-heading); font-size: 46px; letter-spacing: 0.38em; fill-opacity: 0.05; }
+
+    /* mobile: min-w 640px + 横スクロール前提でラベル微拡大 */
+    @media (max-width: 767px) {
+      .rm-town { font-size: 17px; }
+      .rm-dist { font-size: 12px; }
+      .rm-kamakura { font-size: 26px; }
+      .rm-chip { font-size: 10.5px; }
     }
 
     /* Destination Card Expand — handled by JS inline styles */
