@@ -21,13 +21,21 @@ const OK = [
   ['IT','Italy'],['ES','Spain'],['PT','Portugal'],['NL','Netherlands'],['LU','Luxembourg'],
   ['AT','Austria'],['DK','Denmark'],['NO','Norway'],['SE','Sweden'],['FI','Finland'],['IS','Iceland'],
   ['PL','Poland'],['CZ','Czechia'],['SK','Slovakia'],['HU','Hungary'],['RO','Romania'],['BG','Bulgaria'],['GR','Greece'],['MT','Malta'],['CY','Cyprus'],
-  ['RU','Russia'],['TR','Türkiye'],['IL','Israel'],['AE','UAE'],['ZA','South Africa'],['EG','Egypt'],['MA','Morocco'],
+  ['RU','Russia'],['TR','Türkiye'],['IL','Israel'],['ZA','South Africa'],['EG','Egypt'],['MA','Morocco'],
   ['AR','Argentina'],['CL','Chile'],['PE','Peru'],['EC','Ecuador'],['DO','Dominican Republic'],['JM','Jamaica'],['TT','Trinidad & Tobago'],
   ['FJ','Fiji'],['PG','Papua New Guinea'],
+  ['JO','Jordan'],['LB','Lebanon'],['GE','Georgia'],['AL','Albania'],['SM','San Marino'],
+  ['TN','Tunisia'],['DZ','Algeria'],['SN','Senegal'],['CI',"Côte d'Ivoire"],['GH','Ghana'],['KE','Kenya'],['ZW','Zimbabwe'],['BW','Botswana'],['NA','Namibia'],['MG','Madagascar'],
+  ['VE','Venezuela'],['PY','Paraguay'],['CU','Cuba'],['BB','Barbados'],
 ];
 const TR = [['DE','Germany'],['CH','Switzerland'],['TW','Taiwan'],['MC','Monaco'],['EE','Estonia'],['SI','Slovenia']];
 const BOTH = [['FR','France'],['BE','Belgium']];
-const NG = [['CN','China (Mainland)'],['VN','Vietnam'],['ID','Indonesia'],['BR','Brazil'],['UA','Ukraine'],['KZ','Kazakhstan'],['MN','Mongolia'],['MM','Myanmar']];
+const NG = [
+  ['CN','China (Mainland)'],['VN','Vietnam'],['ID','Indonesia'],['BR','Brazil'],['MX','Mexico'],
+  ['UA','Ukraine'],['KZ','Kazakhstan'],['UZ','Uzbekistan'],['AZ','Azerbaijan'],['AM','Armenia'],['KG','Kyrgyzstan'],['TM','Turkmenistan'],['BY','Belarus'],['MD','Moldova'],
+  ['LT','Lithuania'],['LV','Latvia'],['HR','Croatia'],['QA','Qatar'],
+  ['MN','Mongolia'],['MM','Myanmar'],
+];
 
 const all = [
   ...OK.map(([c, n]) => ({ c, n, b: 'ok' })),
@@ -84,8 +92,8 @@ const all = [
     <div data-verdict="ng" class="hidden rounded-xl border border-brand/40 bg-brand/[0.08] p-5">
       <p class="text-[13px] font-bold text-brand tracking-wide mb-2">{en ? '✕ CHOPPER NOT AVAILABLE' : '✕ チョッパーは不可'}</p>
       <p class="text-[13px] text-white/70 leading-[1.9] mb-4">{en
-        ? 'Japan does not accept IDPs or licenses from this country (Vienna Convention only). But your Kamakura ride isn’t over —'
-        : 'この国の免許・IDPは日本では認められていません（ウィーン条約のみ加盟のため）。でも、鎌倉の旅はここで終わりません——'}</p>
+        ? 'Japan does not accept IDPs or licenses issued by this country (it is not part of the 1949 Geneva Convention system Japan recognizes). But your Kamakura ride isn’t over —'
+        : 'この国発行の免許・IDPは日本の公道では認められていません（日本が承認する1949年ジュネーブ条約の枠外のため）。でも、鎌倉の旅はここで終わりません——'}</p>
       <a href={localePath('/ebike', lang)} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-ebike text-white text-[11px] font-bold tracking-[0.15em] uppercase hover:opacity-90 transition-opacity">
         {en ? 'RIDE THE E-BIKE — NO LICENSE NEEDED' : 'E-BIKEなら免許不要 →'}
       </a>

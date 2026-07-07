@@ -142,40 +142,47 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
       </dl>
     </div>
 
-    <!-- Right Column: 2-col grid (Store + OCEANBEETLE GROUP) -->
-    <div class="grid grid-cols-2 gap-10">
-      <!-- Sitemap（車両詳細以外の全ページ） -->
-      <div>
-        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">SITEMAP</h4>
-        <ul class="flex flex-col gap-2.5">
-          {[
-            { href: localePath('/', lang), label: 'HOME' },
-            { href: localePath('/ebike', lang), label: 'E-BIKE' },
-            { href: localePath('/ebike-rules', lang), label: 'E-BIKE RULES' },
-            { href: localePath('/chopper', lang), label: 'CHOPPER' },
-            { href: localePath('/hakone', lang), label: 'HAKONE' },
-            { href: localePath('/fuji', lang), label: 'MT. FUJI' },
-            { href: localePath('/night-run', lang), label: 'TOKYO NIGHT RUN' },
-            { href: localePath('/about', lang), label: 'ABOUT' },
-            { href: localePath('/journal', lang), label: 'RIDE JOURNAL' },
-            { href: localePath('/access', lang), label: 'ACCESS' },
-            { href: localePath('/faq', lang), label: 'FAQ' },
-          ].map((l) => (
-            <li><a href={l.href} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{l.label}</a></li>
-          ))}
-        </ul>
+    <!-- Right Column: Sitemap（カテゴリ3列・見やすく） -->
+    <div>
+      <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-6">SITEMAP</h4>
+      <div class="grid grid-cols-3 max-md:grid-cols-2 gap-x-8 gap-y-8">
+        <div>
+          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">RIDE</p>
+          <ul class="flex flex-col gap-2.5">
+            <li><a href={localePath('/chopper', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">CHOPPER</a></li>
+            <li><a href={localePath('/ebike', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">E-BIKE</a></li>
+            <li><a href={localePath('/ebike-rules', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">E-BIKE RULES</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">DESTINATIONS</p>
+          <ul class="flex flex-col gap-2.5">
+            <li><a href={localePath('/hakone', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">HAKONE</a></li>
+            <li><a href={localePath('/fuji', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">MT. FUJI</a></li>
+            <li><a href={localePath('/night-run', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">TOKYO NIGHT RUN</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">INFO</p>
+          <ul class="flex flex-col gap-2.5">
+            <li><a href={localePath('/access', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">ACCESS</a></li>
+            <li><a href={localePath('/faq', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">FAQ</a></li>
+            <li><a href={localePath('/journal', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">RIDE JOURNAL</a></li>
+            <li><a href={localePath('/about', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">ABOUT</a></li>
+          </ul>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <!-- OCEANBEETLE GROUP -->
-      <div>
-        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">{t('footer.group')}</h4>
-        <ul class="flex flex-col gap-2.5">
-          <li><a href="https://oceanbeetle.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE</a></li>
-          <li><a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE ONLINE STORE</a></li>
-          <li><a href="https://www.houndracer.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">HOUND RACER</a></li>
-          <li><a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a></li>
-        </ul>
-      </div>
+  <!-- OCEANBEETLE GROUP（横並び帯へ移設） -->
+  <div class="border-t border-white/[0.06] px-10 py-5">
+    <div class="max-w-[1200px] mx-auto flex flex-wrap items-center justify-center md:justify-start gap-x-7 gap-y-2">
+      <span class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-white/25">{t('footer.group')}</span>
+      <a href="https://oceanbeetle.com/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">OCEANBEETLE</a>
+      <a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">ONLINE STORE</a>
+      <a href="https://www.houndracer.com/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">HOUND RACER</a>
+      <a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a>
     </div>
   </div>
 

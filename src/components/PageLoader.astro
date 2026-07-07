@@ -8,13 +8,23 @@
 </div>
 
 <script>
-  window.addEventListener('load', () => {
+  // 重いメディア(hero動画等)のload完了を待たず、DOM構築後すぐ開く。
+  // 旧実装はwindow.load依存で、低速回線だとローダーが数秒残っていた。
+  let hidden = false;
+  const hide = () => {
+    if (hidden) return;
+    hidden = true;
     const loader = document.getElementById('page-loader');
     if (loader) {
       loader.style.opacity = '0';
       setTimeout(() => {
-        loader.style.visibility = 'hidden';
+        loader.style.display = 'none';
       }, 500);
     }
-  });
+  };
+  const schedule = () => setTimeout(hide, 350);
+  if (document.readyState !== 'loading') schedule();
+  else document.addEventListener('DOMContentLoaded', schedule);
+  window.addEventListener('load', hide);
+  setTimeout(hide, 2500); // セーフティ
 </script>
