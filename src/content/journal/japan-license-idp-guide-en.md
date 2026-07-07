@@ -4,6 +4,7 @@ description: "Which foreign licenses work in Japan, what a 1949 Geneva IDP is, w
 date: 2026-07-05
 lang: en
 cover: /assets/chopper/promo/674A3883.webp
+product: chopper
 category: RIDER TIPS
 ---
 

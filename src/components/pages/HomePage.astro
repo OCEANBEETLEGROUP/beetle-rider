@@ -105,53 +105,67 @@ const t = useTranslations(lang);
         </div>
       </div>
       <div class="reveal reveal-delay-2">
-        <!-- Access v4 — 路線図式ダイアグラム + 実地図（土地勘は本物の地図で） -->
-        <div class="flex flex-col gap-5">
-          <div class="rounded-2xl border border-white/[0.08] bg-white/[0.03] px-6 py-7">
-            <div class="flex items-center">
-              <div class="flex flex-col items-center shrink-0">
-                <span class="w-4 h-4 rounded-full border-[2.5px] border-white"></span>
-                <span class="mt-2 text-[11px] font-bold tracking-[0.1em] text-white font-[family-name:var(--font-heading)]">TOKYO</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center px-2">
-                <span class="text-[8.5px] font-bold tracking-[0.15em] text-white/40 mb-1.5 whitespace-nowrap">JR YOKOSUKA LINE</span>
-                <span class="w-full border-t-2 border-dashed border-white/50"></span>
-                <span class="mt-1.5 px-2.5 py-0.5 rounded-full bg-brand text-white text-[10px] font-bold tracking-[0.12em]">60 MIN</span>
-              </div>
-              <div class="flex flex-col items-center shrink-0">
-                <span class="w-4 h-4 rounded-full bg-white"></span>
-                <span class="mt-2 text-[11px] font-bold tracking-[0.1em] text-white font-[family-name:var(--font-heading)]">KAMAKURA</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center px-2 max-w-[110px]">
-                <span class="text-[8.5px] font-bold tracking-[0.15em] text-white/40 mb-1.5">WALK</span>
-                <span class="w-full border-t-2 border-white/50"></span>
-                <span class="mt-1.5 text-[10px] font-bold tracking-[0.12em] text-white/60">4 MIN</span>
-              </div>
-              <div class="flex flex-col items-center shrink-0">
-                <span class="relative flex w-4 h-4">
-                  <span class="absolute inline-flex h-full w-full rounded-full bg-brand opacity-60 animate-ping"></span>
-                  <span class="relative inline-flex rounded-full w-4 h-4 bg-brand"></span>
-                </span>
-                <span class="mt-2 text-[11px] font-bold tracking-[0.1em] text-brand font-[family-name:var(--font-heading)]">BASE</span>
-              </div>
-            </div>
-            <p class="mt-5 text-[10.5px] text-white/35 font-semibold tracking-[0.08em] text-center">{lang === 'en' ? 'TOKYO STA. → KAMAKURA STA. — DIRECT, NO TRANSFERS' : '東京駅 → 鎌倉駅 直通・乗り換えなし'}</p>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-white/[0.08]">
-            <iframe
-              src={`https://www.google.com/maps?q=Kamakura,+Kanagawa,+Japan&z=9&output=embed&hl=${lang}`}
-              width="100%"
-              height="300"
-              style="border:0; filter: grayscale(1) invert(0.92) contrast(0.9);"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Kamakura location"
-            ></iframe>
-          </div>
-        </div>
+        <!-- Access Map v5 — ミニマル地図（東京・渋谷・横浜・富士・鎌倉） -->
+        <svg viewBox="0 0 560 500" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" aria-label="Kamakura access map — 60 min from Tokyo, 55 min from Shibuya">
+          <!-- 海岸線 -->
+          <path d="M -10,338 C 80,348 160,354 235,346 C 268,342 292,336 305,338 C 318,342 330,352 340,366 C 352,388 360,414 364,444 L 366,505" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5"/>
+          <path d="M 402,505 C 404,452 400,406 392,368 C 384,332 380,296 384,262 C 388,224 396,186 404,150 C 409,128 414,112 418,100" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5"/>
+          <!-- 波 -->
+          <g stroke="#fff" stroke-opacity="0.05" stroke-width="1">
+            <path d="M 76,406 h 42 M 88,415 h 36"/>
+            <path d="M 180,436 h 38 M 190,445 h 30"/>
+          </g>
+          <!-- 富士山 -->
+          <path d="M 48,238 Q 78,196 81,196 Q 84,196 114,238" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1.6"/>
+          <path d="M 70,212 l 4,-5 4,5 4,-5 4,5" fill="none" stroke="#fff" stroke-opacity="0.32" stroke-width="1.2"/>
+          <text x="81" y="256" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="9.5" font-weight="600" letter-spacing="0.12em" style="font-family: var(--font-body)">MT. FUJI</text>
+          <!-- ROUTE 134 -->
+          <path d="M 180,352 C 230,348 268,342 300,336 C 312,339 322,346 330,356" fill="none" stroke="var(--color-brand)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.8"/>
+          <text x="205" y="372" fill="var(--color-brand)" fill-opacity="0.65" font-size="9" font-weight="800" letter-spacing="0.18em" transform="rotate(3 205 372)" style="font-family: var(--font-body)">ROUTE 134</text>
+          <circle cx="252" cy="344" r="2.5" fill="#fff" fill-opacity="0.4"/>
+          <text x="252" y="330" text-anchor="middle" fill="#fff" fill-opacity="0.38" font-size="8.5" font-weight="600" letter-spacing="0.08em" style="font-family: var(--font-body)">ENOSHIMA</text>
+          <!-- JR横須賀線: 東京 → 横浜 → 鎌倉 -->
+          <path d="M 408,96 C 392,150 378,178 366,208 C 346,252 322,292 300,336" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round"/>
+          <!-- 湘南新宿ライン: 渋谷 → 横浜 -->
+          <path d="M 346,58 C 352,110 358,160 366,208" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 5"/>
+          <!-- 60 MIN ピル -->
+          <g transform="translate(344,272)">
+            <rect x="-34" y="-12" width="68" height="24" rx="12" fill="var(--color-brand)"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="11" letter-spacing="0.12em" style="font-family: var(--font-heading)">60 MIN</text>
+          </g>
+          <!-- 都市ノード -->
+          <circle cx="408" cy="96" r="5.5" fill="none" stroke="#fff" stroke-opacity="0.85" stroke-width="1.8"/>
+          <circle cx="408" cy="96" r="2" fill="#fff" fill-opacity="0.9"/>
+          <text x="422" y="92" fill="#fff" fill-opacity="0.9" font-size="14" letter-spacing="0.08em" style="font-family: var(--font-heading)">TOKYO</text>
+          <circle cx="346" cy="58" r="3" fill="#fff" fill-opacity="0.5"/>
+          <text x="334" y="54" text-anchor="end" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">SHIBUYA</text>
+          <text x="334" y="68" text-anchor="end" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">55 MIN</text>
+          <circle cx="366" cy="208" r="3.5" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.5"/>
+          <text x="380" y="212" fill="#fff" fill-opacity="0.55" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">YOKOHAMA</text>
+          <!-- KAMAKURA -->
+          <circle cx="300" cy="336" r="6" fill="var(--color-brand)" filter="drop-shadow(0 0 8px rgba(195,13,35,0.7))"/>
+          <circle cx="300" cy="336" r="12" fill="none" stroke="var(--color-brand)" stroke-opacity="0.5" stroke-width="1.5"/>
+          <circle cx="300" cy="336" r="18" fill="none" stroke="var(--color-brand)" stroke-width="1.2" opacity="0.3">
+            <animate attributeName="r" from="14" to="32" dur="2.6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.35" to="0" dur="2.6s" repeatCount="indefinite"/>
+          </circle>
+          <text x="300" y="378" text-anchor="middle" fill="#fff" fill-opacity="0.95" font-size="16" letter-spacing="0.12em" style="font-family: var(--font-heading)">KAMAKURA</text>
+          <text x="300" y="394" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.75" font-size="8.5" font-weight="800" letter-spacing="0.18em" style="font-family: var(--font-body)">BEETLE RIDER BASE</text>
+          <!-- 海域 -->
+          <text x="104" y="456" fill="#fff" fill-opacity="0.08" font-size="13" letter-spacing="0.3em" style="font-family: var(--font-heading)">SAGAMI BAY</text>
+          <text x="448" y="300" fill="#fff" fill-opacity="0.08" font-size="9.5" font-weight="700" letter-spacing="0.28em" transform="rotate(76 448 300)" style="font-family: var(--font-body)">TOKYO BAY</text>
+          <!-- コンパス -->
+          <g transform="translate(522,64)" opacity="0.6">
+            <circle r="10" fill="none" stroke="#fff" stroke-opacity="0.2"/>
+            <path d="M 0,-6 L 2.3,3 L 0,1.4 L -2.3,3 Z" fill="var(--color-brand)" fill-opacity="0.8"/>
+            <text y="-15" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8" font-weight="600" style="font-family: var(--font-body)">N</text>
+          </g>
+        </svg>
       </div>
     </div>
   </section>
+
+  <Reviews lang={lang} product="all" />
 
   <!-- Section 4: Highlights -->
   <section class="py-16 px-10 bg-deep-red">
@@ -186,10 +200,6 @@ const t = useTranslations(lang);
       </div>
     </div>
   </section>
-
-  <Reviews lang={lang} accent="brand" product="all" />
-
-
 
   <script>
     document.querySelectorAll('video[autoplay]').forEach(v => {

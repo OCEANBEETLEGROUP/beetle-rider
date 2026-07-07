@@ -18,12 +18,18 @@ const logoSrc = {
   corporate: '/assets/logo/OB_CORPORATE.svg',
 }[logo];
 
-// ヘッダーは予約導線の3項目に絞る（Access/FAQ/Journal等はフッター＋文脈リンクから: TAKE方針 2026-07-06）
+// ヘッダー: E-Bike / Chopper / Others(About・Journal・Access・FAQ) — TAKE方針 2026-07-07
 const navItems = [
   { href: localePath('/ebike', lang), label: t('nav.ebike'), key: 'ebike' as const },
   { href: localePath('/chopper', lang), label: t('nav.chopper'), key: 'chopper' as const },
-  { href: localePath('/about', lang), label: t('nav.about'), key: 'about' as const },
 ];
+const otherItems = [
+  { href: localePath('/about', lang), label: t('nav.about'), key: 'about' as const },
+  { href: localePath('/journal', lang), label: 'Journal', key: 'journal' as const },
+  { href: localePath('/access', lang), label: t('nav.access'), key: 'access' as const },
+  { href: localePath('/faq', lang), label: t('nav.faq'), key: 'faq' as const },
+];
+const othersActive = (['about', 'journal', 'access', 'faq'] as string[]).includes(activePage);
 
 const altUrl = alternateUrl(Astro.url);
 // Add ?lang= param to set cookie via middleware
@@ -58,6 +64,28 @@ const enUrl = (lang === 'en' ? Astro.url.pathname : altUrl) + '?lang=en';
         {item.label}
       </a>
     ))}
+    <!-- Others dropdown -->
+    <div class="relative group">
+      <button class:list={[
+        'nav-pill inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-[11px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer border',
+        othersActive ? 'bg-white/15 border-white/25 text-white' : 'bg-white/[0.08] border-white/10 text-white/85 hover:bg-white/15 hover:text-white',
+      ]}>
+        Others
+        <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden group-hover:block group-focus-within:block">
+        <div class="min-w-[170px] rounded-2xl border border-white/12 bg-[rgba(28,5,7,0.95)] backdrop-blur-[16px] py-2 flex flex-col shadow-[0_16px_48px_rgba(0,0,0,0.5)]">
+          {otherItems.map((item) => (
+            <a href={item.href} class:list={[
+              'px-5 py-2.5 text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors',
+              activePage === item.key ? 'text-white' : 'text-white/60 hover:text-white hover:bg-white/[0.06]',
+            ]}>
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
   </nav>
 
   <!-- Language Switch (right-aligned, shown on md+) -->
@@ -88,6 +116,12 @@ const enUrl = (lang === 'en' ? Astro.url.pathname : altUrl) + '?lang=en';
 <div id="mobile-menu" class="fixed inset-0 bg-deep-red z-[99] flex flex-col items-center justify-center gap-6 opacity-0 pointer-events-none transition-opacity duration-400">
   {navItems.map((item) => (
     <a href={item.href} class="font-[family-name:var(--font-heading)] text-[32px] text-white tracking-wide uppercase hover:opacity-60 transition-opacity">
+      {item.label}
+    </a>
+  ))}
+  <div class="w-10 h-px bg-white/15 my-1"></div>
+  {otherItems.map((item) => (
+    <a href={item.href} class="font-[family-name:var(--font-heading)] text-[19px] text-white/60 tracking-wide uppercase hover:text-white transition-colors">
       {item.label}
     </a>
   ))}

@@ -4,6 +4,7 @@ description: "日本で有効な外国免許とは。1949年ジュネーブ条�
 date: 2026-07-05
 lang: ja
 cover: /assets/chopper/promo/674A3883.webp
+product: chopper
 category: RIDER TIPS
 ---
 

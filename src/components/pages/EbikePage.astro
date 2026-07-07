@@ -91,8 +91,8 @@ const ebikeSchema = [
     serviceType: 'E-Bike Rental',
     name: lang === 'en' ? 'Kamakura E-Bike Rental' : '鎌倉 eバイク・電動自転車レンタル',
     description: lang === 'en'
-      ? 'Electric bike (e-bike) rental in Kamakura, Japan. No license required; helmet & insurance included.'
-      : '鎌倉でのeバイク（電動自転車）レンタル。免許不要、ヘルメット・保険込み。',
+      ? 'Electric bike (e-bike) rental in Kamakura, Japan. No license required; free helmets, insurance plans available.'
+      : '鎌倉でのeバイク（電動自転車）レンタル。免許不要、ヘルメット無料貸出・保険プランあり。',
     provider: { '@id': 'https://beetlerider.com/#localbusiness' },
     areaServed: { '@type': 'City', name: 'Kamakura' },
     url: ebikePageUrl,
@@ -291,10 +291,17 @@ const ebikeSchema = [
       <div class="text-center mb-16 reveal">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/40 mb-4">{t(lang, 'ebike.faq.label')}</p>
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,40px)] text-white tracking-tight">{t(lang, 'ebike.faq.heading')}</h2>
-        <a href={localePath('/ebike-rules', lang)} class="inline-flex items-center gap-1.5 mt-4 text-[11px] font-bold tracking-[0.15em] uppercase text-white/60 hover:text-white transition-colors underline underline-offset-4">
-          {lang === 'en' ? 'Full riding rules — 3 min read' : '交通ルールの詳細（3分で読めます）'}
-        </a>
       </div>
+      <!-- 交通ルールへの大型CTA -->
+      <a href={localePath('/ebike-rules', lang)} class="group flex items-center justify-between gap-4 max-w-[560px] mx-auto mb-12 rounded-2xl bg-white px-7 py-5 hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(0,0,0,0.25)] transition-all">
+        <div class="text-left">
+          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-ebike mb-1">RIDE RULES</p>
+          <p class="font-[family-name:var(--font-heading)] text-[15px] md:text-[17px] text-[#1A1A1A] tracking-tight">{lang === 'en' ? 'The riding rules — a 3-minute read' : '交通ルールまとめ — 3分で読めます'}</p>
+        </div>
+        <span class="w-10 h-10 rounded-full bg-ebike flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
       <!-- Accordion -->
       <div class="flex flex-col reveal reveal-delay-1" id="accordion">
         {faqItems.map((item, i) => (

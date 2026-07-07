@@ -39,7 +39,7 @@ const cardBorder = pink ? 'border-white/[0.14] bg-white/[0.06]' : 'border-white/
         {GOOGLE_RATING.toFixed(1)} <span class={starColor}>★</span> on Google.
       </h2>
       <p class="text-[13px] text-white/50 mt-2 font-medium">
-        {en ? `${GOOGLE_REVIEW_COUNT} reviews from riders around the world` : `世界中のライダーから ${GOOGLE_REVIEW_COUNT} 件のレビュー`}
+        {en ? '100+ reviews from riders around the world' : '世界中のライダーから100件以上のレビュー'}
       </p>
     </div>
 
@@ -64,7 +64,7 @@ const cardBorder = pink ? 'border-white/[0.14] bg-white/[0.06]' : 'border-white/
 
     <div class="text-center mt-10 reveal reveal-delay-2">
       <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener" class={`inline-flex items-center gap-2 px-7 py-3 rounded-full border border-white/20 bg-white/[0.05] text-[11px] font-bold tracking-[0.18em] uppercase text-white/85 ${hoverBtn} hover:text-white transition-all`}>
-        {en ? `Read all ${GOOGLE_REVIEW_COUNT} reviews` : `レビュー${GOOGLE_REVIEW_COUNT}件をすべて見る`}
+        {en ? 'Read all reviews on Google' : 'Googleでレビューをすべて見る'}
         <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
       {!REVIEWS_ARE_REAL && (

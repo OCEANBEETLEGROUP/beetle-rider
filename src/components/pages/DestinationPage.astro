@@ -1,0 +1,264 @@
+---
+/**
+ * DestinationPage — 行き先別LP（箱根/富士/首都高ナイトラン）
+ * /touring を廃止し、行き先ごとに魅力を伝える専用ページに分割（TAKE指示 2026-07-07）。
+ * 車両セクションは microCMS getVehicles() 由来 = CMSに車両を追加すれば自動で増える。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CmsImage from '../../components/CmsImage.astro';
+import IdpChecker from '../../components/IdpChecker.astro';
+import { getVehicles } from '../../lib/microcms';
+import { getLangFromUrl, localePath } from '../../i18n/config';
+import { t } from '../../i18n/index';
+
+interface Props {
+  dest: 'hakone' | 'fuji' | 'nightrun';
+}
+const { dest } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const en = lang === 'en';
+
+const { contents: vehiclesRaw } = await getVehicles();
+const vehicles = vehiclesRaw
+  .filter(v => !(v as any).closedAt && (v.status?.[0] || 'active') === 'active')
+  .map(v => ({
+    slug: v.slug, name: v.name, base: v.base,
+    day: v.dayRidePrice, multi: v.multiDayPrice,
+    img: v.thumbnail.url, imgW: v.thumbnail.width, imgH: v.thumbnail.height,
+  }));
+
+type Spot = { name: string; desc: string };
+type D = {
+  metaTitle: string; metaDesc: string;
+  tag: string; title: string; intro: string;
+  hero: string;
+  spots: Spot[];
+  facts: string[];
+  planNote: string;
+};
+
+const DATA: Record<string, { ja: D; en: D }> = {
+  hakone: {
+    ja: {
+      metaTitle: '箱根ツーリング — ターンパイクと温泉｜BEETLE RIDER 鎌倉',
+      metaDesc: '鎌倉からチョッパーで箱根へ。ターンパイクのワインディング、大観山の絶景、タトゥーOKの天山湯治郷。日帰りでも1泊でも。',
+      tag: 'ONSEN · 日帰り / 1泊2日',
+      title: 'HAKONE',
+      intro: '134号線を西へ45km。海と別れて峠に入った瞬間、空気が変わる。ターンパイクを駆け上がれば、眼下に芦ノ湖と相模湾——日帰りで温泉に浸かって帰るもよし、湖畔の宿に一泊するもよし。',
+      hero: '/assets/route/HAKONE.webp',
+      spots: [
+        { name: '箱根ターンパイク', desc: '全長約14km、標高1,000mまで一気に駆け上がる有料ワインディング。V-twinの鼓動と一緒に登る朝のターンパイクは、それだけで来る価値がある。' },
+        { name: '大観山展望台', desc: 'ターンパイクの頂上。富士山と芦ノ湖を一望する定番の絶景ポイント。ライダーの聖地で、週末の朝はバイクが並ぶ。' },
+        { name: '天山湯治郷', desc: '山あいの日帰り温泉。タトゥーがあっても入れる数少ない本格湯治場で、峠を走った身体をほどくのに最高。' },
+        { name: '芦ノ湖', desc: '1泊するなら湖畔へ。夕方の湖沿いは車が減り、朝は鏡のような湖面と富士。連泊レンタルの本領。' },
+      ],
+      facts: ['鎌倉から片道 約45km・90分', 'ターンパイク等の料金所は現金推奨', '日帰りOK・1泊ならMULTI-DAYプラン'],
+      planNote: '日帰りはDAY RIDE、1泊2日はMULTI-DAY（リクエスト制・5日前まで無料キャンセル）で。',
+    },
+    en: {
+      metaTitle: 'Hakone by Chopper — Turnpike & Onsen｜BEETLE RIDER Kamakura',
+      metaDesc: 'Ride from Kamakura to Hakone: the Turnpike climb, Taikanzan lookout, tattoo-friendly Tenzan onsen. Day trip or overnight.',
+      tag: 'ONSEN · DAY TRIP / OVERNIGHT',
+      title: 'HAKONE',
+      intro: 'Forty-five kilometers west on Route 134, then the road leaves the sea and climbs. Up the Turnpike, Lake Ashi and Sagami Bay spread out below — soak in an onsen and ride home, or stay the night by the lake.',
+      hero: '/assets/route/HAKONE.webp',
+      spots: [
+        { name: 'Hakone Turnpike', desc: 'A 14km toll road climbing to 1,000m in one sweep. Taking it at sunrise with a V-twin under you is worth the trip on its own.' },
+        { name: 'Taikanzan Lookout', desc: 'The summit of the Turnpike. Mt. Fuji over Lake Ashi — the classic rider photo, and the weekend morning meeting spot for Japan\'s bike scene.' },
+        { name: 'Tenzan Tojikyo', desc: 'A traditional hot-spring bathhouse in the hills — one of the few that welcomes guests with tattoos. The perfect reset after the passes.' },
+        { name: 'Lake Ashi', desc: 'Staying overnight? Sleep by the lake. Empty shoreline roads at dusk, mirror-flat water and Fuji at dawn. This is what multi-day rentals are for.' },
+      ],
+      facts: ['~45km / 90 min from Kamakura one way', 'Carry cash — some toll gates are cash-only', 'Day trip OK · overnight = MULTI-DAY plan'],
+      planNote: 'Day trip → DAY RIDE. Overnight → MULTI-DAY (request-based, free cancellation until 5 days before).',
+    },
+  },
+  fuji: {
+    ja: {
+      metaTitle: '富士ツーリング 1泊2日｜BEETLE RIDER 鎌倉',
+      metaDesc: '鎌倉からチョッパーで富士五湖へ。河口湖・大石公園、山中湖パノラマ台、本栖湖。富士は泊まった者だけに素顔を見せる。',
+      tag: '1泊2日',
+      title: 'MT. FUJI',
+      intro: '箱根を越えた先に、あの山がいる。夕方に湖畔へ着いて、観光バスが来る前の早朝に湖畔道路を走る——富士は、泊まった者だけに素顔を見せる。',
+      hero: '/assets/route/MT FUJI VIEW.webp',
+      spots: [
+        { name: '河口湖・大石公園', desc: '湖越しの富士の定番。早朝は逆さ富士が狙える。湖北岸の道路は信号が少なく、朝のクルーズに最高。' },
+        { name: '山中湖パノラマ台', desc: '湖と富士を見下ろす高台。夕暮れ時、湖面がオレンジに染まる時間帯が本番。' },
+        { name: '本栖湖', desc: '千円札の裏の富士はここから。五湖で最も静かで、水の透明度は別格。' },
+        { name: '忍野八海', desc: '富士の湧水が池になった集落。走りの合間に、冷たい水と蕎麦で一休み。' },
+      ],
+      facts: ['鎌倉から片道 約100km・2時間〜（箱根経由）', '料金所・山間部は現金推奨', 'MULTI-DAYプラン（1泊2日〜）'],
+      planNote: '富士はMULTI-DAY専用ルート。リクエスト制・5日前まで無料キャンセル。',
+    },
+    en: {
+      metaTitle: 'Mt. Fuji Overnight Tour by Chopper｜BEETLE RIDER Kamakura',
+      metaDesc: 'Ride from Kamakura to the Fuji Five Lakes: Oishi Park, Lake Yamanaka Panorama-dai, Lake Motosu. Fuji shows its true face only to those who stay.',
+      tag: 'OVERNIGHT · 2 DAYS',
+      title: 'MT. FUJI',
+      intro: 'Beyond Hakone, the mountain is waiting. Arrive lakeside by evening, then ride the shoreline at dawn before the tour buses wake up — Fuji shows its true face only to those who stay the night.',
+      hero: '/assets/route/MT FUJI VIEW.webp',
+      spots: [
+        { name: 'Lake Kawaguchi · Oishi Park', desc: 'The classic Fuji-over-the-lake view. Come early for the mirror reflection; the northern shore road is nearly signal-free.' },
+        { name: 'Yamanaka Panorama-dai', desc: 'A hilltop over Lake Yamanaka. Go at dusk, when the lake turns orange under the mountain.' },
+        { name: 'Lake Motosu', desc: 'The Fuji on the ¥1,000 bill is drawn from here. The quietest of the five lakes, with impossibly clear water.' },
+        { name: 'Oshino Hakkai', desc: 'A village of spring-water ponds fed by Fuji itself. Cold water and soba noodles — the perfect mid-ride reset.' },
+      ],
+      facts: ['~100km / 2+ hrs from Kamakura via Hakone', 'Carry cash for tolls and mountain areas', 'MULTI-DAY plan (2 days minimum)'],
+      planNote: 'Fuji is a MULTI-DAY route. Request-based booking, free cancellation until 5 days before.',
+    },
+  },
+  nightrun: {
+    ja: {
+      metaTitle: '首都高ナイトラン — 夜の東京を走る｜BEETLE RIDER 鎌倉',
+      metaDesc: '鎌倉からチョッパーで夜の首都高へ。横浜みなとみらい、湾岸線、C1環状線、銀座の光、レインボーブリッジ、大黒PA。',
+      tag: '夜（ナイトラン）',
+      title: 'SHUTO NIGHT RUN',
+      intro: '日が落ちてから、が本番。横浜の光を横目に湾岸線へ乗れば、そこから先は光のトンネルだ。ビルの谷間を縫うC1、汐留の高架、レインボーブリッジの主塔——夜の東京の速度を決めるのは、右手のスロットルだけ。',
+      hero: '/assets/chopper/promo/2512080008.webp',
+      spots: [
+        { name: 'C1 環状線', desc: '東京の心臓部をぐるりと回る全長14.8kmのループ。ビルの谷間、急なコーナー、トンネルの光——世界中のライダーが憧れる"都市の峠"。' },
+        { name: '銀座・汐留の谷間', desc: '高層ビルのネオンが頭上を流れる高架区間。V-twinの排気音がビルに反響する瞬間は、鳥肌もの。' },
+        { name: 'レインボーブリッジ', desc: '湾の上を渡る夜のハイライト。左手にお台場、右手に東京タワー。橋の主塔が近づいてくる数十秒のために走る。' },
+        { name: '大黒PA', desc: '湾岸線の伝説的な集合スポット。深夜、日本中のカスタムカーとバイクが集まる。コーヒー1杯で東京の車文化が見える。' },
+      ],
+      facts: ['鎌倉→横浜→C1 約60km', 'ETC車載器なし＝料金所は「一般」緑ゲートで現金/カード', '帰りは深夜——連泊レンタル推奨'],
+      planNote: '夜に出て深夜に戻るルートのため、MULTI-DAY（連泊）レンタルを推奨します。',
+    },
+    en: {
+      metaTitle: 'Shuto Expressway Night Run — Tokyo After Dark｜BEETLE RIDER Kamakura',
+      metaDesc: 'Ride the Shuto Expressway at night: Yokohama lights, the Bayshore Route, the C1 loop, Ginza canyons, Rainbow Bridge and Daikoku PA.',
+      tag: 'NIGHT RUN',
+      title: 'SHUTO NIGHT RUN',
+      intro: "It starts when the sun goes down. Past the lights of Yokohama and onto the Bayshore Route, the city becomes a tunnel of light. The C1 loop threading between towers, the elevated curves of Shiodome, the pylons of Rainbow Bridge — after dark, the only thing setting Tokyo's speed is your right hand.",
+      hero: '/assets/chopper/promo/2512080008.webp',
+      spots: [
+        { name: 'The C1 Loop', desc: "A 14.8km circuit around Tokyo's core. Building canyons, tight corners, tunnel light — the 'urban touge' riders around the world dream about." },
+        { name: 'Ginza & Shiodome Canyons', desc: 'Elevated sections where the neon flows overhead. The sound of a V-twin echoing off the towers is something you keep forever.' },
+        { name: 'Rainbow Bridge', desc: 'The night crossing over the bay — Odaiba on your left, Tokyo Tower on your right, and the bridge pylons rushing closer. Worth the whole ride.' },
+        { name: 'Daikoku PA', desc: "The legendary Bayshore meeting spot. After midnight, Japan's custom car and bike culture gathers here. One coffee, front-row seats." },
+      ],
+      facts: ['Kamakura → Yokohama → C1: ~60km', 'No ETC device — use the GREEN (General) toll lanes, cash or card', 'You return late — multi-day rental recommended'],
+      planNote: 'This route goes out at dusk and comes home after midnight — we recommend a MULTI-DAY rental.',
+    },
+  },
+};
+
+const L = DATA[dest][en ? 'en' : 'ja'];
+const faqSubset = ['license', 'toll', 'fuel', 'cancel'] as const;
+const faqItems = faqSubset.map(k => ({
+  title: t(lang, `chopper.faq.${k}.title` as any) as string,
+  content: t(lang, `chopper.faq.${k}.content` as any) as string,
+}));
+---
+
+<BaseLayout title={L.metaTitle} description={L.metaDesc} activePage="chopper" headerLogo="chopper" ogImage={L.hero}>
+  <!-- Hero -->
+  <section class="relative h-[58vh] min-h-[420px] flex items-end overflow-hidden">
+    <div class="absolute inset-0 bg-[#111]">
+      <img src={L.hero} alt={L.title} class="w-full h-full object-cover" loading="eager" />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/25 via-black/30 to-[rgba(45,10,10,0.97)]"></div>
+    <div class="relative z-[2] px-6 md:px-10 pb-12 max-w-[1000px] mx-auto w-full">
+      <p class="text-[11px] font-bold tracking-[0.3em] uppercase text-brand mb-4">{L.tag}</p>
+      <h1 class="font-[family-name:var(--font-heading)] text-[clamp(40px,8vw,92px)] text-white tracking-tight leading-[0.95] mb-5">{L.title}</h1>
+      <p class="font-[family-name:var(--font-heading-jp)] text-[clamp(13px,1.5vw,16px)] text-white/60 font-medium max-w-[620px] leading-[1.9]">{L.intro}</p>
+    </div>
+  </section>
+
+  <!-- Facts bar -->
+  <section class="px-6 md:px-10 py-5 bg-deep-red border-b border-white/[0.06]">
+    <div class="max-w-[1000px] mx-auto flex flex-wrap gap-x-8 gap-y-2">
+      {L.facts.map((f) => (
+        <span class="text-[11px] font-bold tracking-[0.1em] text-white/45 uppercase">✓ {f}</span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Spots -->
+  <section class="py-16 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[1000px] mx-auto">
+      <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-8 reveal">{en ? 'THE SPOTS' : '走る価値のある場所'}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {L.spots.map((s, i) => (
+          <div class={`rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 reveal reveal-delay-${(i % 4) + 1}`}>
+            <p class="font-[family-name:var(--font-heading)] text-[13px] text-brand tracking-[0.12em] mb-2">{String(i + 1).padStart(2, '0')}</p>
+            <h2 class="font-[family-name:var(--font-heading)] text-[18px] text-white tracking-tight mb-2.5">{s.name}</h2>
+            <p class="text-[13px] text-white/55 leading-[1.9]">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Machines (microCMS自動) -->
+  <section class="py-16 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[1000px] mx-auto">
+      <div class="text-center mb-10 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{en ? 'YOUR MACHINE' : 'この旅のマシンを選ぶ'}</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3.5vw,40px)] text-white tracking-tight">{en ? 'Pick Your Ride.' : 'Pick Your Ride.'}</h2>
+        <p class="text-[12px] text-white/40 mt-3">{L.planNote}</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 reveal reveal-delay-1">
+        {vehicles.map((v) => (
+          <a href={localePath('/chopper/' + v.slug, lang)} class="group rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand/50 transition-all">
+            <div class="aspect-[4/3] overflow-hidden bg-[#111]">
+              <CmsImage src={v.img} width={400} naturalWidth={v.imgW} naturalHeight={v.imgH} quality={70} alt={v.name} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-[family-name:var(--font-heading)] text-[14px] text-white tracking-tight">{v.name}</h3>
+              <p class="text-[10px] text-white/40 font-medium mt-0.5 truncate">{v.base}</p>
+              {v.multi && <p class="text-[10.5px] font-bold text-white/70 mt-2">¥{v.multi.toLocaleString()}<span class="text-white/35 font-semibold"> {en ? '/ 2 days' : '/ 2日'}</span></p>}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- License -->
+  <section class="py-12 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[800px] mx-auto">
+      <IdpChecker lang={lang} />
+    </div>
+  </section>
+
+  <!-- FAQ subset -->
+  <section class="pb-24 px-6 md:px-10 bg-deep-red">
+    <div class="max-w-[800px] mx-auto">
+      <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-6">{en ? 'GOOD TO KNOW' : '出発前に'}</p>
+      <div class="flex flex-col">
+        {faqItems.map((item, i) => (
+          <div class:list={['border-b border-white/10 overflow-hidden', i === 0 && 'border-t border-white/10']} data-dfaq-item>
+            <button class="w-full py-5 flex items-center justify-between gap-4 bg-transparent border-none cursor-pointer text-left font-[family-name:var(--font-heading-jp)] text-[15px] max-md:text-sm font-bold text-white tracking-[0.02em] transition-colors duration-300 hover:text-brand" data-dfaq-trigger>
+              <span>{item.title}</span>
+              <div class="shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300" data-dfaq-icon>
+                <svg class="w-4 h-4 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </div>
+            </button>
+            <div class="max-h-0 overflow-hidden transition-[max-height] duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" data-dfaq-body>
+              <div class="pb-5 font-[family-name:var(--font-heading-jp)] text-sm text-white/50 leading-[1.9]" set:html={item.content}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="text-center mt-10">
+        <a href={localePath('/faq', lang)} class="text-[11px] font-bold tracking-[0.18em] uppercase text-white/40 hover:text-white transition-colors underline underline-offset-4">{en ? 'FULL FAQ →' : 'FAQをすべて見る →'}</a>
+      </p>
+    </div>
+  </section>
+
+  <style>
+    [data-dfaq-item].active [data-dfaq-icon] { transform: rotate(45deg); }
+    [data-dfaq-item].active [data-dfaq-body] { max-height: 640px; }
+  </style>
+  <script>
+    document.querySelectorAll('[data-dfaq-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('[data-dfaq-item]');
+        if (!item) return;
+        const wasActive = item.classList.contains('active');
+        document.querySelectorAll('[data-dfaq-item]').forEach((el) => el.classList.remove('active'));
+        if (!wasActive) item.classList.add('active');
+      });
+    });
+  </script>
+</BaseLayout>

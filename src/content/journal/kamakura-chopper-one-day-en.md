@@ -4,6 +4,7 @@ description: "How to spend a full day on a custom chopper in Kamakura, Japan —
 date: 2026-07-06
 lang: en
 cover: /assets/chopper/promo/R0006459.webp
+product: chopper
 category: ROUTE GUIDE
 ---
 
@@ -32,7 +33,7 @@ Cross the causeway onto the island, or keep it simple at the shirasu (whitebait)
 - **West:** Chigasaki and Oiso, where the coast gets emptier and faster. Turn around whenever you're happy.
 - **East:** Zushi and Hayama — quieter coves, the Imperial villa coastline, and fishing-port backroads on the Miura Peninsula.
 
-Feeling ambitious? [Multi-day riders](/en/touring/) push all the way to Hakone or Fuji.
+Feeling ambitious? [Multi-day riders](/en/hakone/) push all the way to Hakone or Fuji.
 
 ## 17:00 — The Golden Hour Run
 

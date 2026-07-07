@@ -4,7 +4,7 @@ import CmsImage from '../../components/CmsImage.astro';
 import TrustBar from '../../components/TrustBar.astro';
 import Reviews from '../../components/Reviews.astro';
 import IdpChecker from '../../components/IdpChecker.astro';
-import { getVehicles, getDestinations } from '../../lib/microcms';
+import { getVehicles } from '../../lib/microcms';
 import { getLangFromUrl, localePath } from '../../i18n/config';
 import { t } from '../../i18n/index';
 
@@ -26,22 +26,7 @@ const vehicles = published.map((v, i) => ({
   status: v.status?.[0] || 'active',
 }));
 
-const { contents: destinationsRaw } = await getDestinations('chopper');
-const destinations = destinationsRaw.map(d => ({
-  img: d.image.url + '?w=800&q=80',
-  imgW: d.image.width,
-  imgH: d.image.height,
-  name: d.name.toUpperCase(),
-  desc: lang === 'en'
-    ? `${d.name} — ${d.description?.split('.')[0] || ''}`
-    : `${d.nameJp} — ${d.descriptionJp?.split('。')[0] || ''}`,
-  time: d.timeFromBase || '',
-  detail: lang === 'en'
-    ? `<strong>${d.name}</strong><br>${d.description || ''}`
-    : `<strong>${d.nameJp}</strong><br>${d.descriptionJp || ''}`,
-}));
-
-const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'toll', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
 const protocolItems = faqKeys.map(key => ({
   title: t(lang, `chopper.faq.${key}.title` as any) as string,
   content: t(lang, `chopper.faq.${key}.content` as any) as string,
@@ -195,32 +180,103 @@ const chopperSchema = [
     <div class="max-w-[1200px] mx-auto text-center">
       <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t(lang, 'chopper.route.label')}</p>
       <h2 class="font-[family-name:var(--font-heading)] text-[clamp(20px,3.5vw,36px)] text-white tracking-[-0.02em] mb-16">{t(lang, 'chopper.route.heading')}</h2>
-      <!-- Route 134 v4 — 聖域バナー + 海岸線ダイアグラム + 連泊誘導 -->
+      <!-- Route 134 v5 — 走行写真 × ミニマル行き先マップ + 連泊誘導 -->
       <div class="mt-2 text-left">
-        <div class="relative rounded-2xl overflow-hidden aspect-[21/9] max-md:aspect-[4/3] mb-10 reveal">
-          <img src="/assets/route/KAMAKURA_BEACH3.webp" alt="Route 134 — Shonan coast" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10"></div>
-          <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[family-name:var(--font-heading)] text-[clamp(100px,20vw,240px)] text-white/[0.12] leading-none select-none pointer-events-none">134</span>
-          <div class="absolute bottom-0 left-0 right-0 p-7 md:p-9">
-            <p class="font-[family-name:var(--font-heading)] text-[clamp(17px,2.4vw,26px)] text-white tracking-tight mb-1">{lang === 'en' ? '7km of coastline. Barely a traffic light.' : '信号の少ない、海沿いの7km。'}</p>
-            <p class="text-[12.5px] text-white/60 font-medium">{lang === 'en' ? 'Sagami Bay on your left. Enoshima ahead. Fuji on the horizon.' : '左手に相模湾、正面に江ノ島、水平線に富士。'}</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch reveal">
+          <!-- 左: 134走行写真 -->
+          <div class="relative rounded-2xl overflow-hidden min-h-[380px] max-md:min-h-[300px]">
+            <img src="/assets/chopper/promo/674A3883.webp" alt="Riding Route 134 along the Shonan coast" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/10"></div>
+            <span class="absolute top-5 right-6 font-[family-name:var(--font-heading)] text-[clamp(56px,7vw,88px)] text-white/[0.16] leading-none select-none pointer-events-none">134</span>
+            <div class="absolute bottom-0 left-0 right-0 p-7">
+              <p class="font-[family-name:var(--font-heading)] text-[clamp(16px,2vw,22px)] text-white tracking-tight mb-1">{lang === 'en' ? '7km of coastline. Barely a traffic light.' : '信号の少ない、海沿いの7km。'}</p>
+              <p class="text-[12px] text-white/60 font-medium">{lang === 'en' ? 'Sagami Bay on your left. Enoshima ahead. Fuji on the horizon.' : '左手に相模湾、正面に江ノ島、水平線に富士。'}</p>
+            </div>
+          </div>
+
+          <!-- 右: 行き先マップ（鎌倉ハブ・134・首都高C1・湾岸線・富士・横浜） -->
+          <div class="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-3 flex items-center">
+            <svg viewBox="0 0 460 560" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-h-[520px] mx-auto" aria-label="Destinations from Kamakura: Route 134, Yokohama, Shuto Expressway C1, Mt. Fuji, Hakone">
+              <!-- 海岸線 -->
+              <path d="M -10,470 C 60,468 120,452 175,438 C 200,431 215,428 228,432 C 244,438 256,448 264,462 C 276,484 284,512 288,545" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5"/>
+              <path d="M 322,545 C 318,500 310,440 300,380 C 293,330 289,272 293,225 C 296,180 304,140 316,105 C 322,88 330,72 338,60" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5"/>
+              <!-- ROUTE 134 -->
+              <path d="M 40,462 C 95,455 150,442 200,431 C 216,435 228,441 238,450" fill="none" stroke="var(--color-brand)" stroke-width="3" stroke-linecap="round" stroke-opacity="0.85"/>
+              <text x="86" y="480" fill="var(--color-brand)" fill-opacity="0.7" font-size="9" font-weight="800" letter-spacing="0.18em" transform="rotate(-6 86 480)" style="font-family: var(--font-body)">ROUTE 134</text>
+              <!-- 横浜方面（横横道路） -->
+              <path d="M 200,428 C 235,370 265,300 291,232" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="1.5" stroke-dasharray="4 5"/>
+              <!-- 湾岸線: 横浜 → C1 -->
+              <path d="M 293,218 C 305,185 315,150 323,118" fill="none" stroke="var(--color-brand)" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="6 5"/>
+              <text x="330" y="172" fill="#fff" fill-opacity="0.45" font-size="8.5" font-weight="700" letter-spacing="0.14em" transform="rotate(-72 330 172)" style="font-family: var(--font-body)">湾岸線 BAYSHORE</text>
+              <!-- 首都高 C1 ループ -->
+              <text x="330" y="42" text-anchor="middle" fill="#fff" fill-opacity="0.9" font-size="13" letter-spacing="0.1em" style="font-family: var(--font-heading)">TOKYO</text>
+              <text x="330" y="58" text-anchor="middle" fill="#fff" fill-opacity="0.45" font-size="8.5" font-weight="700" letter-spacing="0.16em" style="font-family: var(--font-body)">SHUTO EXPWY</text>
+              <circle cx="330" cy="97" r="20" fill="none" stroke="var(--color-brand)" stroke-opacity="0.75" stroke-width="2"/>
+              <text x="330" y="101" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.9" font-size="11" letter-spacing="0.08em" style="font-family: var(--font-heading)">C1</text>
+              <circle cx="348" cy="106" r="2.5" fill="#fff" fill-opacity="0.85"/>
+              <text x="356" y="110" fill="#fff" fill-opacity="0.55" font-size="8.5" font-weight="700" letter-spacing="0.1em" style="font-family: var(--font-body)">GINZA</text>
+              <!-- YOKOHAMA -->
+              <circle cx="293" cy="225" r="4" fill="#fff" fill-opacity="0.75"/>
+              <text x="305" y="222" fill="#fff" fill-opacity="0.75" font-size="11" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">YOKOHAMA</text>
+              <text x="305" y="236" fill="#fff" fill-opacity="0.4" font-size="8" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">MINATO MIRAI · 40 MIN</text>
+              <!-- FUJI -->
+              <path d="M 28,362 Q 58,318 61,318 Q 64,318 94,362" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1.6"/>
+              <path d="M 50,336 l 4,-5 4,5 4,-5 4,5" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.1"/>
+              <text x="61" y="380" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="9.5" font-weight="700" letter-spacing="0.1em" style="font-family: var(--font-body)">MT. FUJI</text>
+              <text x="61" y="393" text-anchor="middle" fill="#fff" fill-opacity="0.32" font-size="7.5" font-weight="600" letter-spacing="0.08em" style="font-family: var(--font-body)">2 HRS · VIA HAKONE</text>
+              <!-- ODAWARA / HAKONE -->
+              <circle cx="52" cy="459" r="3" fill="#fff" fill-opacity="0.5"/>
+              <text x="52" y="447" text-anchor="middle" fill="#fff" fill-opacity="0.42" font-size="8.5" font-weight="600" letter-spacing="0.08em" style="font-family: var(--font-body)">ODAWARA · 60 MIN</text>
+              <path d="M 52,462 C 58,480 65,500 73,514" fill="none" stroke="var(--color-brand)" stroke-opacity="0.5" stroke-width="1.8" stroke-dasharray="4 4"/>
+              <path d="M 60,506 l 7,-9 5,6 4,-7 7,10" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.3"/>
+              <circle cx="75" cy="518" r="4.5" fill="var(--color-brand)" filter="drop-shadow(0 0 6px rgba(195,13,35,0.6))"/>
+              <text x="92" y="522" fill="var(--color-brand)" fill-opacity="0.9" font-size="10.5" font-weight="800" letter-spacing="0.1em" style="font-family: var(--font-body)">HAKONE</text>
+              <text x="92" y="535" fill="#fff" fill-opacity="0.4" font-size="8" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">90 MIN · ONSEN</text>
+              <!-- ZUSHI・HAYAMA -->
+              <circle cx="247" cy="452" r="3" fill="#fff" fill-opacity="0.5"/>
+              <text x="258" y="456" fill="#fff" fill-opacity="0.45" font-size="8.5" font-weight="600" letter-spacing="0.08em" style="font-family: var(--font-body)">ZUSHI · HAYAMA</text>
+              <!-- KAMAKURA hub -->
+              <g filter="url(#rmGlow5)">
+                <path d="M 200,418.3 L 203.2,426.1 L 211.7,426.1 L 205,431.5 L 207.6,439.8 L 200,435 L 192.4,439.8 L 195,431.5 L 188.3,426.1 L 196.8,426.1 Z" fill="var(--color-brand)"/>
+              </g>
+              <defs>
+                <filter id="rmGlow5" x="-80%" y="-80%" width="260%" height="260%">
+                  <feGaussianBlur stdDeviation="3.5" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <circle cx="200" cy="429" r="14" fill="none" stroke="var(--color-brand)" stroke-opacity="0.45" stroke-width="1.4"/>
+              <circle cx="200" cy="429" r="20" fill="none" stroke="var(--color-brand)" stroke-width="1.1" opacity="0.25">
+                <animate attributeName="r" from="16" to="34" dur="2.6s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" from="0.3" to="0" dur="2.6s" repeatCount="indefinite"/>
+              </circle>
+              <text x="200" y="404" text-anchor="middle" fill="#fff" fill-opacity="0.95" font-size="15" letter-spacing="0.12em" style="font-family: var(--font-heading)">KAMAKURA</text>
+              <!-- ENOSHIMA -->
+              <circle cx="152" cy="443" r="3" fill="#fff" fill-opacity="0.6"/>
+              <text x="148" y="425" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="8.5" font-weight="600" letter-spacing="0.08em" style="font-family: var(--font-body)">ENOSHIMA · 15 MIN</text>
+              <!-- 海域 -->
+              <text x="110" y="548" fill="#fff" fill-opacity="0.07" font-size="12" letter-spacing="0.3em" style="font-family: var(--font-heading)">SAGAMI BAY</text>
+              <text x="378" y="250" fill="#fff" fill-opacity="0.07" font-size="9" font-weight="700" letter-spacing="0.26em" transform="rotate(80 378 250)" style="font-family: var(--font-body)">TOKYO BAY</text>
+              <!-- compass -->
+              <g transform="translate(424,516)" opacity="0.6">
+                <circle r="10" fill="none" stroke="#fff" stroke-opacity="0.2"/>
+                <path d="M 0,-6 L 2.3,3 L 0,1.4 L -2.3,3 Z" fill="var(--color-brand)" fill-opacity="0.8"/>
+                <text y="-15" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8" font-weight="600" style="font-family: var(--font-body)">N</text>
+              </g>
+            </svg>
           </div>
         </div>
 
-        <div class="overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden reveal reveal-delay-1">
-          <div class="flex items-start min-w-[680px] md:justify-center px-2"><div class="flex flex-col items-center shrink-0"><span class="relative flex w-3.5 h-3.5"><span class="absolute inline-flex h-full w-full rounded-full bg-brand opacity-60 animate-ping"></span><span class="relative inline-flex rounded-full w-3.5 h-3.5 bg-brand"></span></span><span class="mt-2 text-[11px] font-bold tracking-[0.08em] text-brand font-[family-name:var(--font-heading)] whitespace-nowrap">KAMAKURA</span><span class="mt-1 px-2 py-0.5 rounded-full bg-brand text-white text-[9.5px] font-bold tracking-[0.1em] whitespace-nowrap">BASE</span></div><div class="flex-1 min-w-[36px] px-1.5 mt-[6px]"><span class="block w-full border-t-2  border-white/25"></span></div><div class="flex flex-col items-center shrink-0"><span class="w-3.5 h-3.5 rounded-full bg-white/80"></span><span class="mt-2 text-[11px] font-bold tracking-[0.08em] text-white/85 font-[family-name:var(--font-heading)] whitespace-nowrap">SHICHIRIGAHAMA</span><span class="mt-1 text-[8.5px] font-bold tracking-[0.12em] text-white/35">PHOTO SPOT</span></div><div class="flex-1 min-w-[36px] px-1.5 mt-[6px]"><span class="block w-full border-t-2  border-white/25"></span></div><div class="flex flex-col items-center shrink-0"><span class="w-3.5 h-3.5 rounded-full bg-white/80"></span><span class="mt-2 text-[11px] font-bold tracking-[0.08em] text-white/85 font-[family-name:var(--font-heading)] whitespace-nowrap">ENOSHIMA</span><span class="mt-1 px-2 py-0.5 rounded-full bg-white/[0.08] text-white/55 text-[9.5px] font-bold tracking-[0.1em] whitespace-nowrap">15 MIN</span></div><div class="flex-1 min-w-[36px] px-1.5 mt-[6px]"><span class="block w-full border-t-2  border-white/25"></span></div><div class="flex flex-col items-center shrink-0"><span class="w-3.5 h-3.5 rounded-full bg-white/80"></span><span class="mt-2 text-[11px] font-bold tracking-[0.08em] text-white/85 font-[family-name:var(--font-heading)] whitespace-nowrap">ODAWARA</span><span class="mt-1 px-2 py-0.5 rounded-full bg-white/[0.08] text-white/55 text-[9.5px] font-bold tracking-[0.1em] whitespace-nowrap">60 MIN</span></div><div class="flex-1 min-w-[36px] px-1.5 mt-[6px]"><span class="block w-full border-t-2 border-dashed border-brand/60"></span></div><div class="flex flex-col items-center shrink-0"><span class="w-3.5 h-3.5 rounded-full bg-brand"></span><span class="mt-2 text-[11px] font-bold tracking-[0.08em] text-brand font-[family-name:var(--font-heading)] whitespace-nowrap">HAKONE</span><span class="mt-1 px-2 py-0.5 rounded-full bg-brand text-white text-[9.5px] font-bold tracking-[0.1em] whitespace-nowrap">90 MIN</span></div><div class="flex-1 min-w-[36px] px-1.5 mt-[6px]"><span class="block w-full border-t-2 border-dashed border-brand/60"></span></div><div class="flex flex-col items-center shrink-0"><span class="text-brand text-[13px] leading-[14px]">→</span><span class="mt-2 text-[11px] font-bold tracking-[0.08em] text-brand font-[family-name:var(--font-heading)] whitespace-nowrap">FUJI · IZU</span><span class="mt-1 px-2 py-0.5 rounded-full bg-brand/20 text-brand text-[9.5px] font-bold tracking-[0.1em]">OVERNIGHT</span></div></div>
-        </div>
-        <p class="text-[10.5px] text-white/30 font-semibold tracking-[0.1em] mt-3 md:text-center">{lang === 'en' ? 'RIDE TIMES FROM THE GARAGE · HEADING EAST: ZUSHI & HAYAMA 15–20 MIN' : 'ガレージからの走行時間 ・ 東へ走るなら逗子・葉山 15–20分'}</p>
-
-        <div class="mt-12 reveal reveal-delay-2">
-          <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4 md:text-center">{lang === 'en' ? 'GO FURTHER — MULTI-DAY' : 'さらに遠くへ — 連泊で'}</p>
+        <!-- 連泊・ナイトラン誘導（各専用ページへ） -->
+        <div class="mt-10 reveal reveal-delay-1">
+          <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4 md:text-center">{lang === 'en' ? 'GO FURTHER' : 'さらに遠くへ'}</p>
           <div class="grid grid-cols-3 max-md:grid-cols-1 gap-3">
             {[
-              { img: '/assets/route/HAKONE.webp', name: 'HAKONE', sub: lang === 'en' ? 'OVERNIGHT · ONSEN · 90 MIN' : '1泊・温泉・90分' },
-              { img: '/assets/route/MT FUJI VIEW.webp', name: 'FUJI & IZU', sub: lang === 'en' ? '2 DAYS · VIA HAKONE' : '1泊2日・箱根経由' },
-              { img: '/assets/chopper/promo/2512080008.webp', name: 'SHUTO NIGHT RUN', sub: lang === 'en' ? 'NIGHT · YOKOHAMA BAYSHORE' : '夜・横浜湾岸' },
+              { href: '/hakone', img: '/assets/route/HAKONE.webp', name: 'HAKONE', sub: lang === 'en' ? 'ONSEN · DAY TRIP / OVERNIGHT' : '温泉・日帰り / 1泊2日' },
+              { href: '/fuji', img: '/assets/route/MT FUJI VIEW.webp', name: 'MT. FUJI', sub: lang === 'en' ? 'OVERNIGHT · 2 DAYS' : '1泊2日' },
+              { href: '/night-run', img: '/assets/chopper/promo/2512080008.webp', name: 'SHUTO NIGHT RUN', sub: lang === 'en' ? 'NIGHT RUN' : '夜（ナイトラン）' },
             ].map((r) => (
-              <a href={localePath('/touring', lang)} class="group relative rounded-2xl overflow-hidden aspect-[16/9] flex items-end">
+              <a href={localePath(r.href, lang)} class="group relative rounded-2xl overflow-hidden aspect-[16/9] flex items-end">
                 <img src={r.img} alt={r.name} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
                 <div class="relative z-[2] p-5 w-full flex items-end justify-between">
@@ -235,45 +291,9 @@ const chopperSchema = [
           </div>
         </div>
       </div>
-    </div>
   </section>
 
-  <!-- ============================
-       Section 4: Destinations
-       ============================ -->
-  <section class="py-32 px-10 max-md:py-24 max-md:px-6 bg-deep-red" id="destinations">
-    <div class="max-w-[1200px] mx-auto">
-      <div class="text-center mb-16 reveal">
-        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t(lang, 'chopper.dest.label')}</p>
-        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(28px,5vw,56px)] text-white tracking-[-0.02em]">{t(lang, 'chopper.dest.heading')}</h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 items-stretch">
-        {destinations.map((d, i) => (
-          <div class={`dest-card relative rounded-2xl overflow-hidden aspect-[3/4] max-lg:aspect-[4/3] cursor-pointer reveal reveal-delay-${i + 1}`} data-dest-card>
-            <div class="absolute inset-0 bg-[#111] transition-transform duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover-parent-scale">
-              <CmsImage src={d.img} width={800} naturalWidth={d.imgW} naturalHeight={d.imgH} alt={d.name} loading="lazy" class="w-full h-full object-cover" />
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-deep-red/85 via-deep-red/10 to-transparent z-[1]"></div>
-            <!-- Time Badge -->
-            <div class="absolute top-4 right-4 z-[3] flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/55 backdrop-blur-[8px] border border-white/[0.12] text-[11px] font-semibold text-white tracking-[0.04em]">
-              <svg class="w-3 h-3 text-brand shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              {d.time}
-            </div>
-            <!-- Base Content -->
-            <div class="absolute bottom-0 left-0 right-0 p-7 z-[2]">
-              <h3 class="font-[family-name:var(--font-heading)] text-[clamp(22px,3.5vw,28px)] text-white tracking-[-0.01em]">{d.name}</h3>
-              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/60 mt-1 tracking-[0.02em] line-clamp-1">{d.desc}</p>
-            </div>
-            <!-- Expand Detail Panel -->
-            <div class="dest-card__detail absolute bottom-0 left-0 right-0 z-[3] bg-gradient-to-t from-deep-red/95 via-deep-red/85 to-transparent px-6 pb-7 pt-20 transition-all duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style="transform: translateY(100%); opacity: 0; pointer-events: none;">
-              <p class="font-[family-name:var(--font-heading-jp)] text-[13px] text-white/75 leading-[1.8]" set:html={d.detail}></p>
-            </div>
-            <span class="dest-card__tap-hint absolute bottom-2 left-1/2 -translate-x-1/2 z-[3] text-[9px] font-semibold tracking-[0.15em] uppercase text-white/25 transition-opacity duration-300">{t(lang, 'chopper.dest.tap')}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+
 
   <!-- ============================
        Section 5: Protocol
@@ -343,11 +363,6 @@ const chopperSchema = [
     @keyframes scrollBounce {
       0%, 100% { transform: translateY(0); opacity: 0.3; }
       50% { transform: translateY(6px); opacity: 0.8; }
-    }
-
-    /* Destination Card Expand — handled by JS inline styles */
-    .dest-card:hover > div:first-child {
-      transform: scale(1.08);
     }
 
     /* Accordion Active State */
@@ -445,39 +460,6 @@ const chopperSchema = [
         const wasActive = item.classList.contains('active');
         document.querySelectorAll('[data-accordion-item]').forEach((el) => el.classList.remove('active'));
         if (!wasActive) item.classList.add('active');
-      });
-    });
-
-    /* Destination Card Toggle */
-    document.querySelectorAll('[data-dest-card]').forEach((card) => {
-      card.addEventListener('click', () => {
-        const wasExpanded = card.classList.contains('dest-card--expanded');
-
-        // Close all
-        document.querySelectorAll('[data-dest-card]').forEach((el) => {
-          el.classList.remove('dest-card--expanded');
-          const detail = el.querySelector('.dest-card__detail') as HTMLElement;
-          if (detail) {
-            detail.style.transform = 'translateY(100%)';
-            detail.style.opacity = '0';
-            detail.style.pointerEvents = 'none';
-          }
-          const hint = el.querySelector('.dest-card__tap-hint') as HTMLElement;
-          if (hint) hint.style.opacity = '1';
-        });
-
-        // Toggle clicked
-        if (!wasExpanded) {
-          card.classList.add('dest-card--expanded');
-          const detail = card.querySelector('.dest-card__detail') as HTMLElement;
-          if (detail) {
-            detail.style.transform = 'translateY(0)';
-            detail.style.opacity = '1';
-            detail.style.pointerEvents = 'all';
-          }
-          const hint = card.querySelector('.dest-card__tap-hint') as HTMLElement;
-          if (hint) hint.style.opacity = '0';
-        }
       });
     });
 

@@ -13,7 +13,7 @@ import { t } from '../../i18n/index';
 const lang = getLangFromUrl(Astro.url);
 const en = lang === 'en';
 
-const chopperKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const chopperKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'toll', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
 const ebikeKeys = ['license', 'helmet', 'tandem', 'alcohol', 'weather', 'checkin', 'insurance', 'luggage', 'extension', 'cancel'] as const;
 
 const chopperFaq = chopperKeys.map(k => ({

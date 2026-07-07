@@ -15,6 +15,7 @@ const journal = defineCollection({
     lang: z.enum(['ja', 'en']),
     cover: z.string(),
     category: z.string(),
+    product: z.enum(['chopper', 'ebike', 'both']).default('both'),
   }),
 });
 

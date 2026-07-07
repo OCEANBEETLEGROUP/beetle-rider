@@ -4,12 +4,13 @@ description: "The smartest bike rental plan in Kamakura: an e-bike route hitting
 date: 2026-07-04
 lang: en
 cover: /assets/route/KAMAKURA_BEACH1.webp
+product: ebike
 category: ROUTE GUIDE
 ---
 
 Kamakura looks small on a map and rides big in real life — temples in the hills, beaches on the bay, and Enoshima glittering offshore. Walking it means choosing. Buses mean queueing. A **bike rental in Kamakura** solves it, and an e-bike solves the part nobody warns you about: the hills.
 
-No license needed. Sixteen or older, helmet and insurance included, [book the same day](/en/ebike/).
+No license needed. Sixteen or older, free helmets, insurance plans available, [book the same day](/en/ebike/).
 
 ## Why E-Bike Beats Everything Else Here
 

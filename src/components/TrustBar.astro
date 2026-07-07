@@ -16,19 +16,19 @@ const { lang, variant = 'home', theme = 'dark' } = Astro.props;
 const en = lang === 'en';
 
 const google = REVIEWS_ARE_REAL
-  ? `★ ${GOOGLE_RATING.toFixed(1)} GOOGLE (${GOOGLE_REVIEW_COUNT})`
+  ? `★ ${GOOGLE_RATING.toFixed(1)} GOOGLE (100+)`
   : null;
 
 const chips: string[] = [];
 if (google) chips.push(google);
 if (variant === 'chopper') {
-  chips.push(en ? 'ONE-OF-ONE CUSTOM MACHINES' : '世界に1台のカスタム車両');
+  chips.push(en ? "JAPAN'S ONLY CHOPPER RENTAL" : '日本唯一のチョッパーレンタル');
   chips.push(en ? 'LIABILITY INSURANCE INCLUDED' : '対人・対物保険込み');
 } else if (variant === 'ebike') {
   chips.push(en ? 'NO LICENSE REQUIRED' : '免許不要');
-  chips.push(en ? 'INSURANCE INCLUDED' : '保険込み');
+  chips.push(en ? 'INSURANCE PLANS AVAILABLE' : '保険プランあり');
 } else {
-  chips.push(en ? 'ONE-OF-ONE CUSTOM MACHINES' : '世界に1台のカスタム車両');
+  chips.push(en ? "JAPAN'S ONLY CHOPPER RENTAL" : '日本唯一のチョッパーレンタル');
   chips.push(en ? 'NO LICENSE — E-BIKE' : 'E-BIKEは免許不要');
 }
 chips.push(en ? '4 MIN FROM KAMAKURA STA.' : '鎌倉駅から徒歩4分');

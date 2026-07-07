@@ -115,7 +115,7 @@ const icons: Record<string, string> = {
 
   <!-- Getting Here: 交通手段別（アイコン行・余白圧縮） + 目印写真 -->
   <section class="py-10 px-6 md:px-10 bg-deep-red">
-    <div class="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_340px] gap-8 items-start">
+    <div class="max-w-[760px] mx-auto">
       <div class="flex flex-col divide-y divide-white/[0.07] border-y border-white/[0.07]">
         {L.modes.map((m) => (
           <div class="flex gap-5 py-6 items-start">
@@ -128,12 +128,20 @@ const icons: Record<string, string> = {
             </div>
           </div>
         ))}
-        <p class="py-5 text-[12.5px] text-white/45 leading-relaxed">{L.luggage}</p>
       </div>
-      <figure class="rounded-2xl overflow-hidden border border-white/[0.08]">
-        <img src="/assets/chopper/promo/beetle_shop_brc_044.webp" alt={L.landmarkCap} class="w-full aspect-[4/3] object-cover" loading="lazy" />
-        <figcaption class="px-5 py-3.5 text-[11.5px] font-semibold text-white/60 bg-white/[0.03]">📍 {L.landmarkCap}</figcaption>
-      </figure>
+
+      <!-- 荷物預かり / Bounce -->
+      <div class="mt-8 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7">
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-brand mb-3">{en ? 'LUGGAGE' : '荷物預かり'}</p>
+        <div class="flex flex-col gap-2 text-[13px] text-white/60 leading-[1.85] mb-5">
+          <p><strong class="text-white/85">{en ? 'While you ride:' : 'ライド中：'}</strong> {en ? 'we store your luggage at the shop for free.' : '店舗で無料でお預かりします。'}</p>
+          <p><strong class="text-white/85">{en ? 'Before / after your ride:' : 'ライド前後：'}</strong> {en ? 'we are an official Bounce luggage-storage partner — book hourly storage in advance via the Bounce app or website.' : '荷物預かりサービス「Bounce」の提携店舗です。アプリ／Webから時間単位で事前予約できます。'}</p>
+        </div>
+        <a href="https://ja.bounce.com/s/location/5685d419-8bdb-49d6-a342-ddfb3f59ef44" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/[0.06] text-[10.5px] font-bold tracking-[0.15em] uppercase text-white/85 hover:bg-white/15 transition-colors">
+          {en ? 'BOOK LUGGAGE STORAGE (BOUNCE)' : 'Bounceで荷物預かりを予約'}
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
   </section>
 

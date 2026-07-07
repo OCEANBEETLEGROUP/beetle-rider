@@ -166,7 +166,9 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
     <div class="max-w-[1200px] mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
       {[
         { href: localePath('/access', lang), label: 'ACCESS' },
-        { href: localePath('/touring', lang), label: 'MULTI-DAY / TOURING' },
+        { href: localePath('/hakone', lang), label: 'HAKONE' },
+        { href: localePath('/fuji', lang), label: 'MT. FUJI' },
+        { href: localePath('/night-run', lang), label: 'NIGHT RUN' },
         { href: localePath('/faq', lang), label: 'FAQ' },
         { href: localePath('/journal', lang), label: 'RIDE JOURNAL' },
       ].map((l) => (
