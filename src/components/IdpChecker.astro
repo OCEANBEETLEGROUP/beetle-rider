@@ -18,7 +18,7 @@ const OK = [
   ['US','United States'],['CA','Canada'],['GB','United Kingdom'],['IE','Ireland'],['AU','Australia'],['NZ','New Zealand'],
   ['KR','South Korea'],['TH','Thailand'],['SG','Singapore'],['MY','Malaysia'],['PH','Philippines'],['HK','Hong Kong'],['MO','Macau'],
   ['IN','India'],['LK','Sri Lanka'],['KH','Cambodia'],['LA','Laos'],['BD','Bangladesh'],['PK','Pakistan'],
-  ['FR','France'],['BE','Belgium'],['IT','Italy'],['ES','Spain'],['PT','Portugal'],['NL','Netherlands'],['LU','Luxembourg'],
+  ['IT','Italy'],['ES','Spain'],['PT','Portugal'],['NL','Netherlands'],['LU','Luxembourg'],
   ['AT','Austria'],['DK','Denmark'],['NO','Norway'],['SE','Sweden'],['FI','Finland'],['IS','Iceland'],
   ['PL','Poland'],['CZ','Czechia'],['SK','Slovakia'],['HU','Hungary'],['RO','Romania'],['BG','Bulgaria'],['GR','Greece'],['MT','Malta'],['CY','Cyprus'],
   ['RU','Russia'],['TR','Türkiye'],['IL','Israel'],['AE','UAE'],['ZA','South Africa'],['EG','Egypt'],['MA','Morocco'],
@@ -26,11 +26,13 @@ const OK = [
   ['FJ','Fiji'],['PG','Papua New Guinea'],
 ];
 const TR = [['DE','Germany'],['CH','Switzerland'],['TW','Taiwan'],['MC','Monaco'],['EE','Estonia'],['SI','Slovenia']];
+const BOTH = [['FR','France'],['BE','Belgium']];
 const NG = [['CN','China (Mainland)'],['VN','Vietnam'],['ID','Indonesia'],['BR','Brazil'],['UA','Ukraine'],['KZ','Kazakhstan'],['MN','Mongolia'],['MM','Myanmar']];
 
 const all = [
   ...OK.map(([c, n]) => ({ c, n, b: 'ok' })),
   ...TR.map(([c, n]) => ({ c, n, b: 'tr' })),
+  ...BOTH.map(([c, n]) => ({ c, n, b: 'both' })),
   ...NG.map(([c, n]) => ({ c, n, b: 'ng' })),
 ].sort((a, b2) => a.n.localeCompare(b2.n));
 ---
@@ -66,6 +68,12 @@ const all = [
       <p class="text-[13px] text-white/70 leading-[1.9]" set:html={en
         ? 'Bring these 3 items: <strong>① IDP (1949 Geneva Convention) with Category A</strong> ② your home-country license (original) ③ passport. No Category A on the IDP = no chopper — but the e-bike needs no license at all.'
         : '次の3点をご持参ください: <strong>① IDP（1949年ジュネーブ条約様式・Category A記載必須）</strong> ② 母国の運転免許証（原本） ③ パスポート。IDPにCategory Aが無い場合チョッパーは不可ですが、E-BIKEは免許不要で乗れます。'} />
+    </div>
+    <div data-verdict="both" class="hidden rounded-xl border border-green-500/25 bg-green-500/[0.07] p-5">
+      <p class="text-[13px] font-bold text-green-400 tracking-wide mb-2">{en ? '✓ YOU CAN RIDE — TWO WAYS' : '✓ 乗れます — 方法は2通り'}</p>
+      <p class="text-[13px] text-white/70 leading-[1.9]" set:html={en
+        ? 'Riders from your country can use <strong>either</strong> of these:<br>Ⓐ <strong>IDP (1949 Geneva) with Category A</strong> + home license + passport<br>Ⓑ <strong>Home license (original) + official Japanese translation (JAF)</strong> + passport'
+        : 'あなたの国の方は、<strong>どちらの方法でも</strong>乗車できます：<br>Ⓐ <strong>IDP（1949年ジュネーブ様式・Category A）</strong>＋母国免許＋パスポート<br>Ⓑ <strong>母国免許（原本）＋公式日本語翻訳文（JAF発行）</strong>＋パスポート'} />
     </div>
     <div data-verdict="tr" class="hidden rounded-xl border border-yellow-500/25 bg-yellow-500/[0.07] p-5">
       <p class="text-[13px] font-bold text-yellow-400 tracking-wide mb-2">{en ? '△ TRANSLATION REQUIRED' : '△ 翻訳文が必要'}</p>

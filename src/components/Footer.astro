@@ -125,27 +125,45 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
           <span class="text-[11px] font-semibold tracking-wider text-white/50 group-hover:text-white">MAP</span>
         </a>
       </div>
+      <!-- Store info（左列へ移設） -->
+      <dl class="flex flex-col gap-3 mt-4">
+        <div>
+          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.hours')}</dt>
+          <dd class="text-sm text-white/55 font-medium">{siteConfig?.businessHours || '10:00 - 18:00'}</dd>
+        </div>
+        <div>
+          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.tel')}</dt>
+          <dd><a href={`tel:${siteConfig?.phone || '0467379926'}`} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.phone || '0467-37-9926'}</a></dd>
+        </div>
+        <div>
+          <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.location')}</dt>
+          <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{lang === 'en' ? (t('footer.addressEn') as string) : (siteConfig?.address || '神奈川県鎌倉市小町1-15-2')}</a></dd>
+        </div>
+      </dl>
     </div>
 
     <!-- Right Column: 2-col grid (Store + OCEANBEETLE GROUP) -->
     <div class="grid grid-cols-2 gap-10">
-      <!-- Store (Kamakura shop info) -->
+      <!-- Sitemap（車両詳細以外の全ページ） -->
       <div>
-        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">{t('footer.store')}</h4>
-        <dl class="flex flex-col gap-3">
-          <div>
-            <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.hours')}</dt>
-            <dd class="text-sm text-white/55 font-medium">{siteConfig?.businessHours || '10:00 - 18:00'}</dd>
-          </div>
-          <div>
-            <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.tel')}</dt>
-            <dd><a href={`tel:${siteConfig?.phone || '0467379926'}`} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{siteConfig?.phone || '0467-37-9926'}</a></dd>
-          </div>
-          <div>
-            <dt class="text-[10px] font-semibold tracking-[0.15em] uppercase text-white/25 mb-1">{t('footer.location')}</dt>
-            <dd><a href={mapUrl} target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">{lang === 'en' ? (t('footer.addressEn') as string) : (siteConfig?.address || '神奈川県鎌倉市小町1-15-2')}</a></dd>
-          </div>
-        </dl>
+        <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-4">SITEMAP</h4>
+        <ul class="flex flex-col gap-2.5">
+          {[
+            { href: localePath('/', lang), label: 'HOME' },
+            { href: localePath('/ebike', lang), label: 'E-BIKE' },
+            { href: localePath('/ebike-rules', lang), label: 'E-BIKE RULES' },
+            { href: localePath('/chopper', lang), label: 'CHOPPER' },
+            { href: localePath('/hakone', lang), label: 'HAKONE' },
+            { href: localePath('/fuji', lang), label: 'MT. FUJI' },
+            { href: localePath('/night-run', lang), label: 'TOKYO NIGHT RUN' },
+            { href: localePath('/about', lang), label: 'ABOUT' },
+            { href: localePath('/journal', lang), label: 'RIDE JOURNAL' },
+            { href: localePath('/access', lang), label: 'ACCESS' },
+            { href: localePath('/faq', lang), label: 'FAQ' },
+          ].map((l) => (
+            <li><a href={l.href} class="text-sm text-white/55 font-medium hover:text-white transition-colors">{l.label}</a></li>
+          ))}
+        </ul>
       </div>
 
       <!-- OCEANBEETLE GROUP -->
@@ -158,22 +176,6 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
           <li><a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-sm text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a></li>
         </ul>
       </div>
-    </div>
-  </div>
-
-  <!-- Site Links -->
-  <div class="border-t border-white/[0.06] px-10 py-5">
-    <div class="max-w-[1200px] mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
-      {[
-        { href: localePath('/access', lang), label: 'ACCESS' },
-        { href: localePath('/hakone', lang), label: 'HAKONE' },
-        { href: localePath('/fuji', lang), label: 'MT. FUJI' },
-        { href: localePath('/night-run', lang), label: 'NIGHT RUN' },
-        { href: localePath('/faq', lang), label: 'FAQ' },
-        { href: localePath('/journal', lang), label: 'RIDE JOURNAL' },
-      ].map((l) => (
-        <a href={l.href} class="text-[10.5px] font-bold tracking-[0.18em] uppercase text-white/35 hover:text-white transition-colors">{l.label}</a>
-      ))}
     </div>
   </div>
 

@@ -100,7 +100,9 @@ const L = en ? {
   <!-- ルール1: 信号（実写真） -->
   <section class="pb-12 px-6 md:px-10 bg-ebike">
     <div class="max-w-[760px] mx-auto rounded-2xl bg-white/[0.08] border border-white/[0.14] overflow-hidden">
-      <img src="/assets/rules/signal_compare.png" alt={L.imgAltSignal} class="w-full" loading="lazy" />
+      <div class="px-6 pt-6">
+        <img src="/assets/rules/signal_compare.png" alt={L.imgAltSignal} class="w-full rounded-xl" loading="lazy" />
+      </div>
       <div class="p-7 md:p-8">
         <h2 class="font-[family-name:var(--font-heading)] text-[17px] text-white tracking-wide mb-4">🚦 {L.r1t}</h2>
         <ul class="flex flex-col gap-2 mb-4">
@@ -115,36 +117,49 @@ const L = en ? {
   <!-- ルール2・3: 左側通行＋左端（自作SVG図） -->
   <section class="pb-12 px-6 md:px-10 bg-ebike">
     <div class="max-w-[760px] mx-auto rounded-2xl bg-white/[0.08] border border-white/[0.14] overflow-hidden">
-      <div class="bg-[#faf7f4] px-6 py-6">
-        <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[520px] mx-auto block" aria-label="Keep left: ride the far-left edge of the road, never on the right side or the sidewalk">
-          <!-- 歩道(左) / 車道 / 歩道(右) -->
-          <rect x="0" y="0" width="80" height="260" fill="#e7e0d8"/>
-          <rect x="560" y="0" width="80" height="260" fill="#e7e0d8"/>
-          <rect x="80" y="0" width="480" height="260" fill="#3b3b3f"/>
-          <line x1="320" y1="0" x2="320" y2="260" stroke="#fff" stroke-width="3" stroke-dasharray="18 14" opacity="0.85"/>
-          <line x1="92" y1="0" x2="92" y2="260" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
-          <line x1="548" y1="0" x2="548" y2="260" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
-          <text x="40" y="134" text-anchor="middle" fill="#8a8078" font-size="11" font-weight="700" letter-spacing="0.1em" transform="rotate(-90 40 134)" style="font-family: var(--font-body)">SIDEWALK 歩道</text>
-          <!-- ✓ 左端を同方向に -->
-          <g transform="translate(122,170)">
-            <circle r="16" fill="#22c55e"/>
-            <path d="M 0,8 L 0,-10 M -5,-4 L 0,-11 L 5,-4" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="px-6 pt-6">
+        <div class="rounded-xl bg-[#f6f1ea] p-5">
+        <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[540px] mx-auto block" aria-label="Keep left: ride the far-left edge. No wrong-way riding, no sidewalks.">
+          <!-- 歩道 / 車道 -->
+          <rect x="0" y="0" width="78" height="280" fill="#e5ddd3"/>
+          <rect x="562" y="0" width="78" height="280" fill="#e5ddd3"/>
+          <rect x="78" y="0" width="484" height="280" fill="#3b3b3f"/>
+          <line x1="320" y1="0" x2="320" y2="280" stroke="#fff" stroke-width="3" stroke-dasharray="18 14" opacity="0.85"/>
+          <line x1="90" y1="0" x2="90" y2="280" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
+          <line x1="550" y1="0" x2="550" y2="280" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
+          <!-- 車線の進行方向マーキング -->
+          <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.28">
+            <path d="M 196,70 L 205,52 L 214,70"/>
+            <path d="M 196,150 L 205,132 L 214,150"/>
+            <path d="M 426,210 L 435,228 L 444,210"/>
+            <path d="M 426,130 L 435,148 L 444,130"/>
           </g>
-          <text x="122" y="215" text-anchor="middle" fill="#22c55e" font-size="12" font-weight="800" letter-spacing="0.06em" style="font-family: var(--font-body)">{en ? 'YOU — LEFT EDGE' : 'あなた＝左端'}</text>
-          <!-- 車(同方向・中央寄り) -->
-          <g transform="translate(240,80)" opacity="0.85">
+          <text x="39" y="140" text-anchor="middle" fill="#8a8078" font-size="10.5" font-weight="700" letter-spacing="0.1em" transform="rotate(-90 39 140)" style="font-family: var(--font-body)">SIDEWALK · 歩道</text>
+          <!-- ✓ YOU: 左端・同方向 -->
+          <g transform="translate(122,185)">
+            <circle r="17" fill="#22c55e"/>
+            <path d="M 0,9 L 0,-10 M -5.5,-4 L 0,-11.5 L 5.5,-4" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="122" y="228" text-anchor="middle" fill="#16a34a" font-size="12" font-weight="800" letter-spacing="0.04em" style="font-family: var(--font-body)">YOU — FAR-LEFT EDGE</text>
+          <text x="122" y="243" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="700" style="font-family: var(--font-body)">あなた＝車道の一番左端</text>
+          <!-- 車（同方向・車線中央） -->
+          <g transform="translate(240,85)" opacity="0.85">
             <rect x="-18" y="-30" width="36" height="60" rx="8" fill="#d9d3cb"/>
             <path d="M -10,-38 L 0,-50 L 10,-38" stroke="#d9d3cb" stroke-width="4" fill="none" stroke-linecap="round"/>
           </g>
-          <!-- ✕ 逆走(右側) -->
-          <g transform="translate(470,95)">
-            <circle r="16" fill="var(--color-brand)"/>
-            <path d="M 0,-8 L 0,10 M -5,4 L 0,11 L 5,4" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="240" y="150" text-anchor="middle" fill="#b7b0a6" font-size="9.5" font-weight="700" style="font-family: var(--font-body)">CAR · クルマ</text>
+          <!-- ✕ 逆走 -->
+          <g transform="translate(470,100)">
+            <circle r="17" fill="var(--color-brand)"/>
+            <path d="M 0,-9 L 0,10 M -5.5,4 L 0,11.5 L 5.5,4" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </g>
-          <text x="470" y="140" text-anchor="middle" fill="var(--color-brand)" font-size="12" font-weight="800" letter-spacing="0.04em" style="font-family: var(--font-body)">✕ {en ? 'WRONG WAY' : '逆走'}</text>
+          <text x="470" y="143" text-anchor="middle" fill="var(--color-brand)" font-size="12" font-weight="800" letter-spacing="0.04em" style="font-family: var(--font-body)">✕ WRONG WAY</text>
+          <text x="470" y="158" text-anchor="middle" fill="var(--color-brand)" font-size="11" font-weight="700" style="font-family: var(--font-body)">逆走は最も危険</text>
           <!-- ✕ 歩道 -->
-          <text x="600" y="120" text-anchor="middle" fill="var(--color-brand)" font-size="13" font-weight="800" transform="rotate(-90 600 120)" style="font-family: var(--font-body)">✕ {en ? 'NO SIDEWALK' : '歩道走行禁止'}</text>
+          <text x="601" y="106" text-anchor="middle" fill="var(--color-brand)" font-size="11" font-weight="800" transform="rotate(-90 601 106)" style="font-family: var(--font-body)">✕ NO RIDING</text>
+          <text x="617" y="150" text-anchor="middle" fill="var(--color-brand)" font-size="10.5" font-weight="700" transform="rotate(-90 617 150)" style="font-family: var(--font-body)">歩道走行禁止</text>
         </svg>
+        </div>
       </div>
       <div class="p-7 md:p-8">
         <h2 class="font-[family-name:var(--font-heading)] text-[17px] text-white tracking-wide mb-4">⬅️ {L.r2t}</h2>
@@ -159,40 +174,51 @@ const L = en ? {
   <!-- ルール4: 二段階右折（自作SVG図） -->
   <section class="pb-12 px-6 md:px-10 bg-ebike">
     <div class="max-w-[760px] mx-auto rounded-2xl bg-white/[0.08] border border-white/[0.14] overflow-hidden">
-      <div class="bg-[#faf7f4] px-6 py-6">
-        <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[480px] mx-auto block" aria-label="Two-step right turn: go straight across, stop at the far corner, then turn and go straight">
-          <!-- 交差点 -->
-          <rect x="0" y="0" width="640" height="340" fill="#efe9e2"/>
-          <rect x="230" y="0" width="180" height="340" fill="#3b3b3f"/>
-          <rect x="0" y="90" width="640" height="160" fill="#3b3b3f"/>
-          <line x1="320" y1="0" x2="320" y2="80" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.7"/>
-          <line x1="320" y1="260" x2="320" y2="340" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.7"/>
-          <line x1="0" y1="170" x2="220" y2="170" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.7"/>
-          <line x1="420" y1="170" x2="640" y2="170" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.7"/>
+      <div class="px-6 pt-6">
+        <div class="rounded-xl bg-[#f6f1ea] p-5">
+        <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[500px] mx-auto block" aria-label="Two-step right turn: 1 go straight across and stop at the far corner, 2 turn right and go straight. Never turn diagonally.">
+          <rect x="0" y="0" width="640" height="360" fill="#e5ddd3"/>
+          <rect x="230" y="0" width="180" height="360" fill="#3b3b3f"/>
+          <rect x="0" y="100" width="640" height="160" fill="#3b3b3f"/>
+          <!-- 横断歩道 -->
+          <g fill="#fff" opacity="0.5">
+            <rect x="238" y="78" width="18" height="14"/><rect x="266" y="78" width="18" height="14"/><rect x="294" y="78" width="18" height="14"/><rect x="322" y="78" width="18" height="14"/><rect x="350" y="78" width="18" height="14"/><rect x="378" y="78" width="18" height="14"/>
+            <rect x="238" y="268" width="18" height="14"/><rect x="266" y="268" width="18" height="14"/><rect x="294" y="268" width="18" height="14"/><rect x="322" y="268" width="18" height="14"/><rect x="350" y="268" width="18" height="14"/><rect x="378" y="268" width="18" height="14"/>
+          </g>
+          <line x1="320" y1="0" x2="320" y2="72" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.6"/>
+          <line x1="320" y1="290" x2="320" y2="360" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.6"/>
+          <line x1="0" y1="180" x2="222" y2="180" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.6"/>
+          <line x1="418" y1="180" x2="640" y2="180" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" opacity="0.6"/>
           <!-- ✕ 斜め右折 -->
-          <path d="M 290,330 C 310,260 380,215 480,196" fill="none" stroke="var(--color-brand)" stroke-width="4" stroke-dasharray="8 7" opacity="0.75"/>
-          <g transform="translate(392,232)">
-            <circle r="14" fill="var(--color-brand)"/>
-            <path d="M -5,-5 L 5,5 M 5,-5 L -5,5" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M 292,350 C 312,280 380,225 490,206" fill="none" stroke="var(--color-brand)" stroke-width="4" stroke-dasharray="8 7" opacity="0.7"/>
+          <g transform="translate(396,242)">
+            <circle r="15" fill="var(--color-brand)"/>
+            <path d="M -5.5,-5.5 L 5.5,5.5 M 5.5,-5.5 L -5.5,5.5" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
           </g>
-          <!-- ✓ 1️⃣ 直進 -->
-          <path d="M 250,335 L 250,120" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round"/>
-          <path d="M 242,132 L 250,116 L 258,132" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- 停止点 -->
-          <circle cx="250" cy="104" r="9" fill="#fff" stroke="#22c55e" stroke-width="4"/>
-          <!-- ✓ 2️⃣ 右へ直進 -->
-          <path d="M 266,104 L 560,104" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 0"/>
-          <path d="M 548,96 L 564,104 L 548,112" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- バッジ -->
-          <g transform="translate(224,240)">
-            <circle r="13" fill="#1A1A1A"/>
-            <text y="4.5" text-anchor="middle" fill="#fff" font-size="13" font-weight="800" style="font-family: var(--font-body)">1</text>
+          <!-- ✓ 1: 直進 → 角で停止 -->
+          <path d="M 252,352 L 252,120" fill="none" stroke="#22c55e" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M 243,133 L 252,116 L 261,133" fill="none" stroke="#22c55e" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="252" cy="102" r="9" fill="#fff" stroke="#22c55e" stroke-width="4.5"/>
+          <!-- ✓ 2: 向きを変えて直進 -->
+          <path d="M 270,102 L 556,102" fill="none" stroke="#22c55e" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M 544,93 L 560,102 L 544,111" fill="none" stroke="#22c55e" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- ステップバッジ + バイリンガルラベル -->
+          <g transform="translate(216,300)">
+            <circle r="14" fill="#16a34a"/>
+            <text y="5" text-anchor="middle" fill="#fff" font-size="14" font-weight="800" style="font-family: var(--font-body)">1</text>
           </g>
-          <g transform="translate(300,78)">
-            <circle r="13" fill="#1A1A1A"/>
-            <text y="4.5" text-anchor="middle" fill="#fff" font-size="13" font-weight="800" style="font-family: var(--font-body)">2</text>
+          <text x="196" y="326" text-anchor="end" fill="#4a453e" font-size="11" font-weight="800" style="font-family: var(--font-body)">GO STRAIGHT</text>
+          <text x="196" y="340" text-anchor="end" fill="#4a453e" font-size="10.5" font-weight="700" style="font-family: var(--font-body)">まず直進して角で停止</text>
+          <g transform="translate(300,64)">
+            <circle r="14" fill="#16a34a"/>
+            <text y="5" text-anchor="middle" fill="#fff" font-size="14" font-weight="800" style="font-family: var(--font-body)">2</text>
           </g>
+          <text x="330" y="48" fill="#4a453e" font-size="11" font-weight="800" style="font-family: var(--font-body)">TURN, THEN GO STRAIGHT</text>
+          <text x="330" y="62" fill="#4a453e" font-size="10.5" font-weight="700" style="font-family: var(--font-body)">右を向いて、青になったら直進</text>
+          <text x="486" y="252" fill="var(--color-brand)" font-size="11" font-weight="800" style="font-family: var(--font-body)">✕ NO DIAGONAL TURN</text>
+          <text x="486" y="266" fill="var(--color-brand)" font-size="10.5" font-weight="700" style="font-family: var(--font-body)">斜め右折は禁止</text>
         </svg>
+        </div>
       </div>
       <div class="p-7 md:p-8">
         <h2 class="font-[family-name:var(--font-heading)] text-[17px] text-white tracking-wide mb-4">↱ {L.r4t}</h2>
