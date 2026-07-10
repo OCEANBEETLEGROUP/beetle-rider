@@ -94,8 +94,6 @@ const chopperSchema = [
   </section>
 
   <TrustBar lang={lang} variant="chopper" />
-  <!-- チョッパー実績バナー（貸渡簿の住所+電話国番号から算出 2026-07-10: 56人・10カ国。更新時はDB再集計） -->
-  <CountriesBar lang={lang} theme="brand" count={10} riders={56} codes={['us', 'au', 'jp', 'de', 'gb', 'ca', 'sg', 'tr', 'mt', 'id']} />
 
   <!-- ============================
        Section 2: Vehicle Gallery
@@ -197,6 +195,7 @@ const chopperSchema = [
       <!-- 行き先マップ v9 — コード製ジオラマ（MAP LAB R4採用・2026-07-08）
            台形富士・箱根=2面立体 / C1=柱付き高架リング+ビル群 / ベイブリッジ / ターンパイク /
            走行ライト3系統(134=鎌倉発往復・ターンパイク往復・C1周回、オレンジ・最前面レイヤー) -->
+      <div class="relative">
       <div id="dioScroll" class="max-md:overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <svg viewBox="0 0 1440 640" xmlns="http://www.w3.org/2000/svg" class="dio w-full h-auto max-md:min-w-[920px]" aria-label="Destinations from Kamakura, drawn in code: Route 134, Turnpike to Hakone, Mt. Fuji, Atami-Izu, Shuto C1 loop with Shibuya Shinjuku Ueno Ginza, Bayshore Route, Bay Bridge, Daikoku PA, Yokohama, Yokosuka">
         <defs>
@@ -407,6 +406,15 @@ const chopperSchema = [
         </circle>
       </svg>
       </div>
+      <!-- モバイル: 横スクロールできることを視覚的に伝える（両端フェード＋スワイプヒント） -->
+      <div class="dio-fade dio-fade-l md:hidden" aria-hidden="true"></div>
+      <div class="dio-fade dio-fade-r md:hidden" aria-hidden="true"></div>
+      <div id="dioHint" class="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-[3] flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/60 border border-white/15 backdrop-blur-[8px] text-[10px] font-bold tracking-[0.18em] uppercase text-white/90 pointer-events-none transition-opacity duration-500 whitespace-nowrap">
+        <svg class="w-3 h-3 dio-arrow-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>{lang === 'en' ? 'SWIPE TO EXPLORE' : 'スワイプで地図を動かせます'}</span>
+        <svg class="w-3 h-3 dio-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      </div>
 
       </div>
   </section>
@@ -499,6 +507,10 @@ const chopperSchema = [
     </div>
   </section>
 
+  <!-- チョッパー実績バナー（Reviews直前 — レビューと並ぶ社会的証明クラスタ。
+       国数は貸渡簿統合DBの住所+電話国番号から算出 2026-07-10: 10カ国。更新時はDB再集計） -->
+  <CountriesBar lang={lang} theme="brand" count={10} regions={false} codes={['us', 'au', 'jp', 'de', 'gb', 'ca', 'sg', 'tr', 'mt', 'id']} />
+
   <Reviews lang={lang} accent="brand" product="chopper" />
 
   <!-- Floating CTA -->
@@ -544,7 +556,17 @@ const chopperSchema = [
     /* 動きを抑える設定のユーザーには走行ライトを消す */
     @media (prefers-reduced-motion: reduce) {
       .orbit-light { display: none; }
+      .dio-arrow-l, .dio-arrow-r { animation: none; }
     }
+
+    /* モバイル横スクロールの視覚誘導: 両端フェード＋矢印の往復アニメ */
+    .dio-fade { position: absolute; top: 0; bottom: 0; width: 34px; pointer-events: none; z-index: 2; }
+    .dio-fade-l { left: 0; background: linear-gradient(to right, var(--color-deep-red, #2D0A0A) 8%, rgba(45, 10, 10, 0)); }
+    .dio-fade-r { right: 0; background: linear-gradient(to left, var(--color-deep-red, #2D0A0A) 8%, rgba(45, 10, 10, 0)); }
+    @keyframes dioNudgeL { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-3px); } }
+    @keyframes dioNudgeR { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
+    .dio-arrow-l { animation: dioNudgeL 1.4s ease-in-out infinite; }
+    .dio-arrow-r { animation: dioNudgeR 1.4s ease-in-out infinite; }
 
     /* Accordion Active State */
     [data-accordion-item].active [data-accordion-icon] {
@@ -562,14 +584,28 @@ const chopperSchema = [
        Scripts
        ============================ -->
   <script>
-    /* Diorama map: モバイルは横スクロールのため、初期位置を鎌倉(x=58%)中心へ */
+    /* Diorama map: モバイルは横スクロールのため、初期位置を鎌倉(x=58%)中心へ。
+       スワイプヒントはユーザーが実際に動かしたらフェードアウト（初期スクロールでは消さない） */
     (function() {
       const wrap = document.getElementById('dioScroll');
       const svg = wrap ? wrap.querySelector('svg') : null;
+      const hint = document.getElementById('dioHint');
       if (!wrap || !svg) return;
       const w = svg.getBoundingClientRect().width;
       if (wrap.clientWidth < w) {
         wrap.scrollLeft = Math.max(0, w * 0.58 - wrap.clientWidth / 2);
+        if (hint) {
+          const base = wrap.scrollLeft;
+          const onScroll = () => {
+            if (Math.abs(wrap.scrollLeft - base) < 30) return;
+            wrap.removeEventListener('scroll', onScroll);
+            hint.style.opacity = '0';
+            setTimeout(() => hint.remove(), 600);
+          };
+          wrap.addEventListener('scroll', onScroll, { passive: true });
+        }
+      } else {
+        hint?.remove();
       }
     })();
 

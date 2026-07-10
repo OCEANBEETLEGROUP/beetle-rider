@@ -217,7 +217,7 @@ const websiteLd = {
 
   <Footer activePage={activePage} siteConfig={siteConfig} igPhotos={igPhotos} lang={lang} />
 
-  <ContactFloat lang={lang} phone={siteConfig?.phone} />
+  <ContactFloat lang={lang} phone={siteConfig?.phone} igUrl={activePage === 'ebike' ? 'https://ig.me/m/beetlerider_ebike' : 'https://ig.me/m/beetlerider_japan'} />
 
   {siteConfig?.announcement && (
     <div id="announceBar" class="hidden fixed bottom-0 inset-x-0 z-[95] bg-brand text-white px-10 py-2.5 text-center">

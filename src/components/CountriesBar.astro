@@ -1,20 +1,21 @@
 ---
 /**
- * CountriesBar — 実顧客の出身国バナー（TrustBarの直下に置くスリム帯・TAKE指示 2026-07-10）
- * 数字はカウントアップ演出（リアルタイムカウント風・IntersectionObserverで視認時に開始）。
- * 国旗はSVG自己ホスト（/assets/flags/、flag-icons MIT）— 絵文字はWindowsで描画されないため不使用。
- * ホーム/E-BIKE = 27の国と地域（TAKE提供リスト）。
- * チョッパー = 貸渡簿統合DB(CHOPPER_統合DB)の住所+電話国番号から算出（2026-07-10時点: 56人・10カ国）。
- *   → 数字を更新する時は貸渡簿を再集計して riders / count / codes を差し替える。
+ * CountriesBar — 実顧客の出身国バナー（国旗マーキー＋カウントアップ・TAKE指示 2026-07-10改）
+ * - 数字は国数のみ（人数は出さない）。「現在、」＋パルスドットでリアルタイムな数字感を演出。
+ * - 配置は顧客動線で決定: ホーム=ヒーロー直下（着地直後にグローバル実績を提示）／
+ *   チョッパー・E-BIKE=Reviewsの直前（レビューと並ぶ社会的証明クラスタ）。TrustBarとは並べない。
+ * - 国旗はSVG自己ホスト（/assets/flags/、flag-icons MIT）— 絵文字はWindowsで描画されないため不使用。
+ * - ホーム/E-BIKE = 27の国と地域（TAKE提供リスト）。チョッパー = 貸渡簿統合DBの住所+電話国番号から
+ *   算出（2026-07-10時点: 10カ国）。数字更新時は貸渡簿を再集計して count / codes を差し替える。
  */
 import type { Lang } from '../i18n/config';
 
 interface Props {
   lang: Lang;
   theme?: 'brand' | 'ebike';
-  count: number;           // 国・地域の数
-  riders?: number;         // ライダー数（チョッパーページのみ）
-  codes?: string[];        // 表示する国旗コード（/assets/flags/{code}.svg）
+  count: number;            // 国・地域の数
+  regions?: boolean;        // true=「の国と地域」/ COUNTRIES & REGIONS 表記（グアム・台湾を含む27用）
+  codes?: string[];         // 表示する国旗コード（/assets/flags/{code}.svg）
 }
 
 const NAMES: Record<string, string> = {
@@ -29,31 +30,25 @@ const NAMES: Record<string, string> = {
 // 全社実績27（貸渡記録・TAKE提供）
 const DEFAULT_CODES = ['us', 'au', 'de', 'gu', 'gb', 'fr', 'ca', 'nz', 'ch', 'be', 'no', 'pl', 'cz', 'ru', 'cl', 'ar', 'tw', 'kr', 'th', 'sg', 'my', 'ph', 'kh', 'in', 'tr', 'ma', 'jp'];
 
-const { lang, theme = 'brand', count, riders, codes = DEFAULT_CODES } = Astro.props;
+const { lang, theme = 'brand', count, regions = true, codes = DEFAULT_CODES } = Astro.props;
 const en = lang === 'en';
 const pink = theme === 'ebike';
 
-const wrap = pink ? 'bg-ebike border-b border-black/[0.08]' : 'bg-white/[0.015] border-b border-white/[0.07]';
+const wrap = pink ? 'bg-ebike border-y border-black/[0.08]' : 'bg-white/[0.015] border-y border-white/[0.07]';
 const label = pink ? 'text-white/75' : 'text-white/45';
 const numCls = 'cb-num font-[family-name:var(--font-heading)] text-[19px] leading-none text-white inline-block min-w-[1.3em] text-center';
+const dotCls = pink ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-brand shadow-[0_0_10px_var(--color-brand)]';
 ---
 
 <div class={wrap}>
   <div class="max-w-[1200px] mx-auto pl-6 py-3 flex items-center gap-6 max-md:flex-col max-md:gap-2.5 max-md:px-0 max-md:pt-3.5">
-    <!-- カウント（リアルタイムカウント風） -->
-    <p class:list={['shrink-0 flex items-baseline gap-x-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase whitespace-nowrap max-md:px-6', label]}>
-      {riders ? (
-        en ? (
-          <><span class={numCls} data-target={riders}>0</span> RIDERS · <span class={numCls} data-target={count}>0</span> COUNTRIES — AND COUNTING</>
-        ) : (
-          <>世界 <span class={numCls} data-target={count}>0</span> カ国から <span class={numCls} data-target={riders}>0</span> 人のライダー</>
-        )
+    <!-- 現在の実績カウント（パルスドット＋カウントアップでリアルタイム感） -->
+    <p class:list={['shrink-0 flex items-center gap-x-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase whitespace-nowrap max-md:px-6', label]}>
+      <span class:list={['w-1.5 h-1.5 rounded-full animate-pulse shrink-0', dotCls]} aria-hidden="true"></span>
+      {en ? (
+        <>RIGHT NOW — RIDERS FROM <span class={numCls} data-target={count}>0</span> {regions ? <>COUNTRIES &amp; REGIONS</> : <>COUNTRIES</>}</>
       ) : (
-        en ? (
-          <>RIDERS FROM <span class={numCls} data-target={count}>0</span> COUNTRIES &amp; REGIONS</>
-        ) : (
-          <>世界 <span class={numCls} data-target={count}>0</span> の国と地域からライダーが来ています</>
-        )
+        <>現在、世界 <span class={numCls} data-target={count}>0</span> {regions ? 'の国と地域' : 'カ国'} からライダーが来ています</>
       )}
     </p>
     <!-- 国旗マーキー（2セット複製・ホバーで停止） -->

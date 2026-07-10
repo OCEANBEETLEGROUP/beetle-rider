@@ -1,20 +1,22 @@
 ---
 /**
  * ContactFloat — 予約直前の疑問を即解消する連絡ボタン（IG DM / 電話）。左下固定。
+ * igUrl: E-BIKE系ページでは @beetlerider_ebike のDMへ（BaseLayoutがactivePageで出し分け）。
  */
 import type { Lang } from '../i18n/config';
 
 interface Props {
   lang: Lang;
   phone?: string;
+  igUrl?: string;
 }
-const { lang, phone = '0467379926' } = Astro.props;
+const { lang, phone = '0467379926', igUrl = 'https://ig.me/m/beetlerider_japan' } = Astro.props;
 const en = lang === 'en';
 ---
 
 <div class="fixed bottom-8 left-8 max-md:bottom-5 max-md:left-5 z-[85] flex flex-col gap-2.5">
   <a
-    href="https://ig.me/m/beetlerider_japan"
+    href={igUrl}
     target="_blank"
     rel="noopener"
     aria-label={en ? 'Message us on Instagram' : 'InstagramでDMする'}
