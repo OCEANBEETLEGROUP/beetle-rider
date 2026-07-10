@@ -1,8 +1,8 @@
 ---
 /**
- * E-BIKE RULES v2 — 店舗の使用説明書（Notion「E-BIKE-交通ルール/Traffic Rules」）準拠。
- * 信号比較画像は自社アセット(GitHub raw→self-host)。左側通行・二段階右折は
- * 著作権回避のためSVG図を自作（TAKE指示 2026-07-07）。
+ * E-BIKE RULES v3 — 店舗の使用説明書（Notion「E-BIKE-交通ルール/Traffic Rules」）準拠。
+ * ルール画像はNotionページと同じ3点（signal_compare / position / twostep）を
+ * self-host（ob-ebike-rules-assets→/assets/rules/）。AI生成イラストは廃止（TAKE指示 2026-07-10）。
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getLangFromUrl, localePath } from '../../i18n/config';
@@ -118,13 +118,8 @@ const L = en ? {
   <section class="pb-12 px-6 md:px-10 bg-ebike">
     <div class="max-w-[760px] mx-auto rounded-2xl bg-white/[0.08] border border-white/[0.14] overflow-hidden">
       <div class="px-6 pt-6">
-        <!-- AI生成イラスト（fal.ai nano-banana・著作権フリー自社生成）+ バイリンガルラベル -->
-        <div class="relative rounded-xl overflow-hidden bg-[#26060b] max-w-[540px] mx-auto">
-          <img src="/assets/rules/keepleft_ai.webp" alt="Keep left: ride in the left lane with the flow. Riding against traffic is prohibited. 左側通行・逆走禁止" class="w-full h-auto block" loading="lazy" />
-          <span class="absolute left-[3%] bottom-[4%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-green-500 text-white text-[8.5px] md:text-[11.5px] font-bold tracking-wide whitespace-nowrap shadow-lg">✓ KEEP LEFT — 左側を走る</span>
-          <span class="absolute right-[3%] top-[54%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-white/95 text-[#8e1d40] text-[8.5px] md:text-[11.5px] font-bold tracking-wide whitespace-nowrap shadow-lg">✕ WRONG WAY — 逆走禁止</span>
-          <span class="absolute right-[3%] top-[22%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-black/55 text-white/80 text-[8px] md:text-[10.5px] font-bold tracking-wide whitespace-nowrap backdrop-blur-sm">対向車線 / ONCOMING LANE</span>
-        </div>
+        <!-- Notionルールページと同一の図版（position.png・OK/NG注釈入り） -->
+        <img src="/assets/rules/position.png" alt="Keep left and ride at the far-left edge of the road. Riding against traffic (wrong way) is prohibited. 左側通行・車道の左端を走る・逆走禁止" class="w-full rounded-xl" loading="lazy" />
       </div>
       <div class="p-7 md:p-8">
         <h2 class="font-[family-name:var(--font-heading)] text-[17px] text-white tracking-wide mb-4">⬅️ {L.r2t}</h2>
@@ -140,14 +135,8 @@ const L = en ? {
   <section class="pb-12 px-6 md:px-10 bg-ebike">
     <div class="max-w-[760px] mx-auto rounded-2xl bg-white/[0.08] border border-white/[0.14] overflow-hidden">
       <div class="px-6 pt-6">
-        <!-- AI生成イラスト（fal.ai nano-banana・著作権フリー自社生成）+ ステップラベル -->
-        <div class="relative rounded-xl overflow-hidden bg-[#26060b] max-w-[540px] mx-auto">
-          <img src="/assets/rules/twostep_ai.webp" alt="Two-step right turn: go straight across the intersection, stop, turn your bike right, then go when the light turns green. Never cut diagonally. 二段階右折" class="w-full h-auto block" loading="lazy" />
-          <span class="absolute left-[53%] top-[66%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-[#B42550] text-white text-[8.5px] md:text-[11px] font-bold tracking-wide whitespace-nowrap shadow-lg">① GO STRAIGHT — まず直進</span>
-          <span class="absolute left-[24%] top-[41%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-[#B42550] text-white text-[8.5px] md:text-[11px] font-bold tracking-wide whitespace-nowrap shadow-lg">② STOP & TURN — 停止して右を向く</span>
-          <span class="absolute right-[2%] top-[34%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-[#B42550] text-white text-[8.5px] md:text-[11px] font-bold tracking-wide whitespace-nowrap shadow-lg">③ GO — 青で直進</span>
-          <span class="absolute left-[4%] top-[81%] px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-white/95 text-[#8e1d40] text-[8.5px] md:text-[11px] font-bold tracking-wide whitespace-nowrap shadow-lg">✕ NO DIAGONAL — 斜め右折禁止</span>
-        </div>
+        <!-- Notionルールページと同一の図版（twostep.png・①②とOK/NG注釈入り） -->
+        <img src="/assets/rules/twostep.png" alt="Two-step right turn: go straight across the intersection, stop, turn your bike right, then go when the light turns green. Never cut diagonally. 二段階右折" class="w-full rounded-xl" loading="lazy" />
       </div>
       <div class="p-7 md:p-8">
         <h2 class="font-[family-name:var(--font-heading)] text-[17px] text-white tracking-wide mb-4">↱ {L.r4t}</h2>

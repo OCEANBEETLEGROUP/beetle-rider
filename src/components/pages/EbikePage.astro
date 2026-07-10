@@ -4,6 +4,7 @@ import BookNowButton from '../../components/BookNowButton.astro';
 import CmsImage from '../../components/CmsImage.astro';
 import TrustBar from '../../components/TrustBar.astro';
 import Reviews from '../../components/Reviews.astro';
+import CountriesBar from '../../components/CountriesBar.astro';
 import { EBIKE_WIDGETS } from '../../lib/bokun';
 import { getDestinations } from '../../lib/microcms';
 import { getLangFromUrl, localePath } from '../../i18n/config';
@@ -283,6 +284,9 @@ const ebikeSchema = [
   </section>
 
   <Reviews lang={lang} product="ebike" theme="pink" />
+
+  <!-- Section 4.5: 27カ国訴求（貸渡記録ベース） -->
+  <CountriesBar lang={lang} theme="ebike" />
 
   <!-- Section 5: Rules (Accordion) -->
   <section id="rules" class="py-32 px-10 bg-ebike max-md:py-24 max-md:px-6">

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getImage } from 'astro:assets';
 import BookNowButton from '../../components/BookNowButton.astro';
 import CmsImage from '../../components/CmsImage.astro';
+import IdpChecker from '../../components/IdpChecker.astro';
 import { getLangFromUrl, localePath } from '../../i18n/config';
 import { useTranslations } from '../../i18n/index';
 import type { Vehicle } from '../../lib/microcms';
@@ -319,6 +320,10 @@ const faqItems = faqKeys.map(key => ({
   <!-- Section 4: Protocol -->
   <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
     <div class="max-w-[800px] mx-auto">
+      <!-- License Checker（「Before You Ride」の上に配置 TAKE指示 2026-07-10） -->
+      <div class="mb-20 max-md:mb-16 reveal">
+        <IdpChecker lang={lang} />
+      </div>
       <div class="text-center mb-16">
         <div class="reveal">
           <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t('detail.protocol.label')}</p>

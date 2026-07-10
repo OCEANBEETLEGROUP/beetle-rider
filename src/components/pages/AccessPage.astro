@@ -68,12 +68,12 @@ const icons: Record<string, string> = {
 ---
 
 <BaseLayout title={L.metaTitle} description={L.metaDesc} activePage="access" headerLogo="chopper">
-  <!-- Hero: 事実バッジ統合型（カード3枚を廃止） -->
-  <section class="relative h-[44vh] min-h-[340px] flex items-end overflow-hidden">
+  <!-- Hero: 事実バッジ統合型（店舗画像がよく見えるよう高さ増・グラデ軽め TAKE指示 2026-07-10） -->
+  <section class="relative h-[72vh] min-h-[540px] max-md:h-[60vh] max-md:min-h-[440px] flex items-end overflow-hidden">
     <div class="absolute inset-0 bg-[#111]">
       <img src="/assets/shop/BR_SHOP_FRONT.webp" alt="BEETLE RIDER Kamakura storefront — bikes lined up out front" class="w-full h-full object-cover" loading="eager" />
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-[rgba(45,10,10,0.97)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.05)_40%,rgba(0,0,0,0.3)_75%,rgba(45,10,10,0.97)_100%)]"></div>
     <div class="relative z-[2] px-6 md:px-10 pb-10 max-w-[1000px] mx-auto w-full">
       <p class="text-[11px] font-bold tracking-[0.35em] uppercase text-brand mb-3">{L.label}</p>
       <h1 class="font-[family-name:var(--font-heading)] text-[clamp(34px,5.5vw,64px)] text-white tracking-tight leading-none mb-5">{L.heading}</h1>
@@ -81,34 +81,6 @@ const icons: Record<string, string> = {
         {L.badges.map((b, i) => (
           <span class:list={['px-4 py-2 rounded-full text-[10.5px] font-bold tracking-[0.14em] uppercase border', i === 0 ? 'bg-brand border-brand text-white' : 'bg-black/40 border-white/15 text-white/80 backdrop-blur-sm']}>{b}</span>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 地図 + 1行インフォバー -->
-  <section class="px-6 md:px-10 pt-6 bg-deep-red">
-    <div class="max-w-[1000px] mx-auto">
-      <div class="rounded-2xl overflow-hidden border border-white/[0.08]">
-        <iframe
-          src={`https://www.google.com/maps?q=BEETLE%20RIDER%20OCEANBEETLE%20KAMAKURA&output=embed&hl=${lang}`}
-          width="100%"
-          height="360"
-          style="border:0; filter: grayscale(1) invert(0.92) contrast(0.9);"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Map to BEETLE RIDER Kamakura"
-        ></iframe>
-      </div>
-      <div class="flex flex-wrap items-center justify-between gap-3 px-1 py-4">
-        <p class="text-[12.5px] text-white/60 font-medium">
-          {L.addr}
-          <span class="text-white/25 mx-2">|</span>
-          <a href={`tel:${phone.replace(/-/g, '')}`} class="hover:text-white transition-colors">{phone}</a>
-        </p>
-        <a href={mapUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand text-white text-[10.5px] font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] transition-colors">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          {L.mapBtn}
-        </a>
       </div>
     </div>
   </section>
@@ -178,6 +150,34 @@ const icons: Record<string, string> = {
               <svg class="w-[18px] h-[18px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </span>
           </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 地図 + 1行インフォバー（レイアウト変更で最下部へ TAKE指示 2026-07-10） -->
+  <section class="px-6 md:px-10 pt-2 pb-20 bg-deep-red">
+    <div class="max-w-[1000px] mx-auto">
+      <div class="rounded-2xl overflow-hidden border border-white/[0.08]">
+        <iframe
+          src={`https://www.google.com/maps?q=BEETLE%20RIDER%20OCEANBEETLE%20KAMAKURA&output=embed&hl=${lang}`}
+          width="100%"
+          height="360"
+          style="border:0; filter: grayscale(1) invert(0.92) contrast(0.9);"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Map to BEETLE RIDER Kamakura"
+        ></iframe>
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-3 px-1 py-4">
+        <p class="text-[12.5px] text-white/60 font-medium">
+          {L.addr}
+          <span class="text-white/25 mx-2">|</span>
+          <a href={`tel:${phone.replace(/-/g, '')}`} class="hover:text-white transition-colors">{phone}</a>
+        </p>
+        <a href={mapUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand text-white text-[10.5px] font-bold tracking-[0.15em] uppercase hover:bg-[#a80b1e] transition-colors">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {L.mapBtn}
         </a>
       </div>
     </div>

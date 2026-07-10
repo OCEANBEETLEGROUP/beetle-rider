@@ -100,7 +100,7 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
   </div>
 
   <!-- Main Footer -->
-  <div class="px-10 py-16 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+  <div class="px-10 py-16 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-16">
     <!-- Brand Column -->
     <div class="flex flex-col gap-6">
       <img src="/assets/logo/OB_CORPORATE.svg" alt="OCEANBEETLE" class="h-10 w-auto self-start" />
@@ -142,10 +142,10 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
       </dl>
     </div>
 
-    <!-- Right Column: Sitemap（カテゴリ3列・見やすく） -->
+    <!-- Right Column: Sitemap + OCEANBEETLE GROUP（同一グリッド・4列） -->
     <div>
       <h4 class="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-6">SITEMAP</h4>
-      <div class="grid grid-cols-3 max-md:grid-cols-2 gap-x-8 gap-y-8">
+      <div class="grid grid-cols-4 max-md:grid-cols-2 gap-x-8 gap-y-8">
         <div>
           <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">RIDE</p>
           <ul class="flex flex-col gap-2.5">
@@ -155,7 +155,7 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
           </ul>
         </div>
         <div>
-          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">DESTINATIONS</p>
+          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">CHOPPER DESTINATIONS</p>
           <ul class="flex flex-col gap-2.5">
             <li><a href={localePath('/hakone', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">HAKONE</a></li>
             <li><a href={localePath('/fuji', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">MT. FUJI</a></li>
@@ -171,18 +171,16 @@ const chopperPhotos: IgPhoto[] = (Astro.props.igPhotos?.chopper ?? [
             <li><a href={localePath('/about', lang)} class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">ABOUT</a></li>
           </ul>
         </div>
+        <div>
+          <p class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-brand/80 mb-3.5">{t('footer.group')}</p>
+          <ul class="flex flex-col gap-2.5">
+            <li><a href="https://motorcycle.oceanbeetle.com/" target="_blank" class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE MOTORCYCLE</a></li>
+            <li><a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">ONLINE STORE</a></li>
+            <li><a href="https://www.houndracer.com/" target="_blank" class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">HOUND RACER</a></li>
+            <li><a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-[13px] text-white/55 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- OCEANBEETLE GROUP（横並び帯へ移設） -->
-  <div class="border-t border-white/[0.06] px-10 py-5">
-    <div class="max-w-[1200px] mx-auto flex flex-wrap items-center justify-center md:justify-start gap-x-7 gap-y-2">
-      <span class="text-[9.5px] font-bold tracking-[0.2em] uppercase text-white/25">{t('footer.group')}</span>
-      <a href="https://oceanbeetle.com/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">OCEANBEETLE</a>
-      <a href="https://oceanbeetle.ocnk.net/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">ONLINE STORE</a>
-      <a href="https://www.houndracer.com/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">HOUND RACER</a>
-      <a href="https://www.oceanbeetleusa.com/" target="_blank" class="text-[11.5px] text-white/45 font-medium hover:text-white transition-colors">OCEANBEETLE USA</a>
     </div>
   </div>
 

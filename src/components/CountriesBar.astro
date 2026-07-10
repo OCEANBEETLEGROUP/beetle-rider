@@ -1,0 +1,106 @@
+---
+/**
+ * CountriesBar — 実顧客の出身国訴求（貸渡記録ベース・27の国と地域）
+ * 国旗はSVGを自己ホスト（/assets/flags/、flag-icons MIT）。絵文字はWindowsで
+ * 描画されないため使わない。マーキーは2セット複製でシームレスループ、
+ * prefers-reduced-motion では静的グリッドに切替。
+ */
+import type { Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+  theme?: 'brand' | 'ebike';
+}
+const { lang, theme = 'brand' } = Astro.props;
+const en = lang === 'en';
+const pink = theme === 'ebike';
+
+// 貸渡記録に登場した国と地域（2026-07時点・27）
+const COUNTRIES: [string, string][] = [
+  ['us', 'USA'], ['au', 'Australia'], ['de', 'Germany'], ['gu', 'Guam'],
+  ['gb', 'UK'], ['fr', 'France'], ['ca', 'Canada'], ['nz', 'New Zealand'],
+  ['ch', 'Switzerland'], ['be', 'Belgium'], ['no', 'Norway'], ['pl', 'Poland'],
+  ['cz', 'Czechia'], ['ru', 'Russia'], ['cl', 'Chile'], ['ar', 'Argentina'],
+  ['tw', 'Taiwan'], ['kr', 'South Korea'], ['th', 'Thailand'], ['sg', 'Singapore'],
+  ['my', 'Malaysia'], ['ph', 'Philippines'], ['kh', 'Cambodia'], ['in', 'India'],
+  ['tr', 'Türkiye'], ['ma', 'Morocco'], ['jp', 'Japan'],
+];
+
+const label = en ? 'OUR RIDERS' : 'OUR RIDERS';
+const countText = en ? 'COUNTRIES & REGIONS' : 'COUNTRIES & REGIONS';
+const sub = en
+  ? 'From the U.S. to Guam, Germany to Singapore — riders from all over the world start their Japan ride at this one garage in Kamakura.'
+  : 'アメリカから、ドイツから、グアムから。世界中のライダーが、鎌倉のこのガレージから走り出しています。';
+---
+
+<section class:list={['py-20 max-md:py-16 overflow-hidden', pink ? 'bg-ebike' : 'bg-deep-red']}>
+  <div class="max-w-[1200px] mx-auto px-10 max-md:px-6 text-center">
+    <div class="reveal">
+      <p class:list={['text-[11px] font-semibold tracking-[0.3em] uppercase mb-5', pink ? 'text-white/45' : 'text-white/35']}>{label}</p>
+    </div>
+    <div class="reveal reveal-delay-1 flex items-baseline justify-center gap-4 max-md:gap-3">
+      <span class="font-[family-name:var(--font-heading)] text-[clamp(72px,10vw,128px)] text-white leading-none tracking-tight">27</span>
+      <span class:list={['font-[family-name:var(--font-heading)] text-[clamp(15px,2vw,24px)] tracking-[0.08em] text-left leading-[1.15]', pink ? 'text-white/85' : 'text-white/85']}>COUNTRIES<br />&amp; REGIONS</span>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <p class:list={['text-[13.5px] max-md:text-[12.5px] leading-[1.9] max-w-[560px] mx-auto mt-5', pink ? 'text-white/65' : 'text-white/50']}>{sub}</p>
+    </div>
+  </div>
+
+  <!-- 国旗マーキー（2セット複製・ホバーで停止） -->
+  <div class="cb-marquee mt-10 reveal reveal-delay-3">
+    <div class="cb-track">
+      {[0, 1].map((dup) => (
+        <div class:list={['cb-set', dup === 1 && 'cb-dup']} aria-hidden={dup === 1 ? 'true' : undefined}>
+          {COUNTRIES.map(([code, name]) => (
+            <span class:list={['cb-chip', pink ? 'cb-chip-pink' : 'cb-chip-brand']}>
+              <img src={`/assets/flags/${code}.svg`} width="21" height="16" alt={dup === 0 ? `${name} flag` : ''} loading="lazy" />
+              <span>{name}</span>
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cb-marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .cb-track {
+    display: flex;
+    width: max-content;
+    animation: cbScroll 55s linear infinite;
+  }
+  .cb-marquee:hover .cb-track { animation-play-state: paused; }
+  .cb-set { display: flex; }
+  .cb-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 16px;
+    margin-right: 10px;
+    border-radius: 999px;
+    border: 1px solid;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+  }
+  .cb-chip img { border-radius: 2.5px; display: block; }
+  .cb-chip-brand { background: rgba(255, 255, 255, 0.045); border-color: rgba(255, 255, 255, 0.1); }
+  .cb-chip-pink { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.16); }
+  @keyframes cbScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cb-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 10px; padding: 0 24px; }
+    .cb-dup { display: none; }
+    .cb-marquee { -webkit-mask-image: none; mask-image: none; }
+  }
+</style>

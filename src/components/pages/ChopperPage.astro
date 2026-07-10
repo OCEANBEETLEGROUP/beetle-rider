@@ -176,18 +176,14 @@ const chopperSchema = [
   <!-- ============================
        Section 3: Route 134 Map
        ============================ -->
-  <!-- 3a: 「134号線という聖域」バナー（走行写真背景・横長低め） -->
-  <section class="pt-24 pb-8 px-10 max-md:pt-16 max-md:px-4 bg-deep-red overflow-hidden reveal" id="routeMap">
-    <div class="max-w-[1200px] mx-auto text-left">
-      <div class="relative rounded-[24px] overflow-hidden h-[250px] max-md:h-[200px] flex items-end">
-        <img src="/assets/chopper/promo/674A3883.webp" alt="Riding Route 134 along the Shonan coast" class="absolute inset-0 w-full h-full object-cover object-[center_62%]" loading="lazy" />
-        <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/5"></div>
-        <span class="absolute top-4 right-7 font-[family-name:var(--font-heading)] text-[clamp(64px,8vw,104px)] text-white/[0.15] leading-none select-none pointer-events-none">134</span>
-        <div class="relative z-[2] p-8 max-md:p-6">
-          <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/45 mb-2">{t(lang, 'chopper.route.label')}</p>
-          <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3.5vw,40px)] text-white tracking-[-0.02em] mb-2">{t(lang, 'chopper.route.heading')}</h2>
-          <p class="text-[12.5px] text-white/65 font-medium">{lang === 'en' ? 'Sagami Bay on your left. Enoshima ahead. Fuji on the horizon.' : '左手に相模湾、正面に江ノ島、水平線に富士。信号の少ない海沿いの7km。'}</p>
-        </div>
+  <!-- 3a: 「134号線という聖域」ヘッダー（背景画像なし・センター揃え TAKE指示 2026-07-10） -->
+  <section class="pt-24 pb-10 px-10 max-md:pt-16 max-md:px-6 bg-deep-red overflow-hidden reveal" id="routeMap">
+    <div class="max-w-[1200px] mx-auto text-center relative">
+      <span class="absolute inset-x-0 -top-8 max-md:-top-4 font-[family-name:var(--font-heading)] text-[clamp(96px,14vw,180px)] text-white/[0.045] leading-none select-none pointer-events-none" aria-hidden="true">134</span>
+      <div class="relative z-[1] pt-14 max-md:pt-8">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4">{t(lang, 'chopper.route.label')}</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(30px,4.5vw,56px)] text-white tracking-[-0.02em] mb-4">{t(lang, 'chopper.route.heading')}</h2>
+        <p class="text-[13px] max-md:text-[12.5px] text-white/55 font-medium">{lang === 'en' ? 'Sagami Bay on your left. Enoshima ahead. Fuji on the horizon.' : '左手に相模湾、正面に江ノ島、水平線に富士。信号の少ない海沿いの7km。'}</p>
       </div>
     </div>
   </section>
@@ -409,14 +405,14 @@ const chopperSchema = [
       </svg>
       </div>
 
-        <!-- 行き先カード（縦長） -->
-        <div class="mt-12 reveal reveal-delay-1">
+        <!-- 行き先カード（縦長）— 地図との余白を広めに -->
+        <div class="mt-24 max-md:mt-16 reveal reveal-delay-1">
           <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4 md:text-center">{lang === 'en' ? 'GO FURTHER' : 'さらに遠くへ'}</p>
           <div class="grid grid-cols-3 max-md:grid-cols-1 gap-4">
             {[
               { href: '/hakone', img: '/assets/route/HAKONE.webp', name: 'HAKONE', sub: lang === 'en' ? 'ONSEN · DAY TRIP / OVERNIGHT' : '温泉・日帰り / 1泊2日' },
               { href: '/fuji', img: '/assets/route/MT FUJI VIEW.webp', name: 'MT. FUJI', sub: lang === 'en' ? 'OVERNIGHT · 2 DAYS' : '1泊2日' },
-              { href: '/night-run', img: '/assets/chopper/promo/SHUTOKO_NIGHT.webp', name: 'TOKYO NIGHT RUN', sub: lang === 'en' ? 'NIGHT RUN' : '夜（ナイトラン）' },
+              { href: '/night-run', img: '/assets/chopper/promo/SHUTOKO_NIGHT.webp', name: 'TOKYO NIGHT RUN', sub: lang === 'en' ? 'NIGHT RUN · OVERNIGHT / 2 DAYS' : 'ナイトラン・1泊2日' },
             ].map((r) => (
               <a href={localePath(r.href, lang)} class="group relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-[4/5] flex items-end">
                 <img src={r.img} alt={r.name} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
@@ -442,6 +438,10 @@ const chopperSchema = [
        ============================ -->
   <section class="py-32 px-10 max-md:py-24 max-md:px-6 bg-deep-red">
     <div class="max-w-[800px] mx-auto">
+      <!-- License Checker（「Before You Ride」の上に配置 TAKE指示 2026-07-10） -->
+      <div class="mb-20 max-md:mb-16 reveal">
+        <IdpChecker lang={lang} />
+      </div>
       <!-- Header -->
       <div class="text-center mb-16">
         <div class="reveal">
@@ -455,10 +455,6 @@ const chopperSchema = [
           <p class="font-[family-name:var(--font-heading-jp)] text-[15px] font-medium text-white/50 leading-[1.8] tracking-[0.03em] mt-4">{t(lang, 'chopper.protocol.body2')}</p>
           <p class="font-[family-name:var(--font-accent)] text-[clamp(32px,6vw,56px)] font-bold text-brand leading-[1.3] tracking-[0.02em] mt-10 drop-shadow-[0_0_40px_rgba(195,13,35,0.3)]">{t(lang, 'chopper.protocol.cta')}</p>
         </div>
-      </div>
-      <!-- License Checker -->
-      <div class="mb-12 reveal reveal-delay-2">
-        <IdpChecker lang={lang} />
       </div>
 
       <!-- Accordion -->

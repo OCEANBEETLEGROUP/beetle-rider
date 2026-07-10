@@ -1,9 +1,9 @@
 ---
 title: "A First-Timer's Guide to the Shuto Night Run"
-description: "From Kamakura into Tokyo after dark: the Bayshore Route, the C1 loop, Rainbow Bridge and Daikoku PA. Routes and rules for your first night run."
+description: "From Kamakura into Tokyo after dark: the Bay Bridge, the Bayshore Route, the C1 loop and Daikoku PA. Routes and rules for your first night run."
 date: 2026-07-07
 lang: en
-cover: /assets/chopper/promo/2512080008.webp
+cover: /assets/chopper/promo/SHUTOKO_NIGHT.webp
 product: chopper
 category: ROUTE GUIDE
 ---
@@ -12,11 +12,11 @@ Tokyo by day is a traffic jam. Tokyo by night is something else entirely — aft
 
 ## The Route
 
-Leave Kamakura at dusk and head north to Yokohama. Pass the Minato Mirai ferris wheel, merge onto the Bayshore Route, and the city becomes a tunnel of light.
+Leave Kamakura at dusk and head north to Yokohama. Pass the Minato Mirai ferris wheel, cross the Bay Bridge, and the city becomes a tunnel of light.
 
-1. **Bayshore Route (Wangan)** — the coastal expressway from Yokohama to Tokyo. Long, fast lines with the bay glittering beside you
-2. **The C1 Loop** — 14.8km around Tokyo's core. Building canyons, Ginza neon, corner after corner
-3. **Rainbow Bridge** — the night crossing over the bay. Odaiba left, Tokyo Tower right
+1. **The Bay Bridge** — the opening act: over Yokohama harbor with the lights of Minato Mirai at your back, the twin pylons rushing closer
+2. **Bayshore Route (Wangan)** — the coastal expressway from Yokohama to Tokyo. Long, fast lines with the bay glittering beside you
+3. **The C1 Loop** — 14.8km around Tokyo's core. Building canyons, Ginza neon, corner after corner
 4. **Daikoku PA** — the legendary meeting spot on the way home. After midnight, Japan's custom car and bike culture gathers here
 
 ## What You Need to Know

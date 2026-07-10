@@ -22,7 +22,7 @@ Ease out through Kamakura's old streets, past the great torii of Tsurugaoka Hach
 
 ## 11:00 — Route 134 West: Inamuragasaki & Shichirigahama
 
-This is the stretch that made the road famous. Sagami Bay on your left, Enoshima floating ahead, and on clear days Mt. Fuji stacked behind it. Pull over at Inamuragasaki park — the classic photo spot — then roll down to Shichirigahama beach for a coffee at one of the surf cafés.
+This is the stretch that made the road famous. Sagami Bay on your left, Enoshima floating ahead, and on clear days Mt. Fuji stacked behind it. Our crew stops at Shichirigahama **every single time** — it's the one frame where the ocean, Enoshima and your machine all fit together. Grab a coffee at one of the surf cafés while you're at it.
 
 ## 12:30 — Enoshima for Lunch
 
@@ -30,7 +30,7 @@ Cross the causeway onto the island, or keep it simple at the shirasu (whitebait)
 
 ## 14:00 — The Choice: West or East
 
-- **West:** Chigasaki and Oiso, where the coast gets emptier and faster. Turn around whenever you're happy.
+- **West:** Chigasaki and Oiso, where the coast gets emptier and faster. In Chigasaki you'll find the OCEANBEETLE store — helmets, apparel and bikes from the company behind BEETLE RIDER. Worth the stop. Turn around whenever you're happy.
 - **East:** Zushi and Hayama — quieter coves, the Imperial villa coastline, and fishing-port backroads on the Miura Peninsula.
 
 Feeling ambitious? [Multi-day riders](/en/hakone/) push all the way to Hakone or Fuji.
@@ -45,4 +45,4 @@ Tank full, stories fuller. We're four minutes from Kamakura Station ([access gui
 
 ---
 
-**The practical stuff:** helmets, gloves and liability insurance included or available as options. Fuel is on you (return full — there's a stand two minutes away). Free cancellation until 5 days before. Full rules on the [FAQ page](/en/faq/).
+**The practical stuff:** helmets, gloves and liability insurance included or available as options. Fuel is on you (return full — high-octane, the YELLOW nozzle; there's a stand two minutes away). Free cancellation until 5 days before. Full rules on the [FAQ page](/en/faq/).
