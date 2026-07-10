@@ -77,6 +77,8 @@ const t = useTranslations(lang);
   </section>
 
   <TrustBar lang={lang} variant="home" />
+  <!-- 27カ国バナー（TrustBar直下・国旗マーキー＋カウントアップ） -->
+  <CountriesBar lang={lang} theme="brand" count={27} />
 
   <!-- Section 3: Access Map -->
   <section class="py-16 px-10 bg-deep-red">
@@ -128,7 +130,13 @@ const t = useTranslations(lang);
           <!-- 小田原: 134号線の左端に点で追加 -->
           <circle cx="60" cy="333" r="3" fill="white" opacity="0.25"/>
           <text x="42" y="320" font-family="Inter" font-size="11" fill="white" opacity="0.25" font-weight="600" letter-spacing="0.06em">ODAWARA</text>
-          <text x="20" y="290" font-family="Inter" font-size="11" fill="white" opacity="0.22" font-weight="600" letter-spacing="0.06em">← HAKONE / MT. FUJI</text>
+          <!-- 箱根/富士の山シルエット（富士=雪冠付き・箱根=小峰） -->
+          <path d="M 24,276 L 40,256 L 56,276 Z" fill="white" opacity="0.07"/>
+          <path d="M 24,276 L 40,256 L 56,276" fill="none" stroke="white" stroke-width="1.3" opacity="0.32" stroke-linejoin="round"/>
+          <path d="M 34.5,263 Q 40,259.5 45.5,263 L 40,256 Z" fill="white" opacity="0.5"/>
+          <path d="M 52,276 L 63,263 L 74,276 Z" fill="white" opacity="0.05"/>
+          <path d="M 52,276 L 63,263 L 74,276" fill="none" stroke="white" stroke-width="1.1" opacity="0.22" stroke-linejoin="round"/>
+          <text x="20" y="294" font-family="Inter" font-size="11" fill="white" opacity="0.22" font-weight="600" letter-spacing="0.06em">← HAKONE / MT. FUJI</text>
           <g>
             <circle cx="298" cy="324" r="9" fill="#C30D23"/>
             <circle cx="298" cy="324" r="18" fill="none" stroke="#C30D23" stroke-width="1.5" opacity="0.3">
@@ -150,9 +158,6 @@ const t = useTranslations(lang);
   </section>
 
   <Reviews lang={lang} product="all" />
-
-  <!-- Section 3.5: 27カ国訴求（貸渡記録ベース） -->
-  <CountriesBar lang={lang} theme="brand" />
 
   <!-- Section 4: Highlights -->
   <section class="py-16 px-10 bg-deep-red">

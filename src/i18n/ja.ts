@@ -196,6 +196,8 @@ export default {
   'detail.protocol.label': 'PROTOCOL',
   'detail.protocol.heading': 'Before You Ride.',
   'detail.protocol.thinkYouCan': 'THINK YOU CAN HANDLE THIS?',
+  'detail.license.heading': 'あなたの免許で乗れる？',
+  'detail.license.sub': '予約の前に、30秒だけ。免許を発行した国を選ぶと、必要な書類がその場でわかります。',
 
   // === ABOUT PAGE ===
   'about.s1.label': '01 — Escape',

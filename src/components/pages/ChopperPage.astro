@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CmsImage from '../../components/CmsImage.astro';
 import TrustBar from '../../components/TrustBar.astro';
+import CountriesBar from '../../components/CountriesBar.astro';
 import Reviews from '../../components/Reviews.astro';
 import IdpChecker from '../../components/IdpChecker.astro';
 import { getVehicles } from '../../lib/microcms';
@@ -93,6 +94,8 @@ const chopperSchema = [
   </section>
 
   <TrustBar lang={lang} variant="chopper" />
+  <!-- チョッパー実績バナー（貸渡簿の住所+電話国番号から算出 2026-07-10: 56人・10カ国。更新時はDB再集計） -->
+  <CountriesBar lang={lang} theme="brand" count={10} riders={56} codes={['us', 'au', 'jp', 'de', 'gb', 'ca', 'sg', 'tr', 'mt', 'id']} />
 
   <!-- ============================
        Section 2: Vehicle Gallery
@@ -183,7 +186,7 @@ const chopperSchema = [
       <div class="relative z-[1] pt-14 max-md:pt-8">
         <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4">{t(lang, 'chopper.route.label')}</p>
         <h2 class="font-[family-name:var(--font-heading)] text-[clamp(30px,4.5vw,56px)] text-white tracking-[-0.02em] mb-4">{t(lang, 'chopper.route.heading')}</h2>
-        <p class="text-[13px] max-md:text-[12.5px] text-white/55 font-medium">{lang === 'en' ? 'Sagami Bay on your left. Enoshima ahead. Fuji on the horizon.' : '左手に相模湾、正面に江ノ島、水平線に富士。信号の少ない海沿いの7km。'}</p>
+        <p class="text-[13px] max-md:text-[12.5px] text-white/55 font-medium">{lang === 'en' ? 'An hour from Tokyo — and this coastal road runs straight on to Hakone and Mt. Fuji.' : '東京から60分。この海沿いの一本道は、箱根へ、富士へと、そのまま一直線につながっている。'}</p>
       </div>
     </div>
   </section>
@@ -405,43 +408,60 @@ const chopperSchema = [
       </svg>
       </div>
 
-        <!-- 行き先カード（縦長）— 地図との余白を広めに -->
-        <div class="mt-24 max-md:mt-16 reveal reveal-delay-1">
-          <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4 md:text-center">{lang === 'en' ? 'GO FURTHER' : 'さらに遠くへ'}</p>
-          <div class="grid grid-cols-3 max-md:grid-cols-1 gap-4">
-            {[
-              { href: '/hakone', img: '/assets/route/HAKONE.webp', name: 'HAKONE', sub: lang === 'en' ? 'ONSEN · DAY TRIP / OVERNIGHT' : '温泉・日帰り / 1泊2日' },
-              { href: '/fuji', img: '/assets/route/MT FUJI VIEW.webp', name: 'MT. FUJI', sub: lang === 'en' ? 'OVERNIGHT · 2 DAYS' : '1泊2日' },
-              { href: '/night-run', img: '/assets/chopper/promo/SHUTOKO_NIGHT.webp', name: 'TOKYO NIGHT RUN', sub: lang === 'en' ? 'NIGHT RUN · OVERNIGHT / 2 DAYS' : 'ナイトラン・1泊2日' },
-            ].map((r) => (
-              <a href={localePath(r.href, lang)} class="group relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-[4/5] flex items-end">
-                <img src={r.img} alt={r.name} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10"></div>
-                <div class="relative z-[2] p-6 w-full flex items-end justify-between">
-                  <div>
-                    <p class="font-[family-name:var(--font-heading)] text-[clamp(17px,1.8vw,22px)] text-white tracking-tight">{r.name}</p>
-                    <p class="text-[10px] font-bold tracking-[0.15em] text-white/60 mt-1">{r.sub}</p>
-                  </div>
-                  <span class="text-brand text-lg group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
       </div>
   </section>
 
+  <!-- 3c: さらに遠くへ（独立セクション — 地図と明確に分離 TAKE指示 2026-07-10） -->
+  <section class="pt-28 pb-20 max-md:pt-16 px-10 max-md:px-4 bg-deep-red" id="goFurther">
+    <div class="max-w-[1200px] mx-auto reveal">
+      <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-6 md:text-center">{lang === 'en' ? 'GO FURTHER' : 'さらに遠くへ'}</p>
+      <div class="grid grid-cols-3 max-md:grid-cols-1 gap-4">
+        {[
+          { href: '/hakone', img: '/assets/route/HAKONE.webp', name: 'HAKONE', sub: lang === 'en' ? 'ONSEN · DAY TRIP / OVERNIGHT' : '温泉・日帰り / 1泊2日' },
+          { href: '/fuji', img: '/assets/route/MT FUJI VIEW.webp', name: 'MT. FUJI', sub: lang === 'en' ? 'OVERNIGHT · 2 DAYS' : '1泊2日' },
+          { href: '/night-run', img: '/assets/chopper/promo/SHUTOKO_NIGHT.webp', name: 'TOKYO NIGHT RUN', sub: lang === 'en' ? 'NIGHT RUN · OVERNIGHT / 2 DAYS' : 'ナイトラン・1泊2日' },
+        ].map((r) => (
+          <a href={localePath(r.href, lang)} class="group relative rounded-2xl overflow-hidden aspect-[3/4] max-md:aspect-[4/5] flex items-end">
+            <img src={r.img} alt={r.name} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10"></div>
+            <div class="relative z-[2] p-6 w-full flex items-end justify-between">
+              <div>
+                <p class="font-[family-name:var(--font-heading)] text-[clamp(17px,1.8vw,22px)] text-white tracking-tight">{r.name}</p>
+                <p class="text-[10px] font-bold tracking-[0.15em] text-white/60 mt-1">{r.sub}</p>
+              </div>
+              <span class="text-brand text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
+
+
+  <!-- ============================
+       Section 4: License Check（独立セクション）
+       予約検討が始まる直前＝行き先で気分が上がった直後に「自分は乗れるか」を
+       30秒で解消する配置（顧客動線: 車両・価格→行き先→★資格確認→ルール→予約）
+       ============================ -->
+  <section class="py-24 max-md:py-16 px-10 max-md:px-6 bg-deep-red border-y border-white/[0.05]" id="licenseCheck">
+    <div class="max-w-[800px] mx-auto">
+      <div class="text-center mb-10 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4">LICENSE CHECK</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(26px,3.5vw,42px)] text-white tracking-[-0.02em] mb-4">{lang === 'en' ? 'Can You Ride?' : 'あなたの免許で乗れる？'}</h2>
+        <p class="text-[13.5px] text-white/50 leading-[1.9]">{lang === 'en' ? 'Thirty seconds before you plan the ride — pick the country that issued your license, and we’ll tell you exactly what to bring.' : '予約の前に、30秒だけ。免許を発行した国を選ぶと、必要な書類がその場でわかります。'}</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <IdpChecker lang={lang} showHeader={false} />
+      </div>
+    </div>
+  </section>
 
   <!-- ============================
        Section 5: Protocol
        ============================ -->
   <section class="py-32 px-10 max-md:py-24 max-md:px-6 bg-deep-red">
     <div class="max-w-[800px] mx-auto">
-      <!-- License Checker（「Before You Ride」の上に配置 TAKE指示 2026-07-10） -->
-      <div class="mb-20 max-md:mb-16 reveal">
-        <IdpChecker lang={lang} />
-      </div>
       <!-- Header -->
       <div class="text-center mb-16">
         <div class="reveal">

@@ -10,8 +10,12 @@
 import type { Lang } from '../i18n/config';
 import { localePath } from '../i18n/config';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props {
+  lang: Lang;
+  /** false = カード内の見出し・説明を出さない（ページ側でセクション見出しを付ける場合） */
+  showHeader?: boolean;
+}
+const { lang, showHeader = true } = Astro.props;
 const en = lang === 'en';
 
 const OK = [
@@ -46,15 +50,19 @@ const all = [
 ---
 
 <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-7 md:p-9" id="idpChecker">
-  <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-3">LICENSE CHECK</p>
-  <h3 class="font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] text-white tracking-tight mb-2">
-    {en ? 'Can You Ride in Japan?' : 'あなたの免許で乗れる？'}
-  </h3>
-  <p class="text-[13px] text-white/50 leading-relaxed mb-6">
-    {en
-      ? 'Select the country that issued your license. We’ll tell you what documents you need to ride a chopper in Japan.'
-      : '免許を発行した国を選ぶと、日本でチョッパーに乗るために必要な書類がわかります。'}
-  </p>
+  {showHeader && (
+    <div>
+      <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-3">LICENSE CHECK</p>
+      <h3 class="font-[family-name:var(--font-heading)] text-[clamp(20px,2.5vw,28px)] text-white tracking-tight mb-2">
+        {en ? 'Can You Ride in Japan?' : 'あなたの免許で乗れる？'}
+      </h3>
+      <p class="text-[13px] text-white/50 leading-relaxed mb-6">
+        {en
+          ? 'Select the country that issued your license. We’ll tell you what documents you need to ride a chopper in Japan.'
+          : '免許を発行した国を選ぶと、日本でチョッパーに乗るために必要な書類がわかります。'}
+      </p>
+    </div>
+  )}
 
   <select
     id="idpSelect"

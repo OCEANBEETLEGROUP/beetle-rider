@@ -1,106 +1,139 @@
 ---
 /**
- * CountriesBar — 実顧客の出身国訴求（貸渡記録ベース・27の国と地域）
- * 国旗はSVGを自己ホスト（/assets/flags/、flag-icons MIT）。絵文字はWindowsで
- * 描画されないため使わない。マーキーは2セット複製でシームレスループ、
- * prefers-reduced-motion では静的グリッドに切替。
+ * CountriesBar — 実顧客の出身国バナー（TrustBarの直下に置くスリム帯・TAKE指示 2026-07-10）
+ * 数字はカウントアップ演出（リアルタイムカウント風・IntersectionObserverで視認時に開始）。
+ * 国旗はSVG自己ホスト（/assets/flags/、flag-icons MIT）— 絵文字はWindowsで描画されないため不使用。
+ * ホーム/E-BIKE = 27の国と地域（TAKE提供リスト）。
+ * チョッパー = 貸渡簿統合DB(CHOPPER_統合DB)の住所+電話国番号から算出（2026-07-10時点: 56人・10カ国）。
+ *   → 数字を更新する時は貸渡簿を再集計して riders / count / codes を差し替える。
  */
 import type { Lang } from '../i18n/config';
 
 interface Props {
   lang: Lang;
   theme?: 'brand' | 'ebike';
+  count: number;           // 国・地域の数
+  riders?: number;         // ライダー数（チョッパーページのみ）
+  codes?: string[];        // 表示する国旗コード（/assets/flags/{code}.svg）
 }
-const { lang, theme = 'brand' } = Astro.props;
+
+const NAMES: Record<string, string> = {
+  us: 'USA', au: 'Australia', de: 'Germany', gu: 'Guam', gb: 'UK', fr: 'France',
+  ca: 'Canada', nz: 'New Zealand', ch: 'Switzerland', be: 'Belgium', no: 'Norway',
+  pl: 'Poland', cz: 'Czechia', ru: 'Russia', cl: 'Chile', ar: 'Argentina',
+  tw: 'Taiwan', kr: 'South Korea', th: 'Thailand', sg: 'Singapore', my: 'Malaysia',
+  ph: 'Philippines', kh: 'Cambodia', in: 'India', tr: 'Türkiye', ma: 'Morocco',
+  jp: 'Japan', id: 'Indonesia', mt: 'Malta',
+};
+
+// 全社実績27（貸渡記録・TAKE提供）
+const DEFAULT_CODES = ['us', 'au', 'de', 'gu', 'gb', 'fr', 'ca', 'nz', 'ch', 'be', 'no', 'pl', 'cz', 'ru', 'cl', 'ar', 'tw', 'kr', 'th', 'sg', 'my', 'ph', 'kh', 'in', 'tr', 'ma', 'jp'];
+
+const { lang, theme = 'brand', count, riders, codes = DEFAULT_CODES } = Astro.props;
 const en = lang === 'en';
 const pink = theme === 'ebike';
 
-// 貸渡記録に登場した国と地域（2026-07時点・27）
-const COUNTRIES: [string, string][] = [
-  ['us', 'USA'], ['au', 'Australia'], ['de', 'Germany'], ['gu', 'Guam'],
-  ['gb', 'UK'], ['fr', 'France'], ['ca', 'Canada'], ['nz', 'New Zealand'],
-  ['ch', 'Switzerland'], ['be', 'Belgium'], ['no', 'Norway'], ['pl', 'Poland'],
-  ['cz', 'Czechia'], ['ru', 'Russia'], ['cl', 'Chile'], ['ar', 'Argentina'],
-  ['tw', 'Taiwan'], ['kr', 'South Korea'], ['th', 'Thailand'], ['sg', 'Singapore'],
-  ['my', 'Malaysia'], ['ph', 'Philippines'], ['kh', 'Cambodia'], ['in', 'India'],
-  ['tr', 'Türkiye'], ['ma', 'Morocco'], ['jp', 'Japan'],
-];
-
-const label = en ? 'OUR RIDERS' : 'OUR RIDERS';
-const countText = en ? 'COUNTRIES & REGIONS' : 'COUNTRIES & REGIONS';
-const sub = en
-  ? 'From the U.S. to Guam, Germany to Singapore — riders from all over the world start their Japan ride at this one garage in Kamakura.'
-  : 'アメリカから、ドイツから、グアムから。世界中のライダーが、鎌倉のこのガレージから走り出しています。';
+const wrap = pink ? 'bg-ebike border-b border-black/[0.08]' : 'bg-white/[0.015] border-b border-white/[0.07]';
+const label = pink ? 'text-white/75' : 'text-white/45';
+const numCls = 'cb-num font-[family-name:var(--font-heading)] text-[19px] leading-none text-white inline-block min-w-[1.3em] text-center';
 ---
 
-<section class:list={['py-20 max-md:py-16 overflow-hidden', pink ? 'bg-ebike' : 'bg-deep-red']}>
-  <div class="max-w-[1200px] mx-auto px-10 max-md:px-6 text-center">
-    <div class="reveal">
-      <p class:list={['text-[11px] font-semibold tracking-[0.3em] uppercase mb-5', pink ? 'text-white/45' : 'text-white/35']}>{label}</p>
-    </div>
-    <div class="reveal reveal-delay-1 flex items-baseline justify-center gap-4 max-md:gap-3">
-      <span class="font-[family-name:var(--font-heading)] text-[clamp(72px,10vw,128px)] text-white leading-none tracking-tight">27</span>
-      <span class:list={['font-[family-name:var(--font-heading)] text-[clamp(15px,2vw,24px)] tracking-[0.08em] text-left leading-[1.15]', pink ? 'text-white/85' : 'text-white/85']}>COUNTRIES<br />&amp; REGIONS</span>
-    </div>
-    <div class="reveal reveal-delay-2">
-      <p class:list={['text-[13.5px] max-md:text-[12.5px] leading-[1.9] max-w-[560px] mx-auto mt-5', pink ? 'text-white/65' : 'text-white/50']}>{sub}</p>
+<div class={wrap}>
+  <div class="max-w-[1200px] mx-auto pl-6 py-3 flex items-center gap-6 max-md:flex-col max-md:gap-2.5 max-md:px-0 max-md:pt-3.5">
+    <!-- カウント（リアルタイムカウント風） -->
+    <p class:list={['shrink-0 flex items-baseline gap-x-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase whitespace-nowrap max-md:px-6', label]}>
+      {riders ? (
+        en ? (
+          <><span class={numCls} data-target={riders}>0</span> RIDERS · <span class={numCls} data-target={count}>0</span> COUNTRIES — AND COUNTING</>
+        ) : (
+          <>世界 <span class={numCls} data-target={count}>0</span> カ国から <span class={numCls} data-target={riders}>0</span> 人のライダー</>
+        )
+      ) : (
+        en ? (
+          <>RIDERS FROM <span class={numCls} data-target={count}>0</span> COUNTRIES &amp; REGIONS</>
+        ) : (
+          <>世界 <span class={numCls} data-target={count}>0</span> の国と地域からライダーが来ています</>
+        )
+      )}
+    </p>
+    <!-- 国旗マーキー（2セット複製・ホバーで停止） -->
+    <div class="cb-marquee flex-1 min-w-0 max-md:w-full">
+      <div class="cb-track">
+        {[0, 1].map((dup) => (
+          <div class="cb-set" aria-hidden={dup === 1 ? 'true' : undefined}>
+            {codes.map((code) => (
+              <span class:list={['cb-chip', pink ? 'cb-chip-pink' : 'cb-chip-brand']}>
+                <img src={`/assets/flags/${code}.svg`} width="18" height="14" alt={dup === 0 ? `${NAMES[code] ?? code} flag` : ''} loading="lazy" />
+                <span>{NAMES[code] ?? code.toUpperCase()}</span>
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   </div>
-
-  <!-- 国旗マーキー（2セット複製・ホバーで停止） -->
-  <div class="cb-marquee mt-10 reveal reveal-delay-3">
-    <div class="cb-track">
-      {[0, 1].map((dup) => (
-        <div class:list={['cb-set', dup === 1 && 'cb-dup']} aria-hidden={dup === 1 ? 'true' : undefined}>
-          {COUNTRIES.map(([code, name]) => (
-            <span class:list={['cb-chip', pink ? 'cb-chip-pink' : 'cb-chip-brand']}>
-              <img src={`/assets/flags/${code}.svg`} width="21" height="16" alt={dup === 0 ? `${name} flag` : ''} loading="lazy" />
-              <span>{name}</span>
-            </span>
-          ))}
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+</div>
 
 <style>
   .cb-marquee {
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   }
   .cb-track {
     display: flex;
     width: max-content;
-    animation: cbScroll 55s linear infinite;
+    animation: cbScroll 50s linear infinite;
   }
   .cb-marquee:hover .cb-track { animation-play-state: paused; }
   .cb-set { display: flex; }
   .cb-chip {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
-    padding: 9px 16px;
-    margin-right: 10px;
+    gap: 7px;
+    padding: 6px 13px;
+    margin-right: 8px;
     border-radius: 999px;
     border: 1px solid;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.72);
     white-space: nowrap;
   }
-  .cb-chip img { border-radius: 2.5px; display: block; }
+  .cb-chip img { border-radius: 2px; display: block; }
   .cb-chip-brand { background: rgba(255, 255, 255, 0.045); border-color: rgba(255, 255, 255, 0.1); }
-  .cb-chip-pink { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.16); }
+  .cb-chip-pink { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.18); }
   @keyframes cbScroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cb-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 10px; padding: 0 24px; }
-    .cb-dup { display: none; }
-    .cb-marquee { -webkit-mask-image: none; mask-image: none; }
+    .cb-track { animation: none; }
+    .cb-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
   }
 </style>
+
+<script>
+  // カウントアップ（視認時に0→実数、reduced-motionは即値）
+  const nums = document.querySelectorAll<HTMLElement>('.cb-num');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      const el = e.target as HTMLElement;
+      const target = parseInt(el.dataset.target || '0');
+      if (reduce) { el.textContent = String(target); return; }
+      const t0 = performance.now();
+      const dur = 1200;
+      const step = (now: number) => {
+        const p = Math.min(1, (now - t0) / dur);
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.4 });
+  nums.forEach((n) => io.observe(n));
+</script>

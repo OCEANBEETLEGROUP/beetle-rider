@@ -257,6 +257,20 @@ const faqItems = faqKeys.map(key => ({
     </div>
   </section>
 
+  <!-- Section 2.5: License Check（BOOK NOW直後＝予約判断の瞬間に資格確認できる配置） -->
+  <section class="py-20 max-md:py-14 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]" id="licenseCheck">
+    <div class="max-w-[800px] mx-auto">
+      <div class="text-center mb-8 reveal">
+        <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand mb-4">LICENSE CHECK</p>
+        <h2 class="font-[family-name:var(--font-heading)] text-[clamp(24px,3vw,36px)] text-white tracking-[-0.02em] mb-3">{t('detail.license.heading')}</h2>
+        <p class="text-[13.5px] text-white/50 leading-[1.9]">{t('detail.license.sub')}</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <IdpChecker lang={lang} showHeader={false} />
+      </div>
+    </div>
+  </section>
+
   <!-- Section 3: Specs -->
   <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
     <div class="max-w-[900px] mx-auto">
@@ -320,10 +334,6 @@ const faqItems = faqKeys.map(key => ({
   <!-- Section 4: Protocol -->
   <section class="py-24 px-4 md:px-10 bg-deep-red border-t border-white/[0.06]">
     <div class="max-w-[800px] mx-auto">
-      <!-- License Checker（「Before You Ride」の上に配置 TAKE指示 2026-07-10） -->
-      <div class="mb-20 max-md:mb-16 reveal">
-        <IdpChecker lang={lang} />
-      </div>
       <div class="text-center mb-16">
         <div class="reveal">
           <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/35 mb-4">{t('detail.protocol.label')}</p>

@@ -196,6 +196,8 @@ export default {
   'detail.protocol.label': 'PROTOCOL',
   'detail.protocol.heading': 'Before You Ride.',
   'detail.protocol.thinkYouCan': 'THINK YOU CAN HANDLE THIS?',
+  'detail.license.heading': 'Can You Ride?',
+  'detail.license.sub': 'Thirty seconds before you book — pick the country that issued your license, and we\u2019ll tell you exactly what to bring.',
 
   // === ABOUT PAGE ===
   'about.s1.label': '01 — Escape',
