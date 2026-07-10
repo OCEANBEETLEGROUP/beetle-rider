@@ -5,7 +5,6 @@ import { useTranslations } from '../../i18n/index';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const en = lang === 'en';
 ---
 
 <BaseLayout title={t('meta.about.title') as string} description={t('meta.about.desc') as string} activePage="about" headerLogo="chopper">
@@ -240,28 +239,23 @@ const en = lang === 'en';
           style="-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to left, transparent 0%, black 8%, black 100%); mask-image: linear-gradient(to bottom, black 60%, transparent 95%), linear-gradient(to left, transparent 0%, black 8%, black 100%); -webkit-mask-composite: destination-in; mask-composite: intersect;"
         />
       </div>
-      <!-- Text（マニフェスト: JA/ENで出し分け。最終行の That's OCEANBEETLE. は両言語共通のブランドライン） -->
+      <!-- Text（マニフェストは日本語ページでも英語＝意図的なアートディレクション。TAKE裁定 2026-07-10） -->
       <div class="text-left max-lg:text-center">
-        {(en ? [
-          "We don't build bikes.",
-          'We strip away everything<br>the white-collar world told you mattered —<br>just like a chopper.',
-          "What's left?",
-          'Steel, sweat, and a century of craft.',
-          "This country was built by hands, not desks.<br>We're here to remind you.",
-        ] : [
-          '俺たちは、バイクを作っているんじゃない。',
-          'ホワイトカラーの世界が「大事だ」と<br>教えてきたものを、削ぎ落としていく。<br>チョッパーと同じように。',
-          '残るのは、何か。',
-          '鉄と、汗と、100年の手仕事。',
-          'この国は、机じゃなく手が作ってきた。<br>それを思い出させるために、俺たちがいる。',
-        ]).map((line, i) => (
-          <div class:list={['reveal', i > 0 && `reveal-delay-${i}`]}>
-            <p class:list={[
-              en ? 'font-[family-name:var(--font-heading)]' : 'font-[family-name:var(--font-heading-jp)] font-bold',
-              'text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1',
-            ]} set:html={line} />
-          </div>
-        ))}
+        <div class="reveal">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">We don't build bikes.</p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">We strip away everything<br>the white-collar world told you mattered —<br>just like a chopper.</p>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">What's left?</p>
+        </div>
+        <div class="reveal reveal-delay-3">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">Steel, sweat, and a century of craft.</p>
+        </div>
+        <div class="reveal reveal-delay-4">
+          <p class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">This country was built by hands, not desks.<br>We're here to remind you.</p>
+        </div>
         <div class="reveal reveal-delay-5">
           <p class="font-[family-name:var(--font-heading)] text-[clamp(18px,2.5vw,28px)] text-white tracking-[-0.01em] leading-snug mb-1">That's <span class="text-brand">OCEANBEETLE</span>.</p>
         </div>
