@@ -195,84 +195,99 @@ const chopperSchema = [
   <!-- 3b: 行き先マップ（全幅・横長v7） -->
   <section class="pb-16 px-10 max-md:px-3 bg-deep-red overflow-hidden reveal" id="destMap">
     <div class="max-w-[1200px] mx-auto text-left">
-      <!-- 行き先マップ v8 — HOME地図の位置関係・デザインに統一。上部=首都高ネットワーク（C1・湾岸線）。
-           立体表現は「C1リング・湾岸線・富士山」の3要素のみ（高架の厚み+面の陰影） -->
-      <div class="max-w-[680px] mx-auto">
-        <svg viewBox="0 0 560 520" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" aria-label="Destinations from Kamakura: Route 134, Shuto C1 loop (Shibuya, Shinjuku, Ueno, Ginza), Bayshore Route, Daikoku PA, Yokohama, Hakone, Mt. Fuji, Atami-Izu, Yokosuka">
-          <!-- 海岸線 -->
-          <path d="M 62,400 C 140,393 210,387 290,381 C 335,377.5 380,375 440,372 C 468,370.5 484,375 496,384 C 506,392 512,403 516,416" fill="none" stroke="#fff" stroke-opacity="0.16" stroke-width="1.5"/>
+      <!-- 行き先マップ v8.1 — 左に富士・箱根・熱海/伊豆を実配置、ターンパイク＆ベイブリッジ(赤)、
+           横浜-鎌倉を縦圧縮。立体表現は C1リング・湾岸線・山（富士/箱根）のみ -->
+      <div class="max-w-[780px] mx-auto">
+        <svg viewBox="0 0 720 450" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" aria-label="Destinations from Kamakura: Route 134, Turnpike to Hakone, Mt. Fuji, Atami-Izu, Shuto C1 loop (Shibuya, Shinjuku, Ueno, Ginza), Bayshore Route, Bay Bridge, Daikoku PA, Yokohama, Yokosuka">
+          <!-- 海岸線（伊豆→相模湾→三浦） -->
+          <path d="M 60,448 C 95,428 140,405 195,390 C 220,383.5 240,380 262,378 C 330,372 400,366 470,361 C 505,358.5 540,356.5 585,354 C 610,352.5 625,356 636,364 C 645,371 651,381 655,393" fill="none" stroke="#fff" stroke-opacity="0.16" stroke-width="1.5"/>
           <!-- 波 -->
           <g stroke="#fff" stroke-opacity="0.05" stroke-width="1">
-            <path d="M 150,452 h 40 M 162,461 h 32"/>
-            <path d="M 360,444 h 36 M 370,453 h 28"/>
+            <path d="M 310,424 h 40 M 322,433 h 32"/>
+            <path d="M 480,418 h 36 M 490,427 h 28"/>
           </g>
-          <!-- ROUTE 134 -->
-          <path d="M 95,398 C 170,391 250,385 345,378 C 380,375.5 410,373.5 445,372" fill="none" stroke="var(--color-brand)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.85"/>
-          <text x="222" y="371" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.6" font-size="9" font-weight="800" letter-spacing="0.18em" style="font-family: var(--font-body)">ROUTE 134</text>
-          <!-- 遠出（左方向・省略表記）: 富士のみ2面+雪冠の立体表現 -->
-          <path d="M 32,330 L 55,302 L 78,330 Z" fill="#fff" fill-opacity="0.055"/>
-          <path d="M 55,302 L 78,330 L 55,330 Z" fill="#000" fill-opacity="0.22"/>
-          <path d="M 32,330 L 55,302 L 78,330" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.4" stroke-linejoin="round"/>
-          <path d="M 48,311 Q 55,306 62,311 L 55,302 Z" fill="#fff" fill-opacity="0.45"/>
-          <text x="24" y="352" fill="#fff" fill-opacity="0.55" font-size="9.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">← MT. FUJI · 2 HRS</text>
-          <text x="24" y="368" fill="#fff" fill-opacity="0.55" font-size="9.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">← HAKONE · 90 MIN</text>
-          <text x="24" y="384" fill="#fff" fill-opacity="0.55" font-size="9.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">← ATAMI · IZU</text>
-          <path d="M 92,397 H 46 M 52,393 L 44,397 L 52,401" fill="none" stroke="#fff" stroke-opacity="0.28" stroke-width="1.2" stroke-dasharray="4 4"/>
-          <!-- 首都高C1リング（渋谷側=左寄り・高架の厚み付き） -->
-          <text x="240" y="80" text-anchor="middle" fill="#fff" fill-opacity="0.9" font-size="14" letter-spacing="0.1em" style="font-family: var(--font-heading)">TOKYO</text>
-          <ellipse cx="240" cy="176" rx="54" ry="8" fill="#000" opacity="0.14"/>
-          <ellipse cx="240" cy="142" rx="80" ry="28" fill="none" stroke="#6b0813" stroke-opacity="0.6" stroke-width="2.2"/>
-          <ellipse cx="240" cy="138" rx="80" ry="28" fill="none" stroke="var(--color-brand)" stroke-opacity="0.8" stroke-width="2.2"/>
-          <text x="240" y="135" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.95" font-size="13" letter-spacing="0.08em" style="font-family: var(--font-heading)">C1</text>
-          <text x="240" y="153" text-anchor="middle" fill="#fff" fill-opacity="0.45" font-size="8.5" font-weight="700" letter-spacing="0.12em" style="font-family: var(--font-body)">SHUTO EXPWY · 70 MIN</text>
+          <!-- ROUTE 134 / 135（熱海方面へ続く） -->
+          <path d="M 245,380 C 320,373 390,367 470,361 C 505,358.5 535,357 570,355" fill="none" stroke="var(--color-brand)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.85"/>
+          <path d="M 242,381 C 200,389 160,400 122,415" fill="none" stroke="var(--color-brand)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.6"/>
+          <text x="335" y="350" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.6" font-size="9" font-weight="800" letter-spacing="0.18em" style="font-family: var(--font-body)">ROUTE 134</text>
+          <!-- 熱海・伊豆 -->
+          <circle cx="118" cy="418" r="3.5" fill="#fff" fill-opacity="0.55"/>
+          <text x="118" y="440" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ATAMI · IZU</text>
+          <!-- 富士山（2面+雪冠の立体） -->
+          <path d="M 40,225 L 95,150 L 150,225 Z" fill="#fff" fill-opacity="0.055"/>
+          <path d="M 95,150 L 150,225 L 95,225 Z" fill="#000" fill-opacity="0.22"/>
+          <path d="M 40,225 L 95,150 L 150,225" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M 84,165 Q 95,158 106,165 L 95,150 Z" fill="#fff" fill-opacity="0.45"/>
+          <text x="95" y="247" text-anchor="middle" fill="#fff" fill-opacity="0.55" font-size="10.5" font-weight="700" letter-spacing="0.1em" style="font-family: var(--font-body)">MT. FUJI</text>
+          <text x="95" y="261" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">2 HRS</text>
+          <!-- 箱根（2面の立体） -->
+          <path d="M 160,310 L 185,278 L 205,298 L 220,284 L 245,310 Z" fill="#fff" fill-opacity="0.045"/>
+          <path d="M 220,284 L 245,310 L 220,310 Z" fill="#000" fill-opacity="0.18"/>
+          <path d="M 160,310 L 185,278 L 205,298 L 220,284 L 245,310" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="196" y="331" text-anchor="middle" fill="#fff" fill-opacity="0.55" font-size="10.5" font-weight="700" letter-spacing="0.1em" style="font-family: var(--font-body)">HAKONE</text>
+          <text x="196" y="345" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">90 MIN · ONSEN</text>
+          <!-- ターンパイク（小田原→箱根・赤） -->
+          <path d="M 255,373 C 238,354 224,338 212,321" fill="none" stroke="var(--color-brand)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.65"/>
+          <text x="264" y="333" fill="var(--color-brand)" fill-opacity="0.55" font-size="8" font-weight="800" letter-spacing="0.14em" style="font-family: var(--font-body)">TURNPIKE</text>
+          <!-- 首都高C1リング（高架の厚み付き） -->
+          <text x="400" y="52" text-anchor="middle" fill="#fff" fill-opacity="0.9" font-size="14" letter-spacing="0.1em" style="font-family: var(--font-heading)">TOKYO</text>
+          <ellipse cx="400" cy="152" rx="52" ry="7" fill="#000" opacity="0.14"/>
+          <ellipse cx="400" cy="124" rx="78" ry="26" fill="none" stroke="#6b0813" stroke-opacity="0.6" stroke-width="2.2"/>
+          <ellipse cx="400" cy="120" rx="78" ry="26" fill="none" stroke="var(--color-brand)" stroke-opacity="0.8" stroke-width="2.2"/>
+          <text x="400" y="117" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.95" font-size="13" letter-spacing="0.08em" style="font-family: var(--font-heading)">C1</text>
+          <text x="400" y="135" text-anchor="middle" fill="#fff" fill-opacity="0.45" font-size="8.5" font-weight="700" letter-spacing="0.12em" style="font-family: var(--font-body)">SHUTO EXPWY · 70 MIN</text>
           <!-- C1周辺の街 -->
-          <circle cx="177" cy="121" r="2.5" fill="#fff" fill-opacity="0.7"/>
-          <text x="168" y="117" text-anchor="end" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">SHINJUKU</text>
-          <circle cx="177" cy="155" r="2.5" fill="#fff" fill-opacity="0.7"/>
-          <text x="168" y="164" text-anchor="end" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">SHIBUYA</text>
-          <circle cx="303" cy="121" r="2.5" fill="#fff" fill-opacity="0.7"/>
-          <text x="313" y="117" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">UENO</text>
-          <circle cx="303" cy="155" r="2.5" fill="#fff" fill-opacity="0.7"/>
-          <text x="317" y="167" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">GINZA</text>
-          <!-- 湾岸線（銀座側→大黒PA・高架の厚み付き） -->
-          <path d="M 306,160 C 348,178 380,194 402,208" fill="none" stroke="#6b0813" stroke-opacity="0.55" stroke-width="2.5" stroke-linecap="round" transform="translate(0,2.5)"/>
-          <path d="M 306,160 C 348,178 380,194 402,208" fill="none" stroke="var(--color-brand)" stroke-opacity="0.6" stroke-width="2.5" stroke-linecap="round"/>
-          <text x="392" y="180" fill="#fff" fill-opacity="0.4" font-size="8.5" font-weight="600" letter-spacing="0.12em" style="font-family: var(--font-body)">BAYSHORE · 湾岸線</text>
-          <circle cx="402" cy="208" r="2.5" fill="#fff" fill-opacity="0.8"/>
-          <text x="412" y="206" fill="#fff" fill-opacity="0.55" font-size="9.5" font-weight="700" letter-spacing="0.1em" style="font-family: var(--font-body)">DAIKOKU PA</text>
+          <circle cx="339" cy="103" r="2.5" fill="#fff" fill-opacity="0.7"/>
+          <text x="330" y="99" text-anchor="end" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">SHINJUKU</text>
+          <circle cx="339" cy="137" r="2.5" fill="#fff" fill-opacity="0.7"/>
+          <text x="330" y="147" text-anchor="end" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">SHIBUYA</text>
+          <circle cx="461" cy="103" r="2.5" fill="#fff" fill-opacity="0.7"/>
+          <text x="471" y="99" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">UENO</text>
+          <circle cx="461" cy="137" r="2.5" fill="#fff" fill-opacity="0.7"/>
+          <text x="473" y="148" fill="#fff" fill-opacity="0.6" font-size="10" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">GINZA</text>
+          <!-- 湾岸線（銀座側→ベイブリッジ→大黒PA・高架の厚み付き） -->
+          <path d="M 464,142 C 500,166 530,190 552,212" fill="none" stroke="#6b0813" stroke-opacity="0.55" stroke-width="2.5" stroke-linecap="round" transform="translate(0,2.5)"/>
+          <path d="M 464,142 C 500,166 530,190 552,212" fill="none" stroke="var(--color-brand)" stroke-opacity="0.6" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="575" y="196" fill="#fff" fill-opacity="0.4" font-size="8.5" font-weight="600" letter-spacing="0.12em" style="font-family: var(--font-body)">BAYSHORE · 湾岸線</text>
+          <!-- ベイブリッジ（主塔2本+斜張ケーブル・赤） -->
+          <path d="M 505,150 V 174 M 530,168 V 192" stroke="var(--color-brand)" stroke-opacity="0.75" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M 489,172 L 505,151 L 521,172 M 514,190 L 530,169 L 546,190" fill="none" stroke="var(--color-brand)" stroke-opacity="0.55" stroke-width="1"/>
+          <text x="543" y="158" fill="var(--color-brand)" fill-opacity="0.55" font-size="8" font-weight="800" letter-spacing="0.14em" style="font-family: var(--font-body)">BAY BRIDGE</text>
+          <circle cx="558" cy="219" r="2.5" fill="#fff" fill-opacity="0.8"/>
+          <text x="568" y="216" fill="#fff" fill-opacity="0.55" font-size="9.5" font-weight="700" letter-spacing="0.1em" style="font-family: var(--font-body)">DAIKOKU PA</text>
           <!-- 大黒→横浜 -->
-          <path d="M 400,211 C 394,219 389,224 384,227" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1.2"/>
-          <circle cx="381" cy="230" r="4" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.5"/>
-          <text x="396" y="237" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">YOKOHAMA</text>
-          <text x="396" y="251" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">45 MIN</text>
+          <path d="M 554,222 C 546,236 540,246 536,254" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1.2"/>
+          <circle cx="533" cy="258" r="4" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.5"/>
+          <text x="548" y="262" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">YOKOHAMA</text>
+          <text x="548" y="276" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">45 MIN</text>
           <!-- 横横道路: 鎌倉→横浜 / 横浜→横須賀 -->
-          <path d="M 345,378 C 356,327 367,278 381,230" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1.5"/>
-          <path d="M 381,230 C 420,252 448,274 470,296" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1.2"/>
-          <circle cx="472" cy="300" r="3.5" fill="#fff" fill-opacity="0.55"/>
-          <text x="484" y="296" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">YOKOSUKA</text>
-          <text x="484" y="310" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">40 MIN</text>
+          <path d="M 505,355 C 514,322 523,290 533,258" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="1.5"/>
+          <path d="M 533,258 C 566,282 596,305 622,326" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1.2"/>
+          <circle cx="625" cy="329" r="3.5" fill="#fff" fill-opacity="0.55"/>
+          <text x="637" y="326" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">YOKOSUKA</text>
+          <text x="637" y="340" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">40 MIN</text>
           <!-- 海沿いノード -->
-          <circle cx="112" cy="396" r="3.5" fill="#fff" fill-opacity="0.55"/>
-          <text x="112" y="417" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ODAWARA</text>
-          <text x="112" y="431" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">60 MIN</text>
-          <circle cx="228" cy="386" r="3.5" fill="#fff" fill-opacity="0.55"/>
-          <text x="228" y="407" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ENOSHIMA</text>
-          <text x="228" y="421" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">15 MIN</text>
-          <circle cx="440" cy="372" r="3.5" fill="#fff" fill-opacity="0.55"/>
-          <text x="446" y="393" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ZUSHI · HAYAMA</text>
-          <text x="446" y="407" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">15–20 MIN</text>
+          <circle cx="262" cy="378" r="3.5" fill="#fff" fill-opacity="0.55"/>
+          <text x="262" y="399" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ODAWARA</text>
+          <text x="262" y="413" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">60 MIN</text>
+          <circle cx="400" cy="366" r="3.5" fill="#fff" fill-opacity="0.55"/>
+          <text x="395" y="387" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ENOSHIMA</text>
+          <text x="395" y="401" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">15 MIN</text>
+          <circle cx="585" cy="354" r="3.5" fill="#fff" fill-opacity="0.55"/>
+          <text x="604" y="377" text-anchor="middle" fill="#fff" fill-opacity="0.6" font-size="10.5" font-weight="700" letter-spacing="0.08em" style="font-family: var(--font-body)">ZUSHI · HAYAMA</text>
+          <text x="604" y="391" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8.5" font-weight="600" letter-spacing="0.1em" style="font-family: var(--font-body)">15–20 MIN</text>
           <!-- KAMAKURA -->
-          <circle cx="345" cy="378" r="5.5" fill="var(--color-brand)" filter="drop-shadow(0 0 8px rgba(195,13,35,0.7))"/>
-          <circle cx="345" cy="378" r="11" fill="none" stroke="var(--color-brand)" stroke-opacity="0.5" stroke-width="1.4"/>
-          <circle cx="345" cy="378" r="17" fill="none" stroke="var(--color-brand)" stroke-width="1.1" opacity="0.3">
+          <circle cx="505" cy="358" r="5.5" fill="var(--color-brand)" filter="drop-shadow(0 0 8px rgba(195,13,35,0.7))"/>
+          <circle cx="505" cy="358" r="11" fill="none" stroke="var(--color-brand)" stroke-opacity="0.5" stroke-width="1.4"/>
+          <circle cx="505" cy="358" r="17" fill="none" stroke="var(--color-brand)" stroke-width="1.1" opacity="0.3">
             <animate attributeName="r" from="13" to="30" dur="2.6s" repeatCount="indefinite"/>
             <animate attributeName="opacity" from="0.35" to="0" dur="2.6s" repeatCount="indefinite"/>
           </circle>
-          <text x="333" y="406" text-anchor="middle" fill="#fff" fill-opacity="0.95" font-size="14.5" letter-spacing="0.12em" style="font-family: var(--font-heading)">KAMAKURA</text>
-          <text x="333" y="421" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.75" font-size="8" font-weight="800" letter-spacing="0.16em" style="font-family: var(--font-body)">BEETLE RIDER BASE</text>
+          <text x="505" y="390" text-anchor="middle" fill="#fff" fill-opacity="0.95" font-size="14.5" letter-spacing="0.12em" style="font-family: var(--font-heading)">KAMAKURA</text>
+          <text x="505" y="404" text-anchor="middle" fill="var(--color-brand)" fill-opacity="0.75" font-size="8" font-weight="800" letter-spacing="0.16em" style="font-family: var(--font-body)">BEETLE RIDER BASE</text>
           <!-- 海域・コンパス -->
-          <text x="280" y="488" text-anchor="middle" fill="#fff" fill-opacity="0.07" font-size="12" letter-spacing="0.3em" style="font-family: var(--font-heading)">SAGAMI BAY</text>
-          <g transform="translate(524,60)" opacity="0.6">
+          <text x="420" y="440" text-anchor="middle" fill="#fff" fill-opacity="0.07" font-size="12" letter-spacing="0.3em" style="font-family: var(--font-heading)">SAGAMI BAY</text>
+          <g transform="translate(684,48)" opacity="0.6">
             <circle r="10" fill="none" stroke="#fff" stroke-opacity="0.2"/>
             <path d="M 0,-6 L 2.3,3 L 0,1.4 L -2.3,3 Z" fill="var(--color-brand)" fill-opacity="0.8"/>
             <text y="-15" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="8" font-weight="600" style="font-family: var(--font-body)">N</text>
