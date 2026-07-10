@@ -146,14 +146,15 @@ const websiteLd = {
   <!-- Canonical (always apex domain to prevent www/pages.dev duplicates) -->
   <link rel="canonical" href={canonicalUrl}>
 
-  <!-- Favicon (Google search results require square, min 48x48) -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <!-- Favicon (Google search results require square, min 48x48)
+       E-BIKE系ページ=E-BIKEロゴのB(ピンク)、他=BEETLE RIDERの赤B。全て透明背景（TAKE指示 2026-07-10） -->
+  <link rel="icon" type="image/svg+xml" href={`/favicon${activePage === 'ebike' ? '-ebike' : ''}.svg`}>
+  <link rel="icon" type="image/png" sizes="48x48" href={`/favicon${activePage === 'ebike' ? '-ebike' : ''}-48.png`}>
+  <link rel="icon" type="image/png" sizes="96x96" href={`/favicon${activePage === 'ebike' ? '-ebike' : ''}-96.png`}>
+  <link rel="icon" type="image/png" sizes="192x192" href={`/favicon${activePage === 'ebike' ? '-ebike' : ''}-192.png`}>
+  <link rel="icon" type="image/png" sizes="512x512" href={`/favicon${activePage === 'ebike' ? '-ebike' : ''}-512.png`}>
+  <link rel="shortcut icon" href={`/favicon${activePage === 'ebike' ? '-ebike' : ''}.ico`}>
+  <link rel="apple-touch-icon" sizes="180x180" href={`/apple-touch-icon${activePage === 'ebike' ? '-ebike' : ''}.png`}>
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#0a0a0a">
 
