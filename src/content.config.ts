@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 
 /**
  * RIDE JOURNAL — SEO記事コレクション（リポジトリ内Markdown管理）
- * ファイル名: {slug}.{lang}.md  （例: kamakura-chopper-one-day.en.md）
+ * ファイル名: {slug}-{lang}.md  （例: kamakura-chopper-one-day-en.md）
  * 週次でAIが記事を追加 → TAKEレビュー → merge で公開。
  */
 const journal = defineCollection({

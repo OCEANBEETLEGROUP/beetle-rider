@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BookNowButton from '../../components/BookNowButton.astro';
 import CmsImage from '../../components/CmsImage.astro';
 import TrustBar from '../../components/TrustBar.astro';
 import Reviews from '../../components/Reviews.astro';
@@ -159,7 +158,7 @@ const ebikeSchema = [
           <h3 class="font-[family-name:var(--font-heading)] text-[clamp(13px,1.3vw,16px)] text-[#2D0A0A] tracking-wide mb-1.5">{t(lang, 'ebike.specs.power')}</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(15px,1.5vw,22px)] text-ebike tracking-tight mb-2 whitespace-nowrap">{t(lang, 'ebike.specs.powerVal')}</p>
           <p class="text-[clamp(11px,1.1vw,14px)] text-[#2D0A0A]/70 leading-relaxed">{t(lang, 'ebike.specs.powerDesc')}</p>
-          <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.powerDescEn')}</p>
+          {lang === 'ja' && <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.powerDescEn')}</p>}
         </div>
         <!-- RANGE -->
         <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-2">
@@ -171,7 +170,7 @@ const ebikeSchema = [
           <h3 class="font-[family-name:var(--font-heading)] text-[clamp(13px,1.3vw,16px)] text-[#2D0A0A] tracking-wide mb-1.5">{t(lang, 'ebike.specs.range')}</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(15px,1.5vw,22px)] text-ebike tracking-tight mb-2 whitespace-nowrap">{t(lang, 'ebike.specs.rangeVal')}</p>
           <p class="text-[clamp(11px,1.1vw,14px)] text-[#2D0A0A]/70 leading-relaxed">{t(lang, 'ebike.specs.rangeDesc')}</p>
-          <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.rangeDescEn')}</p>
+          {lang === 'ja' && <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.rangeDescEn')}</p>}
         </div>
         <!-- STYLE -->
         <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-3">
@@ -183,7 +182,7 @@ const ebikeSchema = [
           <h3 class="font-[family-name:var(--font-heading)] text-[clamp(13px,1.3vw,16px)] text-[#2D0A0A] tracking-wide mb-1.5">{t(lang, 'ebike.specs.style')}</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(15px,1.5vw,22px)] text-ebike tracking-tight mb-2 whitespace-nowrap">{t(lang, 'ebike.specs.styleVal')}</p>
           <p class="text-[clamp(11px,1.1vw,14px)] text-[#2D0A0A]/70 leading-relaxed">{t(lang, 'ebike.specs.styleDesc')}</p>
-          <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.styleDescEn')}</p>
+          {lang === 'ja' && <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.styleDescEn')}</p>}
         </div>
         <!-- LICENSE -->
         <div class="bg-light border border-black/[0.08] rounded-2xl p-6 aspect-square lg:aspect-square max-lg:aspect-auto flex flex-col overflow-hidden transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] reveal reveal-delay-4">
@@ -195,7 +194,7 @@ const ebikeSchema = [
           <h3 class="font-[family-name:var(--font-heading)] text-[clamp(13px,1.3vw,16px)] text-[#2D0A0A] tracking-wide mb-1.5">{t(lang, 'ebike.specs.license')}</h3>
           <p class="font-[family-name:var(--font-heading)] text-[clamp(15px,1.5vw,22px)] text-ebike tracking-tight mb-2 whitespace-nowrap">{t(lang, 'ebike.specs.licenseVal')}</p>
           <p class="text-[clamp(11px,1.1vw,14px)] text-[#2D0A0A]/70 leading-relaxed">{t(lang, 'ebike.specs.licenseDesc')}</p>
-          <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.licenseDescEn')}</p>
+          {lang === 'ja' && <p class="text-[clamp(10px,1vw,13px)] text-[#2D0A0A]/50 mt-1 font-medium">{t(lang, 'ebike.specs.licenseDescEn')}</p>}
         </div>
       </div>
     </div>

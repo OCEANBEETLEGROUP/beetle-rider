@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getImage } from 'astro:assets';
-import BookNowButton from '../../components/BookNowButton.astro';
 import CmsImage from '../../components/CmsImage.astro';
 import IdpChecker from '../../components/IdpChecker.astro';
 import { getLangFromUrl, localePath } from '../../i18n/config';
@@ -21,8 +20,17 @@ const vehicleStatus = vehicle.status?.[0] || 'active';
 const isHidden = vehicleStatus === 'hidden';
 const isMaintenance = vehicleStatus === 'maintenance';
 
-const dayPriceFormatted = vehicle.dayRidePrice.toLocaleString();
-const multiPriceFormatted = vehicle.multiDayPrice.toLocaleString();
+const dayPriceFormatted = (vehicle.dayRidePrice ?? 0).toLocaleString();
+const multiPriceFormatted = (vehicle.multiDayPrice ?? 0).toLocaleString();
+
+// 車両別・言語別のSEOメタ（従来は汎用英語フォールバックだった）
+const en = lang === 'en';
+const metaTitle = en
+  ? `${vehicle.name} — Custom Chopper Rental in Kamakura｜BEETLE RIDER`
+  : `${vehicle.name} — 鎌倉チョッパーレンタル｜BEETLE RIDER`;
+const metaDesc = en
+  ? `Rent ${vehicle.name}, a one-of-one custom chopper built on a ${vehicle.base}, in Kamakura, Japan. From ¥${dayPriceFormatted}/day. License + IDP required, free cancellation until 5 days before.`
+  : `${vehicle.base}ベースの世界に1台のカスタムチョッパー「${vehicle.name}」を鎌倉でレンタル。1日¥${dayPriceFormatted}〜、5日前まで無料キャンセル。要二輪免許。`;
 
 // Instagram link helper
 function igLink(handle?: string) {
@@ -65,7 +73,7 @@ const ogGen = await getImage({
 });
 
 // FAQ items using chopper.faq.* keys
-const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
+const faqKeys = ['license', 'alcohol', 'weather', 'checkin', 'equipment', 'clothing', 'fuel', 'toll', 'insurance', 'tandem', 'luggage', 'extension', 'cancel'] as const;
 const faqItems = faqKeys.map(key => ({
   title: t(`chopper.faq.${key}.title` as any) as string,
   content: t(`chopper.faq.${key}.content` as any) as string,
@@ -81,7 +89,7 @@ const faqItems = faqKeys.map(key => ({
     <body></body>
   </html>
 ) : (
-<BaseLayout title={vehicle.name + " — BEETLE RIDER"} activePage="chopper" headerLogo="chopper" ogImage={ogGen.src}>
+<BaseLayout title={metaTitle} description={metaDesc} activePage="chopper" headerLogo="chopper" ogImage={ogGen.src}>
 
   <!-- Back Link -->
   <div class="pt-[calc(80px+24px)] px-6 md:px-10 max-w-[1200px] mx-auto">
@@ -105,7 +113,7 @@ const faqItems = faqKeys.map(key => ({
           {vehicle.name}
         </h1>
         <p class="text-sm font-medium text-white/40 tracking-wide mt-4">
-          {vehicle.base} — {vehicle.style}
+          {vehicle.base} — {vehicle.style || 'Chopper'}
         </p>
       </div>
       <div class:list={["flex items-center gap-2 px-4 py-2 rounded-full border shrink-0", isMaintenance ? "bg-yellow-500/10 border-yellow-500/30" : "bg-white/[0.06] border-white/[0.08]"]}>

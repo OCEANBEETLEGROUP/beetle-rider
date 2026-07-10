@@ -51,11 +51,11 @@ const cardBorder = pink ? 'border-white/[0.14] bg-white/[0.06]' : 'border-white/
               {'★'.repeat(r.rating)}
             </div>
             <blockquote class="text-[13.5px] leading-[1.85] text-white/75 font-medium flex-1">
-              “{r.text}”
+              “{en ? r.text : (r.textJa || r.text)}”
             </blockquote>
             <figcaption class="mt-5 flex items-center justify-between">
               <span class="text-[12px] font-bold text-white/85 tracking-wide">{r.author}</span>
-              <span class="text-[9.5px] font-semibold tracking-[0.15em] uppercase text-white/35">{r.source} Review</span>
+              <span class="text-[9.5px] font-semibold tracking-[0.15em] uppercase text-white/35">{en ? `${r.source} Review` : `${r.source}レビュー・翻訳`}</span>
             </figcaption>
           </figure>
         ))}

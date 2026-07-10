@@ -29,6 +29,8 @@ export type Vehicle = {
   bokunMultiDayId?: string;
   status?: string[];
   order: number;
+  /** microCMS公開終了日時（公開終了アイテムはAPIキーによっては返るため必ず除外に使う） */
+  closedAt?: string;
 } & MicroCMSListContent;
 
 export type Destination = {
@@ -63,12 +65,6 @@ export type SiteConfig = {
   importantNoticesUrl?: string;
 } & MicroCMSObjectContent;
 
-export type NewsPost = {
-  title: string;
-  body?: string;
-  publishedAt: string;
-} & MicroCMSListContent;
-
 // ---------- Data Fetchers ----------
 
 /** All vehicles sorted by order */
@@ -77,15 +73,6 @@ export async function getVehicles() {
     endpoint: 'vehicles',
     queries: { orders: 'order', limit: 10 },
   });
-}
-
-/** Single vehicle by slug */
-export async function getVehicleBySlug(slug: string) {
-  const res = await client.getList<Vehicle>({
-    endpoint: 'vehicles',
-    queries: { filters: `slug[equals]${slug}`, limit: 1 },
-  });
-  return res.contents[0] ?? null;
 }
 
 /** Destinations, optionally filtered by category */
@@ -111,13 +98,5 @@ export async function getInstagramPosts(account?: 'chopper' | 'ebike') {
 export async function getSiteConfig() {
   return await client.getObject<SiteConfig>({
     endpoint: 'site-config',
-  });
-}
-
-/** News posts (newest first) */
-export async function getNews(limit = 10) {
-  return await client.getList<NewsPost>({
-    endpoint: 'news',
-    queries: { orders: '-publishedAt', limit },
   });
 }

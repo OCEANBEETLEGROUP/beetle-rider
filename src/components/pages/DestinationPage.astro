@@ -21,7 +21,7 @@ const en = lang === 'en';
 const { contents: vehiclesRaw } = await getVehicles();
 // メンテナンス中も表示する（TAKE指示 2026-07-10）。hidden(COMING SOON)のみ除外
 const vehicles = vehiclesRaw
-  .filter(v => !(v as any).closedAt && ['active', 'maintenance'].includes(v.status?.[0] || 'active'))
+  .filter(v => !v.closedAt && ['active', 'maintenance'].includes(v.status?.[0] || 'active'))
   .map(v => ({
     slug: v.slug, name: v.name, base: v.base,
     day: v.dayRidePrice, multi: v.multiDayPrice,
@@ -253,7 +253,7 @@ const faqItems = faqSubset.map(k => ({
 
   <style>
     [data-dfaq-item].active [data-dfaq-icon] { transform: rotate(45deg); }
-    [data-dfaq-item].active [data-dfaq-body] { max-height: 640px; }
+    [data-dfaq-item].active [data-dfaq-body] { max-height: 1600px; }
   </style>
   <script>
     document.querySelectorAll('[data-dfaq-trigger]').forEach((trigger) => {

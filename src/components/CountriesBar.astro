@@ -43,7 +43,7 @@ const dotCls = pink ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-b
 <div class={wrap}>
   <div class="max-w-[1200px] mx-auto pl-6 py-3 flex items-center gap-6 max-md:flex-col max-md:gap-2.5 max-md:px-0 max-md:pt-3.5">
     <!-- 現在の実績カウント（パルスドット＋カウントアップでリアルタイム感） -->
-    <p class:list={['shrink-0 flex items-center gap-x-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase whitespace-nowrap max-md:px-6', label]}>
+    <p class:list={['shrink-0 flex items-center gap-x-2 text-[10.5px] md:text-[11px] font-bold tracking-[0.18em] uppercase md:whitespace-nowrap max-md:flex-wrap max-md:justify-center max-md:gap-y-1 max-md:px-6 max-md:text-center', label]}>
       <span class:list={['w-1.5 h-1.5 rounded-full animate-pulse shrink-0', dotCls]} aria-hidden="true"></span>
       {en ? (
         <>RIGHT NOW — RIDERS FROM <span class={numCls} data-target={count}>0</span> {regions ? <>COUNTRIES &amp; REGIONS</> : <>COUNTRIES</>}</>

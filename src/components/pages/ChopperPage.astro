@@ -13,7 +13,7 @@ const lang = getLangFromUrl(Astro.url);
 
 const { contents: vehiclesRaw } = await getVehicles();
 // Exclude 公開終了 items (closedAt present = ended publication, even if API key returns them)
-const published = vehiclesRaw.filter(v => !(v as any).closedAt);
+const published = vehiclesRaw.filter(v => !v.closedAt);
 // Display logic: active → normal, maintenance → viewable/no booking, hidden → COMING SOON
 const vehicles = published.map((v, i) => ({
   slug: v.slug,
@@ -511,7 +511,7 @@ const chopperSchema = [
        国数は貸渡簿統合DBの住所+電話国番号から算出 2026-07-10: 10カ国。更新時はDB再集計） -->
   <CountriesBar lang={lang} theme="brand" count={10} regions={false} codes={['us', 'au', 'jp', 'de', 'gb', 'ca', 'sg', 'tr', 'mt', 'id']} />
 
-  <Reviews lang={lang} accent="brand" product="chopper" />
+  <Reviews lang={lang} product="chopper" />
 
   <!-- Floating CTA -->
   <button class="fixed bottom-8 right-8 max-md:bottom-5 max-md:right-5 z-[90] inline-flex items-center gap-2.5 px-7 py-3.5 max-md:px-[22px] max-md:py-3 rounded-full bg-brand text-white text-xs max-md:text-[11px] font-bold tracking-[0.15em] uppercase shadow-[0_4px_16px_rgba(195,13,35,0.35),0_2px_8px_rgba(0,0,0,0.2)] cursor-pointer border-none transition-all duration-400 hover:bg-[#a80b1e] hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(195,13,35,0.45),0_4px_12px_rgba(0,0,0,0.25)]" id="floatingCta">
@@ -576,7 +576,7 @@ const chopperSchema = [
       color: var(--color-brand);
     }
     [data-accordion-item].active [data-accordion-body] {
-      max-height: 500px;
+      max-height: 1600px;
     }
   </style>
 
