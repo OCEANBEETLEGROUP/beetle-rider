@@ -192,7 +192,9 @@ const websiteLd = {
   <!-- i18n (absolute URLs required for hreflang) -->
   <link rel="alternate" hreflang={altLang} href={`https://beetlerider.com${altUrl}`} />
   <link rel="alternate" hreflang={lang} href={canonicalUrl} />
-  <link rel="alternate" hreflang="x-default" href={`https://beetlerider.com${lang === 'ja' ? Astro.url.pathname : Astro.url.pathname.replace(/^\/en/, '') || '/'}`} />
+  <!-- x-default は英語版を指す（2026-08-10）。指名検索の実測で US/AU/CA の brand クリック33件が
+       日本語トップに着地していたため。日本語話者は hreflang="ja" で従来どおり / に誘導される。 -->
+  <link rel="alternate" hreflang="x-default" href={`https://beetlerider.com${lang === 'en' ? Astro.url.pathname : '/en' + (Astro.url.pathname === '/' ? '/' : Astro.url.pathname)}`} />
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify(organizationLd)} />
