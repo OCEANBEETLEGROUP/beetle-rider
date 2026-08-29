@@ -45,4 +45,4 @@ Tank full, stories fuller. We're four minutes from Kamakura Station ([access gui
 
 ---
 
-**The practical stuff:** helmets, gloves and liability insurance included or available as options. Fuel is on you (return full — high-octane, the YELLOW nozzle; there's a stand two minutes away). Free cancellation until 5 days before. Full rules on the [FAQ page](/en/faq/).
+**The practical stuff:** helmets, gloves, phone holders and liability insurance are all included. Fuel is on you (return full — high-octane, the YELLOW nozzle; there's a stand two minutes away). Free cancellation until 5 days before. Full rules on the [FAQ page](/en/faq/).
