@@ -73,7 +73,10 @@ const organizationLd = {
   '@type': 'Organization',
   '@id': 'https://beetlerider.com/#organization',
   name: 'BEETLE RIDER',
-  alternateName: 'BEETLE RIDER Kamakura',
+  // 無スペース表記「BEETLERIDER」はドメイン名そのものだが、これまで構造化データで
+  // 一度も宣言していなかった（2026-09-14）。連結で検索された時に同一ブランドだと
+  // Googleが確信を持てない状態だったため、表記ゆれを全部宣言する。表示名は変えない。
+  alternateName: ['BEETLERIDER', 'ビートルライダー', 'BEETLE RIDER Kamakura', 'BEETLE RIDER by OCEANBEETLE'],
   url: 'https://beetlerider.com/',
   logo: {
     '@type': 'ImageObject',
@@ -94,6 +97,7 @@ const localBusinessLd = {
   '@type': 'LocalBusiness',
   '@id': 'https://beetlerider.com/#localbusiness',
   name: 'BEETLE RIDER',
+  alternateName: ['BEETLERIDER', 'ビートルライダー'],
   image: 'https://beetlerider.com/ogp.png',
   url: 'https://beetlerider.com/',
   telephone: '+81-467-37-9926',
@@ -129,6 +133,7 @@ const websiteLd = {
   '@id': 'https://beetlerider.com/#website',
   url: 'https://beetlerider.com/',
   name: 'BEETLE RIDER',
+  alternateName: ['BEETLERIDER', 'ビートルライダー'],
   description: 'A rental experience by OCEANBEETLE. Chopper & E-Bike rental in Kamakura.',
   publisher: { '@id': 'https://beetlerider.com/#organization' },
   inLanguage: ['ja', 'en'],
