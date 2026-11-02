@@ -5,9 +5,10 @@
  * - 配置は顧客動線で決定: ホーム=ヒーロー直下（着地直後にグローバル実績を提示）／
  *   チョッパー・E-BIKE=Reviewsの直前（レビューと並ぶ社会的証明クラスタ）。TrustBarとは並べない。
  * - 国旗はSVG自己ホスト（/assets/flags/、flag-icons MIT）— 絵文字はWindowsで描画されないため不使用。
- * - ホーム = 50の国と地域（E-BIKE＋チョッパーの合計）／E-BIKE = 45／チョッパー = 25（2026-11-02 1周年集計）。
+ * - ホーム = 51の国と地域（E-BIKE＋チョッパーの合計）／E-BIKE = 46／チョッパー = 25（2026-11-03 1周年集計）。
  *   国数は貸渡簿統合DB（国籍・住所・電話・メール）＋インスタのお客さん紹介投稿の国旗・本文から算出
- *   （貸渡簿だけだと少なく出る）。数字更新時は両方を再集計して count / codes を差し替える。並びは人数順・日本は最後。
+ *   （貸渡簿だけだと少なく出る）。タイはデータに無いがTAKE確認で入れた（E-BIKE）。
+ *   数字更新時は両方を再集計して count / codes を差し替える。並びは人数順・日本は最後。
  */
 import type { Lang } from '../i18n/config';
 
@@ -32,11 +33,11 @@ const NAMES: Record<string, string> = {
   ir: 'Iran', mx: 'Mexico', bg: 'Bulgaria',
 };
 
-// 全社実績50（E-BIKE 45＋チョッパーだけの5）
+// 全社実績51（E-BIKE 46＋チョッパーだけの5）
 const DEFAULT_CODES = [
   'us', 'au', 'de', 'ca', 'kr', 'nl', 'gb', 'ru', 'sg', 'in', 'hk', 'fr', 'it', 'pl', 'tw', 'at', 'gu',
   'my', 'ph', 'cn', 'be', 'ar', 'ch', 'br', 'eg', 'rs', 'cz', 'gr', 'ae', 'fi', 'mt', 'tr', 'ro', 'kz',
-  'ma', 'cu', 'hu', 'sc', 'se', 'pk', 'mm', 'ir', 'kh', 'mx', 'cl', 'nz', 'bg', 'no', 'id', 'jp',
+  'ma', 'cu', 'hu', 'sc', 'se', 'pk', 'mm', 'ir', 'kh', 'mx', 'cl', 'nz', 'bg', 'no', 'id', 'th', 'jp',
 ];
 
 const { lang, theme = 'brand', count, regions = true, codes = DEFAULT_CODES } = Astro.props;
