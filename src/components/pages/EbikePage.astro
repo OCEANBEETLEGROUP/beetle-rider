@@ -278,8 +278,13 @@ const ebikeSchema = [
     </div>
   </section>
 
-  <!-- 27カ国バナー（Reviews直前 — レビューと並ぶ社会的証明クラスタ） -->
-  <CountriesBar lang={lang} theme="ebike" count={27} />
+  <!-- E-BIKE実績バナー（Reviews直前 — レビューと並ぶ社会的証明クラスタ。
+       国数は貸渡簿統合DB＋インスタの投稿から算出 2026-11-02: 45の国と地域。更新時は両方を再集計） -->
+  <CountriesBar lang={lang} theme="ebike" count={45} codes={[
+    'us', 'kr', 'de', 'nl', 'au', 'ru', 'in', 'ca', 'pl', 'sg', 'gb', 'hk', 'gu', 'my', 'fr', 'ph',
+    'cn', 'be', 'ar', 'rs', 'cz', 'kz', 'at', 'ma', 'cu', 'hu', 'sc', 'se', 'pk', 'mm', 'ir', 'eg',
+    'ch', 'tw', 'kh', 'it', 'br', 'mx', 'cl', 'nz', 'bg', 'no', 'id', 'tr', 'jp',
+  ]} />
 
   <Reviews lang={lang} product="ebike" theme="pink" />
 

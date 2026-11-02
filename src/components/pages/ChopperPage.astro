@@ -508,8 +508,11 @@ const chopperSchema = [
   </section>
 
   <!-- チョッパー実績バナー（Reviews直前 — レビューと並ぶ社会的証明クラスタ。
-       国数は貸渡簿統合DBの住所+電話国番号から算出 2026-07-10: 10カ国。更新時はDB再集計） -->
-  <CountriesBar lang={lang} theme="brand" count={10} regions={false} codes={['us', 'au', 'jp', 'de', 'gb', 'ca', 'sg', 'tr', 'mt', 'id']} />
+       国数は貸渡簿統合DB＋インスタの投稿から算出 2026-11-02: 25の国と地域。更新時は両方を再集計） -->
+  <CountriesBar lang={lang} theme="brand" count={25} codes={[
+    'us', 'au', 'ca', 'de', 'gb', 'it', 'sg', 'tw', 'at', 'hk', 'fr', 'gr', 'kr',
+    'ae', 'ch', 'fi', 'br', 'mt', 'nl', 'eg', 'tr', 'ro', 'in', 'my', 'jp',
+  ]} />
 
   <Reviews lang={lang} product="chopper" />
 
