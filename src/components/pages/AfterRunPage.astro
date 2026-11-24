@@ -26,6 +26,8 @@ const EVENT = {
   formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdtUkXlgyKal-lftUGtGgZNZJSVEAZvHx0YTm78bpcoKoGF2A/viewform', // 江ノ島店の Gmail のフォーム（公開は TAKE の OK 後）
 };
 const closed = Date.now() > Date.parse(EVENT.endsAt);
+// 締め切り（TAKE 11/24「一次募集は月末まで。二次募集がロットショー前日まで」→ 同日「一次、二次募集の期限も書いて」＝申し込みボタンのすぐ下に出す）
+const DEADLINE = '1st round Nov 30 · 2nd round Dec 5';
 const link = { href: EVENT.formUrl, target: '_blank', rel: 'noopener' };
 
 // 日程は「箱根まで行ってご飯」くらいの粒度で（TAKE 11/24）。夕日とデザートは書かない
@@ -46,12 +48,13 @@ const who = [
 const steps = [
   { n: '1', t: 'Fill in the form', d: 'Takes 2 minutes. One form per rider.' },
   { n: '2', t: 'Get a payment link', d: 'We email links in the order the forms come in.' },
-  { n: '3', t: 'Pay and you are in', d: 'Your bike is booked once you pay.' },
+  { n: '3', t: 'Pay and you are in', d: 'Your spot is booked once you pay.' },
 ];
 
 const know = [
   { k: 'Bring', v: 'Your license documents and passport. Warm layers: Hakone in December is cold.' },
   { k: 'Gear', v: 'We lend helmets, gloves and riding gear.' },
+  { k: 'Your bike', v: 'Which chopper you ride is decided on the day.' },   // TAKE 11/24「車両は当日決めることも書いて」
   { k: 'Rain', v: 'We cancel the ride and refund you in full.' },
   { k: 'Cancellation', v: 'No cancellations once you pay. Rain is the only exception.' },
   { k: 'Not included', v: 'Hotels and travel to Kamakura. Damage to the bike is not covered, same as our regular rental.' },
@@ -112,6 +115,7 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
                   </span>
                 </span>
                 <p class="apply-note">Fill in the form. We email you a payment link.</p>
+                <p class="deadline"><span class="deadline-k">Deadlines</span> {DEADLINE}</p>
               </>
             )}
             {closed && <p class="closed-msg">This ride has finished. Thank you for riding with us.</p>}
@@ -216,8 +220,8 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
         <div class="how-bottom">
           <p class="note">
             <b>Deadlines</b><br />
-            Round 1: Nov 30<br />
-            Round 2: Dec 5
+            1st round: Nov 30<br />
+            2nd round: Dec 5
           </p>
           <div class="cta cta-how" data-ar-open>
             {!closed && (
@@ -264,6 +268,7 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
             <>
               <a class="apply" id="apply-final" {...link}>APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></a>
               <p class="apply-note">2-minute form. We email you a payment link.</p>
+              <p class="deadline"><span class="deadline-k">Deadlines</span> {DEADLINE}</p>
             </>
           )}
         </div>
@@ -366,6 +371,8 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
     .apply:hover .arr { transform: translateX(4px); }
     .apply:active { transform: rotate(-1.5deg) translate(3px, 4px); box-shadow: 2px 2px 0 var(--ink); }
     .apply-note { font-family: var(--type); font-size: 14px; line-height: 1.6; margin-top: 16px; }
+    .deadline { font-family: var(--type); font-size: 15px; line-height: 1.5; margin-top: 6px; }
+    .deadline-k { font-family: var(--hand); color: var(--red); margin-right: 6px; }
     .apply-wrap { position: relative; display: inline-block; }
     .scrawl-cta { position: absolute; left: 56%; bottom: calc(100% + 8px); font-size: 20px; transform: rotate(-5deg); white-space: nowrap; }
     .scrawl-arrow { position: absolute; left: -44px; top: 12px; width: 42px; height: 28px; fill: none; stroke: var(--red); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
@@ -513,6 +520,7 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
       .final-date .sep { display: none; }
       .final-date .nw { display: block; }
       .flyer-final .hotrod { font-size: 3.85vw; }
+      .deadline-k { display: block; margin: 0 0 2px; }
       .final-date { font-size: 5.4vw; }   /* 2行に分けた日付の広い方の行が、名前の幅の8割ほどになるように */
       .float-apply { right: 12px; padding: 8px 16px 7px; }
       .float-v { font-size: 18px; }

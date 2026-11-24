@@ -38,6 +38,7 @@ const href = localePath('/beetle-run', 'en');
         <p class="arb-meta"><span>MEET 10 AM IN&nbsp;KAMAKURA</span><span>¥32,000 ALL IN</span></p>
         <span class="arb-cta">APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></span>
         <span class="arb-cta-note">first come, first served</span>
+        <span class="arb-dl"><b>Deadlines</b> 1st round Nov 30 · 2nd round Dec 5</span>
       </div>
     </a>
     <script is:inline>
@@ -75,6 +76,8 @@ const href = localePath('/beetle-run', 'en');
   .arb-card:hover .arb-cta { background: #A80B1E; }
   .arb-card:hover .arb-cta .arr { transform: translateX(4px); }
   .arb-cta-note { font-family: var(--type); font-size: 13px; margin-top: 10px; }
+  .arb-dl { font-family: var(--type); font-size: 14px; margin-top: 4px; }   /* 締め切り（TAKE 11/24「一次、二次募集の期限も書いて」） */
+  .arb-dl b { font-family: var(--hand); font-weight: 400; color: var(--red); margin-right: 6px; }
 
   @media (max-width: 1100px) {
     .arb-card { column-gap: 30px; padding: 28px 30px 26px; }
@@ -84,7 +87,7 @@ const href = localePath('/beetle-run', 'en');
   @media (max-width: 860px) {
     /* スマホ: 名前を一番上に全幅で → 日付と集合・料金を横に並べる → 文 → ボタン */
     .arb { padding: 26px 14px 28px; }
-    .arb-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'head head' 'cal meta' 'text text' 'cta cta' 'note note'; column-gap: 18px; row-gap: 16px; padding: 30px 18px 22px; }
+    .arb-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'head head' 'cal meta' 'text text' 'cta cta' 'note note' 'dl dl'; column-gap: 18px; row-gap: 16px; padding: 30px 18px 22px; }
     .arb-rest { display: contents; }
     .arb-hotrod { font-size: 3.6vw; letter-spacing: 0.06em; }
     .arb-title { font-size: 17vw; }
@@ -96,5 +99,7 @@ const href = localePath('/beetle-run', 'en');
     .arb-text { grid-area: text; text-align: center; font-size: 15px; }
     .arb-cta { grid-area: cta; width: 100%; margin-top: 2px; font-size: 24px; padding: 13px 16px 11px; transform: rotate(-1deg); }
     .arb-cta-note { grid-area: note; text-align: center; margin-top: -4px; }
+    .arb-dl { grid-area: dl; text-align: center; margin-top: -10px; }
+    .arb-dl b { display: block; margin: 0 0 1px; }
   }
 </style>
