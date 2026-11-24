@@ -8,7 +8,8 @@
  * 「先着順ではあるものの多少は選びたい（インスタも見て）」・「10時集合、6時間くらい」・「決済リンクはこちらから送る」。
  *
  * - noindex（BaseLayout の noindex）＋ サイトマップから外す（astro.config.mjs の filter）
- * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 店が選ぶ → 決済リンクをメールで送る → 払ったら確定
+ * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 先着順で決済リンクをメールで送る → 払ったら確定（11/24 TAKE「店が選ぶ　これ先着にして」）
+ * - 締め切り: 一次募集は 11/30・二次募集はショー前日の 12/5（11/24 TAKE）。台数は書かない・ほかの未定は消す（同）
  * - 未決（TBC）は EVENT の値が null / '' のとき「TBC / 未定」の印を出す。TAKE が決めたら値を入れる
  * - 12/8 18:00（日本時間）を過ぎたら、申し込みボタンを「終了」に切り替える（ビルド時と表示時の両方）
  */
@@ -26,13 +27,11 @@ const NAME = { script: 'Beetle', block: 'RUN', full: 'BEETLE RUN', sub: 'HOT ROD
 const EVENT = {
   endsAt: '2026-12-08T18:00:00+09:00',
   formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdtUkXlgyKal-lftUGtGgZNZJSVEAZvHx0YTm78bpcoKoGF2A/viewform', // 江ノ島店の Gmail のフォーム（公開は TAKE の OK 後）
-  seats: null as number | null,      // 最大人数
-  closesEn: '', closesJa: '',        // 申し込みの締め切り
+  closesEn: 'first round Nov 30, second round Dec 5 (the day before the show)', closesJa: '一次募集は11月30日（月）まで、二次募集はショー前日の12月5日（土）まで', // TAKE 11/24「一次募集は月末まで。二次募集がロットショー前日まで」
   fuelEn: 'Included.', fuelJa: '込み。',   // ガソリン代も込み（TAKE 11/24）
-  helmetEn: 'We lend helmets and riding gear.', helmetJa: 'ヘルメットとギアの貸し出しがあります。', // TAKE 11/24「ギアの貸出はしてます」
+  helmetEn: 'We lend helmets, gloves and riding gear.', helmetJa: 'ヘルメット・グローブ・ギアの貸し出しがあります。', // TAKE 11/24「ギアの貸出はしてます」「グローブも貸し出しある」
   weatherEn: 'If it rains, we cancel the ride and refund you in full.', weatherJa: '雨なら中止して、全額を返金します。', // TAKE 11/24「雨なら中止で全額返金」
   cancelEn: 'No cancellations once you pay. The only exception is rain: if we cancel the ride, you get a full refund.', cancelJa: 'お支払いのあとのキャンセルはできません。雨で中止したときだけ、全額を返金します。', // TAKE 11/24「雨（開催中止）以外でキャンセル禁止」
-  lunchEn: '', lunchJa: '',          // 箱根の店
 };
 const closed = Date.now() > Date.parse(EVENT.endsAt);
 const TBC = en ? 'TBC' : '未定';
@@ -53,14 +52,12 @@ const T = en
         { k: 'WHEN', v: 'Tue, Dec 8 · Meet 10:00 am' as string | null },
         { k: 'PRICE', v: '¥32,000 per rider' as string | null },
         { k: 'INCLUDED', v: 'Your chopper for the day, fuel, lunch, dessert, expressway tolls' as string | null },
-        { k: 'BIKES', v: null as string | null },
       ],
-      bikesValue: (n: number) => `Only ${n} bikes`,
       dayLabel: 'THE DAY',
       dayTitle: 'About six hours. Mountains first, then the sea.',
       day: [
         { time: '10:00 AM', place: 'KAMAKURA', text: 'Meet at BEETLE RIDER Kamakura. Paperwork, license check and a short briefing on your bike.' },
-        { time: '', place: 'HAKONE', text: 'West along the coast, then up into the mountains. We line the bikes up at Lake Ashi, take photos and have lunch.', note: EVENT.lunchEn, noteLabel: 'Lunch spot' },
+        { time: '', place: 'HAKONE', text: 'West along the coast, then up into the mountains. We line the bikes up at Lake Ashi, take photos and have lunch.' },
         { time: '', place: 'ENOSHIMA', text: 'Back down to the sea. Dessert at OCEANBEETLE BREAKFAST CLUB, our cafe by the beach near Enoshima.' },
         { time: '4:30 PM', place: 'SHICHIRIGAHAMA', text: 'The sun goes down over the sea around 4:30 pm. On a clear day, Mt. Fuji and Enoshima sit right in front of you.' },
         { time: '', place: 'KAMAKURA', text: 'Back to the shop.' },
@@ -79,10 +76,10 @@ const T = en
         'We check your documents again on the morning of the ride.',
       ],
       howLabel: 'HOW TO JOIN',
-      howTitle: 'Apply first. We pick the riders and email a payment link.',
+      howTitle: 'First come, first served. Apply and we email you a payment link.',
       steps: [
         { n: '01', t: 'Apply', d: 'Send the form with your details, your license and your Instagram. It takes about five minutes. One form per rider.' },
-        { n: '02', t: 'We review', d: 'We read every application, roughly in the order they arrive, and email the riders we can take.' },
+        { n: '02', t: 'First come, first served', d: 'We email payment links in the order the applications arrive, until the bikes are gone.' },
         { n: '03', t: 'Pay and you are in', d: 'The email has a payment link. Your bike is confirmed when the payment is done.' },
       ],
       closes: 'Applications close',
@@ -92,10 +89,9 @@ const T = en
         { k: 'Fuel', v: EVENT.fuelEn },
         { k: 'Helmet and gear', v: EVENT.helmetEn },
         { k: 'Not included', v: 'Hotels and travel to Kamakura. This is a day ride, not a tour package. Damage to the bike is not covered, same as our regular rental.' },
-        { k: 'Bring', v: 'Your license documents and passport. Warm layers and gloves. Hakone in December is cold.' },
+        { k: 'Bring', v: 'Your license documents and passport. Warm layers. Hakone in December is cold.' },
         { k: 'Rain or ice', v: EVENT.weatherEn },
         { k: 'Cancellation', v: EVENT.cancelEn },
-        { k: 'Photos', v: 'Our crew shoots photos and video on the day. If you would rather not be in them, tell us in the form.' },
         { k: 'Meeting point', v: 'BEETLE RIDER Kamakura, 1-15-2 Komachi, Kamakura. Meet at 10:00 am.', link: { href: localePath('/access', lang), label: 'ACCESS →' } },
       ],
       finalTitle: 'Only a few bikes. One day.',
@@ -116,14 +112,12 @@ const T = en
         { k: '日時', v: '12月8日（火）10:00 集合' as string | null },
         { k: '料金', v: '1人 ¥32,000' as string | null },
         { k: '含まれるもの', v: '1日分のチョッパー・ガソリン・お昼・デザート・高速代' as string | null },
-        { k: '台数', v: null as string | null },
       ],
-      bikesValue: (n: number) => `${n}台だけ`,
       dayLabel: 'THE DAY',
       dayTitle: '6時間ほど。山へ行って、海に戻る。',
       day: [
         { time: '10:00', place: '鎌倉', text: 'BEETLE RIDER 鎌倉店に集合。書類と免許の確認、バイクの説明。' },
-        { time: '', place: '箱根', text: '海沿いを西へ、そこから山へ。芦ノ湖でバイクを並べて写真を撮り、お昼。', note: EVENT.lunchJa, noteLabel: 'お店' },
+        { time: '', place: '箱根', text: '海沿いを西へ、そこから山へ。芦ノ湖でバイクを並べて写真を撮り、お昼。' },
         { time: '', place: '江の島', text: '海へ下りて、江の島の近くの OCEANBEETLE BREAKFAST CLUB でデザート。' },
         { time: '16:30ごろ', place: '七里ヶ浜', text: '16時半ごろ、海に夕日が沈む。晴れていれば、正面に富士山と江の島。' },
         { time: '', place: '鎌倉', text: '店に戻って解散。' },
@@ -142,10 +136,10 @@ const T = en
         '当日の朝にも、書類をもう一度確認します。',
       ],
       howLabel: 'HOW TO JOIN',
-      howTitle: '申し込みのあと、店が選んで決済のリンクを送ります。',
+      howTitle: '先着順です。申し込みが届いた順に、決済のリンクを送ります。',
       steps: [
         { n: '01', t: '申し込む', d: 'フォームに、名前などの情報・免許・インスタを書いて送る（5分ほど）。1人1回送ってください。' },
-        { n: '02', t: '店が選ぶ', d: '届いた順を目安に全部の申し込みを見て、乗っていただく方にメールします。' },
+        { n: '02', t: '先着順', d: '申し込みが届いた順に、決済のリンクをメールで送ります。台がなくなったら締め切ります。' },
         { n: '03', t: '払ったら確定', d: 'メールに決済のリンクがあります。払い終わった時点で台が決まります。' },
       ],
       closes: '申し込みの締め切り',
@@ -155,17 +149,16 @@ const T = en
         { k: 'ガソリン', v: EVENT.fuelJa },
         { k: 'ヘルメット・装備', v: EVENT.helmetJa },
         { k: '含まれないもの', v: '宿と鎌倉までの交通。日帰りのランで、旅行のパッケージではありません。車両の損害は、いつものレンタルと同じく補償の外です。' },
-        { k: '持ち物', v: '免許の書類とパスポート。暖かい服と手袋（12月の箱根は寒い）。' },
+        { k: '持ち物', v: '免許の書類とパスポート。暖かい服（12月の箱根は寒い）。' },
         { k: '雨・凍結', v: EVENT.weatherJa },
         { k: 'キャンセル', v: EVENT.cancelJa },
-        { k: '写真', v: '当日はスタッフが写真と動画を撮ります。写りたくない方はフォームで教えてください。' },
         { k: '集合', v: 'BEETLE RIDER 鎌倉店（鎌倉市小町1-15-2）に 10:00。', link: { href: localePath('/access', lang), label: 'アクセス →' } },
       ],
       finalTitle: '台数わずか。この日だけ。',
       ask: '質問はインスタの DM へ',
     };
 
-const facts = T.facts.map((f) => (f.v === null ? { ...f, v: EVENT.seats ? T.bikesValue(EVENT.seats) : null } : f));
+const facts = T.facts;
 const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
 const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
 ---
@@ -360,7 +353,7 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
     .ar-h2 { font-family: var(--font-heading); font-size: clamp(24px, 3.4vw, 40px); color: #fff; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 28px; }
     .ar-p { font-size: 15px; line-height: 1.9; color: rgba(255, 255, 255, 0.72); margin-bottom: 14px; }
 
-    .ar-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .ar-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
     .ar-fact { background: #F1E6CF; color: #1A1110; border-radius: 6px; padding: 18px 18px 16px; border: 3px solid #1A1110; box-shadow: 5px 5px 0 var(--color-brand); }
     .ar-fact-k { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.24em; color: var(--color-brand); margin-bottom: 8px; }
     .ar-fact-v { font-weight: 800; font-size: 15px; line-height: 1.45; }
@@ -414,6 +407,7 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
       .ar-hero-inner { grid-template-columns: 1fr; gap: 28px; }
       .ar-poster { width: min(320px, 80vw); justify-self: center; }
       .ar-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ar-fact:last-child { grid-column: 1 / -1; }
       .ar-jose { grid-template-columns: 1fr; gap: 24px; }
       .ar-steps { grid-template-columns: 1fr; }
     }
