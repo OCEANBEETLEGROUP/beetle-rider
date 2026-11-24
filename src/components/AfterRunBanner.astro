@@ -1,7 +1,7 @@
 ---
 /**
  * AfterRunBanner：12/8 のラン（BEETLE RUN・HOT ROD SHOW AFTER RUN）の特設ページへの入口。ホームとチョッパーのページのヒーロー直下に置く。
- * 左にポスター、右に文とボタンをまとめて置く（TAKE 11/24「サイトのバナー、バランスが悪い」で作り直し）。
+ * PC は左に名前、右に文とボタン。スマホは上から名前・文・ボタン（TAKE 11/24「サイトからはポスター消して」でポスターを外した）。
  * 12/8 18:00（日本時間）を過ぎたら自動で消える（ビルド時に出さない＋表示時にも消す）。終わったら外してよい。
  */
 import type { Lang } from '../i18n/config';
@@ -20,7 +20,6 @@ const show = Date.now() < Date.parse(ENDS_AT);
   <section class="arb" id="beetle-run-banner" data-arb-until={ENDS_AT}>
     <link href="https://fonts.googleapis.com/css2?family=Rye&family=Oswald:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <a class="arb-card" href={localePath('/beetle-run', lang)}>
-      <img class="arb-poster" src="/assets/after-run/poster.webp" width="1080" height="1350" loading="lazy" alt="BEETLE RUN poster: Hot Rod Show after run, Tuesday December 8" />
       <div class="arb-head">
         <p class="arb-hotrod">★ HOT ROD SHOW AFTER RUN ★</p>
         <p class="arb-title">BEETLE RUN</p>
@@ -47,22 +46,19 @@ const show = Date.now() < Date.parse(ENDS_AT);
 <style>
   .arb { background: var(--color-deep-red); padding: 6px 6px 10px; }
   @media (min-width: 1024px) { .arb { padding: 8px 8px 12px; } }
-  .arb-card { display: grid; grid-template-columns: 200px minmax(0, 700px); grid-template-areas: 'poster head' 'poster rest'; justify-content: center; column-gap: 32px; align-items: start; background: #F2E7D0; color: #1E1210; border: 4px solid #1E1210; border-radius: 6px; padding: 18px 28px 18px 18px; box-shadow: 6px 6px 0 #C30E23; transition: transform 0.25s ease; }
+  .arb-card { display: grid; grid-template-columns: auto minmax(0, 560px); grid-template-areas: 'head rest'; justify-content: center; align-items: center; column-gap: 44px; background: #F2E7D0; color: #1E1210; border: 4px solid #1E1210; border-radius: 6px; padding: 24px 34px; box-shadow: 6px 6px 0 #C30E23; transition: transform 0.25s ease; }
   .arb-card:hover { transform: translateY(-2px); }
-  .arb-poster { grid-area: poster; width: 200px; height: auto; display: block; border: 3px solid #1E1210; align-self: center; }
-  .arb-head { grid-area: head; align-self: end; padding-top: 18px; }
-  .arb-rest { grid-area: rest; align-self: start; display: flex; flex-direction: column; align-items: flex-start; }
-  .arb-hotrod { font-family: var(--font-heading); font-size: clamp(16px, 2vw, 22px); letter-spacing: 0.06em; color: #C30E23; margin-bottom: 4px; }
-  .arb-title { font-family: 'Rye', serif; font-size: clamp(40px, 5.4vw, 64px); line-height: 1.05; color: #C30E23; text-shadow: 3px 3px 0 #1E1210; margin-bottom: 10px; }
-  .arb-text { font-size: 15px; line-height: 1.7; color: rgba(30, 18, 16, 0.86); max-width: 620px; }
+  .arb-head { grid-area: head; }
+  .arb-rest { grid-area: rest; display: flex; flex-direction: column; align-items: flex-start; }
+  .arb-hotrod { font-family: var(--font-heading); font-size: clamp(15px, 1.6vw, 20px); letter-spacing: 0.06em; color: #C30E23; margin-bottom: 6px; white-space: nowrap; }
+  .arb-title { font-family: 'Rye', serif; font-size: clamp(44px, 5vw, 64px); line-height: 1.05; color: #C30E23; text-shadow: 3px 3px 0 #1E1210; white-space: nowrap; }
+  .arb-text { font-size: 15px; line-height: 1.7; color: rgba(30, 18, 16, 0.86); }
   .arb-meta { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.12em; color: #1E1210; margin-top: 8px; }
   .arb-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 13px 24px; border-radius: 999px; background: #C30E23; color: #fff; font-weight: 800; font-size: 12px; letter-spacing: 0.16em; white-space: nowrap; }
-  @media (max-width: 720px) {
-    .arb-card { grid-template-columns: 96px minmax(0, 1fr); grid-template-areas: 'poster head' 'rest rest'; justify-content: stretch; column-gap: 14px; row-gap: 12px; padding: 14px; }
-    .arb-poster { width: 96px; }
-    .arb-head { align-self: center; padding-top: 0; }
-    .arb-hotrod { font-size: 13px; }
-    .arb-title { font-size: 34px; margin-bottom: 0; }
+  @media (max-width: 860px) {
+    .arb-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'head' 'rest'; row-gap: 12px; padding: 16px; }
+    .arb-hotrod { font-size: 13px; white-space: normal; }
+    .arb-title { font-size: 38px; }
     .arb-text { font-size: 13.5px; }
     .arb-meta { font-size: 11px; letter-spacing: 0.08em; }
     .arb-cta { width: 100%; margin-top: 12px; padding: 13px 16px; }

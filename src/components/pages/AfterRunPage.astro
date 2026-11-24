@@ -78,7 +78,7 @@ const T = en
       howLabel: 'HOW TO JOIN',
       howTitle: 'First come, first served. Apply and we email you a payment link.',
       steps: [
-        { n: '01', t: 'Apply', d: 'Send the form with your details, your license and your Instagram. It takes about five minutes. One form per rider.' },
+        { n: '01', t: 'Apply', d: 'Send the form with your details and your Instagram. It takes about two minutes. One form per rider.' },
         { n: '02', t: 'First come, first served', d: 'We email payment links in the order the applications arrive, until the bikes are gone.' },
         { n: '03', t: 'Pay and you are in', d: 'The email has a payment link. Your bike is confirmed when the payment is done.' },
       ],
@@ -138,7 +138,7 @@ const T = en
       howLabel: 'HOW TO JOIN',
       howTitle: '先着順です。申し込みが届いた順に、決済のリンクを送ります。',
       steps: [
-        { n: '01', t: '申し込む', d: 'フォームに、名前などの情報・免許・インスタを書いて送る（5分ほど）。1人1回送ってください。' },
+        { n: '01', t: '申し込む', d: 'フォームに、名前などの情報とインスタを書いて送る（2分ほど）。1人1回送ってください。' },
         { n: '02', t: '先着順', d: '申し込みが届いた順に、決済のリンクをメールで送ります。台がなくなったら締め切ります。' },
         { n: '03', t: '払ったら確定', d: 'メールに決済のリンクがあります。払い終わった時点で台が決まります。' },
       ],
@@ -192,7 +192,6 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
       </div>
       <p class="ar-closed" data-ar-closed hidden>{T.closedMsg}</p>
       </div>
-      <img class="ar-poster" src="/assets/after-run/poster.webp" width="1080" height="1350" loading="eager" alt={en ? 'BEETLE RUN poster: Hot Rod Show after run, Tuesday December 8' : 'BEETLE RUN のポスター（ロッドショーのアフターラン・12月8日）'} />
     </div>
   </section>
 
@@ -323,8 +322,8 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
     .ar-hero { position: relative; min-height: 94svh; display: flex; align-items: flex-end; overflow: hidden; background: #111; padding-top: 66px; }
     .ar-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: grayscale(1) contrast(1.08); }
     .ar-hero-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26, 6, 6, 0.35) 0%, rgba(26, 6, 6, 0.45) 45%, rgba(45, 10, 10, 0.97) 100%); }
-    .ar-hero-inner { position: relative; z-index: 2; width: 100%; max-width: 1120px; margin: 0 auto; padding: 32px 24px 56px; display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: end; }
-    .ar-poster { width: 360px; height: auto; display: block; border: 4px solid #F1E6CF; box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.45); transform: rotate(2deg); }
+    .ar-hero-inner { position: relative; z-index: 2; width: 100%; max-width: 1120px; margin: 0 auto; padding: 32px 24px 56px; display: grid; grid-template-columns: 1fr; gap: 48px; align-items: end; }
+    .ar-hero-text { max-width: 760px; }   /* ポスターは外した（TAKE 11/24「サイトからはポスター消して」） */
     .ar-presents { font-family: 'Yellowtail', cursive; font-size: clamp(30px, 3.6vw, 44px); color: #F1E6CF; line-height: 1; margin-bottom: 10px; }
     .ar-presents small { font-size: 0.75em; opacity: 0.85; margin-left: 6px; }
     .ar-hotrod { font-family: var(--font-heading); font-size: clamp(19px, 2.6vw, 36px); line-height: 1.1; color: #F1E6CF; letter-spacing: 0.02em; margin-bottom: 6px; }
@@ -405,7 +404,6 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
 
     @media (max-width: 860px) {
       .ar-hero-inner { grid-template-columns: 1fr; gap: 28px; }
-      .ar-poster { width: min(320px, 80vw); justify-self: center; }
       .ar-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .ar-fact:last-child { grid-column: 1 / -1; }
       .ar-jose { grid-template-columns: 1fr; gap: 24px; }
