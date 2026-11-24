@@ -5,6 +5,7 @@ import { useTranslations } from '../../i18n/index';
 import TrustBar from '../../components/TrustBar.astro';
 import Reviews from '../../components/Reviews.astro';
 import CountriesBar from '../../components/CountriesBar.astro';
+import AfterRunBanner from '../../components/AfterRunBanner.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -55,6 +56,9 @@ const t = useTranslations(lang);
       </div>
     </a>
   </section>
+
+  <!-- アフターラン（12/8）の入口。12/8 18:00 を過ぎたら自動で消える（TAKE指示 2026-11-24） -->
+  <AfterRunBanner lang={lang} />
 
   <!-- 51の国と地域バナー（ヒーロー直下 — 着地直後にグローバル実績を提示 TAKE指示 2026-07-10。
        ホームはE-BIKE＋チョッパーの合計 TAKE指示 2026-11-03） -->

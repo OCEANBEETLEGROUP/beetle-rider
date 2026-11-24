@@ -5,6 +5,7 @@ import TrustBar from '../../components/TrustBar.astro';
 import CountriesBar from '../../components/CountriesBar.astro';
 import Reviews from '../../components/Reviews.astro';
 import IdpChecker from '../../components/IdpChecker.astro';
+import AfterRunBanner from '../../components/AfterRunBanner.astro';
 import { getVehicles } from '../../lib/microcms';
 import { getLangFromUrl, localePath } from '../../i18n/config';
 import { t } from '../../i18n/index';
@@ -92,6 +93,9 @@ const chopperSchema = [
       </svg>
     </div>
   </section>
+
+  <!-- アフターラン（12/8）の入口。12/8 18:00 を過ぎたら自動で消える（TAKE指示 2026-11-24） -->
+  <AfterRunBanner lang={lang} />
 
   <TrustBar lang={lang} variant="chopper" />
 

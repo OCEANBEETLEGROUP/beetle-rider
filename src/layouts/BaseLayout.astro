@@ -31,6 +31,8 @@ interface Props {
   schema?: any[];
   /** ページ固有OG画像（相対パス可・省略時は共通ogp.png） */
   ogImage?: string;
+  /** true = 検索に出さない（期間限定の特設ページなど。サイトマップは astro.config.mjs の filter で外す） */
+  noindex?: boolean;
 }
 
 const {
@@ -41,6 +43,7 @@ const {
   headerLogo = 'chopper',
   schema = [],
   ogImage,
+  noindex = false,
 } = Astro.props;
 
 const altUrl = alternateUrl(Astro.url);
@@ -147,6 +150,7 @@ const websiteLd = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex">}
 
   <!-- Canonical (always apex domain to prevent www/pages.dev duplicates) -->
   <link rel="canonical" href={canonicalUrl}>

@@ -12,6 +12,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
+      // 期間限定の特設ページ（noindex）はサイトマップに載せない
+      filter: (page) => !page.includes('/after-run'),
       i18n: {
         defaultLocale: 'ja',
         locales: {
