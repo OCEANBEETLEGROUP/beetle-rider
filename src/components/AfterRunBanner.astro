@@ -1,37 +1,43 @@
 ---
 /**
  * AfterRunBanner：12/8 のラン（BEETLE RUN・HOT ROD SHOW AFTER RUN）の特設ページへの入口。ホームとチョッパーのページのヒーロー直下に置く。
- * PC は左に名前、右に文とボタン。スマホは上から名前・文・ボタン（TAKE 11/24「サイトからはポスター消して」でポスターを外した）。
+ * 英語だけ（TAKE 11/24「サイトは全部英語のみで大丈夫です」）＝日本語のページでも英語で出し、英語の特設ページへ飛ばす。
+ * 特設ページと同じ手作りのチラシの見た目（TAKE 11/24「もっと手作り感満載」「帯のタイトルも同様に変えて」
+ * 「帯は日付をもっとわかりやすく」「アプライCTAはもうちょっと分かりやすく」）。
+ * PC は左から 日付（めくりのカレンダー）・名前・文とボタン。スマホは 日付と名前を横に並べ、その下に文とボタン。
  * 12/8 18:00（日本時間）を過ぎたら自動で消える（ビルド時に出さない＋表示時にも消す）。終わったら外してよい。
  */
 import type { Lang } from '../i18n/config';
 import { localePath } from '../i18n/config';
 
 interface Props {
-  lang: Lang;
+  lang?: Lang; // 呼び出し側との互換のため残す（中身は英語だけ）
 }
-const { lang } = Astro.props;
-const en = lang === 'en';
 const ENDS_AT = '2026-12-08T18:00:00+09:00';
 const show = Date.now() < Date.parse(ENDS_AT);
+const href = localePath('/beetle-run', 'en');
 ---
 
 {show && (
   <section class="arb" id="beetle-run-banner" data-arb-until={ENDS_AT}>
-    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Oswald:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <a class="arb-card" href={localePath('/beetle-run', lang)}>
+    <link href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <a class="arb-card" href={href}>
+      <span class="arb-tape arb-tape-l" aria-hidden="true"></span>
+      <span class="arb-tape arb-tape-r" aria-hidden="true"></span>
+      <p class="arb-cal" aria-label="Tuesday, December 8">
+        <span class="arb-cal-m">DEC</span>
+        <span class="arb-cal-d">8</span>
+        <span class="arb-cal-w">TUESDAY</span>
+      </p>
       <div class="arb-head">
         <p class="arb-hotrod">★ HOT ROD SHOW AFTER RUN ★</p>
-        <p class="arb-title">BEETLE RUN</p>
+        <p class="arb-title">Beetle Run</p>
       </div>
       <div class="arb-rest">
-        <p class="arb-text">
-          {en
-            ? 'Ride Japan with JOSE & TSUGUMI before you fly home. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama.'
-            : 'ロッドショーのアフターラン。JOSE と TSUGUMI と走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。'}
-        </p>
-        <p class="arb-meta">{en ? 'TUE, DEC 8 · MEET 10 AM IN KAMAKURA · ¥32,000 ALL IN · LIMITED BIKES' : '12月8日（火）10:00 鎌倉店に集合・¥32,000（ガソリン・食事・高速代込み）・台数わずか'}</p>
-        <span class="arb-cta">{en ? 'SEE DETAILS & APPLY' : 'くわしく見る・申し込む'} <span aria-hidden="true">→</span></span>
+        <p class="arb-text">Ride to Hakone on our choppers with JOSE &amp; TSUGUMI. Eat lunch. Ride back.</p>
+        <p class="arb-meta"><span>MEET 10 AM IN&nbsp;KAMAKURA</span><span>¥32,000 ALL IN</span></p>
+        <span class="arb-cta">APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></span>
+        <span class="arb-cta-note">first come, first served</span>
       </div>
     </a>
     <script is:inline>
@@ -44,23 +50,51 @@ const show = Date.now() < Date.parse(ENDS_AT);
 )}
 
 <style>
-  .arb { background: var(--color-deep-red); padding: 6px 6px 10px; }
-  @media (min-width: 1024px) { .arb { padding: 8px 8px 12px; } }
-  .arb-card { display: grid; grid-template-columns: auto minmax(0, 560px); grid-template-areas: 'head rest'; justify-content: center; align-items: center; column-gap: 44px; background: #F2E7D0; color: #1E1210; border: 4px solid #1E1210; border-radius: 6px; padding: 24px 34px; box-shadow: 6px 6px 0 #C30E23; transition: transform 0.25s ease; }
-  .arb-card:hover { transform: translateY(-2px); }
-  .arb-head { grid-area: head; }
+  .arb { --ink: #1A1110; --red: #C30E23; --hand: 'Permanent Marker', 'Marker Felt', cursive; --type: 'Special Elite', 'Courier New', monospace; --script: 'Mr Dafoe', 'Brush Script MT', cursive; background-color: var(--color-deep-red); background-image: url(/assets/after-run/wall-grain.png); background-size: 256px; padding: 30px 20px 30px; overflow: hidden; }
+  .arb-card { position: relative; display: grid; grid-template-columns: auto auto minmax(0, 440px); grid-template-areas: 'cal head rest'; justify-content: center; align-items: center; column-gap: 46px; max-width: 1180px; margin: 0 auto; padding: 30px 40px 28px; background-color: #F3E8D2; background-image: url(/assets/after-run/paper-grain.png); background-size: 256px; color: var(--ink); transform: rotate(-0.5deg); box-shadow: 0 18px 28px -14px rgba(0, 0, 0, 0.75), 0 4px 10px rgba(0, 0, 0, 0.3); transition: transform 0.25s ease; }
+  .arb-card:hover { transform: rotate(-0.5deg) translateY(-3px); }
+  .arb-tape { position: absolute; z-index: 2; top: -13px; width: 118px; height: 30px; background: rgba(240, 229, 198, 0.82); background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.14)); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); clip-path: polygon(2% 0, 98% 5%, 100% 24%, 97% 46%, 100% 70%, 98% 100%, 3% 95%, 0 76%, 3% 52%, 0 28%); }
+  .arb-tape-l { left: 26px; transform: rotate(-6deg); }
+  .arb-tape-r { right: 26px; transform: rotate(5deg); }
+
+  .arb-cal { grid-area: cal; width: 118px; margin: 0; background: #FBF6EA; border: 3px solid var(--ink); border-radius: 4px; box-shadow: 4px 5px 0 var(--ink); transform: rotate(-3deg); text-align: center; overflow: hidden; }
+  .arb-cal-m { display: block; background: var(--red); color: #FBF6EA; font-family: var(--hand); font-size: 22px; letter-spacing: 0.14em; padding: 5px 0 2px; border-bottom: 3px solid var(--ink); }
+  .arb-cal-d { display: block; font-family: var(--hand); font-size: 64px; line-height: 1; padding-top: 7px; }
+  .arb-cal-w { display: block; font-family: var(--type); font-size: 12px; letter-spacing: 0.2em; padding: 2px 0 9px; }
+
+  .arb-head { grid-area: head; display: flex; flex-direction: column; align-items: center; }
+  .arb-hotrod { font-family: var(--hand); font-size: 18.5px; letter-spacing: 0.07em; line-height: 1; white-space: nowrap; }   /* 名前の幅の8割5分ほど（TAKE 11/24「タイトルもバランスよく」） */
+  .arb-title { font-family: var(--script); font-size: 92px; line-height: 0.9; color: var(--red); text-shadow: 3px 3px 0 var(--ink); transform: rotate(-4deg); margin-top: 6px; padding: 0 0.1em; white-space: nowrap; }
+
   .arb-rest { grid-area: rest; display: flex; flex-direction: column; align-items: flex-start; }
-  .arb-hotrod { font-family: var(--font-heading); font-size: clamp(15px, 1.6vw, 20px); letter-spacing: 0.06em; color: #C30E23; margin-bottom: 6px; white-space: nowrap; }
-  .arb-title { font-family: 'Rye', serif; font-size: clamp(44px, 5vw, 64px); line-height: 1.05; color: #C30E23; text-shadow: 3px 3px 0 #1E1210; white-space: nowrap; }
-  .arb-text { font-size: 15px; line-height: 1.7; color: rgba(30, 18, 16, 0.86); }
-  .arb-meta { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.12em; color: #1E1210; margin-top: 8px; }
-  .arb-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 13px 24px; border-radius: 999px; background: #C30E23; color: #fff; font-weight: 800; font-size: 12px; letter-spacing: 0.16em; white-space: nowrap; }
+  .arb-text { font-family: var(--type); font-size: 16px; line-height: 1.6; }
+  .arb-meta { font-family: var(--hand); font-size: 16px; letter-spacing: 0.04em; line-height: 1.45; margin-top: 8px; }
+  .arb-meta span { display: block; }
+  .arb-cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; padding: 12px 30px 10px; background: var(--red); color: #FBF6EA; font-family: var(--hand); font-size: 22px; letter-spacing: 0.06em; line-height: 1.1; border: 3px solid var(--ink); border-radius: 14px 20px 12px 22px / 20px 12px 22px 14px; box-shadow: 4px 5px 0 var(--ink); transform: rotate(-1.5deg); white-space: nowrap; transition: background 0.15s ease; }
+  .arb-cta .arr { width: 1.2em; height: 0.72em; flex: none; fill: none; stroke: currentColor; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s ease; }
+  .arb-card:hover .arb-cta { background: #A80B1E; }
+  .arb-card:hover .arb-cta .arr { transform: translateX(4px); }
+  .arb-cta-note { font-family: var(--type); font-size: 13px; margin-top: 10px; }
+
+  @media (max-width: 1100px) {
+    .arb-card { column-gap: 30px; padding: 28px 30px 26px; }
+    .arb-title { font-size: 76px; }
+    .arb-hotrod { font-size: 15.2px; }
+  }
   @media (max-width: 860px) {
-    .arb-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'head' 'rest'; row-gap: 12px; padding: 16px; }
-    .arb-hotrod { font-size: 13px; white-space: normal; }
-    .arb-title { font-size: 38px; }
-    .arb-text { font-size: 13.5px; }
-    .arb-meta { font-size: 11px; letter-spacing: 0.08em; }
-    .arb-cta { width: 100%; margin-top: 12px; padding: 13px 16px; }
+    /* スマホ: 名前を一番上に全幅で → 日付と集合・料金を横に並べる → 文 → ボタン */
+    .arb { padding: 26px 14px 28px; }
+    .arb-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'head head' 'cal meta' 'text text' 'cta cta' 'note note'; column-gap: 18px; row-gap: 16px; padding: 30px 18px 22px; }
+    .arb-rest { display: contents; }
+    .arb-hotrod { font-size: 3.6vw; letter-spacing: 0.06em; }
+    .arb-title { font-size: 17vw; }
+    .arb-cal { width: 92px; justify-self: end; }
+    .arb-cal-m { font-size: 18px; }
+    .arb-cal-d { font-size: 50px; }
+    .arb-cal-w { font-size: 10px; letter-spacing: 0.16em; }
+    .arb-meta { grid-area: meta; align-self: center; justify-self: start; margin-top: 0; font-size: 16px; }
+    .arb-text { grid-area: text; text-align: center; font-size: 15px; }
+    .arb-cta { grid-area: cta; width: 100%; margin-top: 2px; font-size: 24px; padding: 13px 16px 11px; transform: rotate(-1deg); }
+    .arb-cta-note { grid-area: note; text-align: center; margin-top: -4px; }
   }
 </style>

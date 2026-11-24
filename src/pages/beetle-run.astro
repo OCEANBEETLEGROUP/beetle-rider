@@ -1,5 +1,23 @@
 ---
-import AfterRunPage from '../components/pages/AfterRunPage.astro';
+/**
+ * BEETLE RUN の特設ページは英語だけ（TAKE 11/24「サイトは全部英語のみで大丈夫です」）。
+ * 日本語の URL（/beetle-run）に来た人は、英語のページ（/en/beetle-run/）へ送る。
+ * ヘッダーの「JP」を押したときもここに来るので、404 にしない。
+ */
+const to = '/en/beetle-run/';
 ---
-
-<AfterRunPage />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={`https://beetlerider.com${to}`} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <title>BEETLE RUN · BEETLE RIDER Kamakura</title>
+    <script is:inline define:vars={{ to }}>location.replace(to);</script>
+  </head>
+  <body style="background:#2D0A0A;color:#F3E8D2;font-family:sans-serif;padding:40px;">
+    <a href={to} style="color:#F3E8D2;">BEETLE RUN →</a>
+  </body>
+</html>

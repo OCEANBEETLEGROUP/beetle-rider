@@ -2,313 +2,283 @@
 /**
  * AfterRunPage：ロッドショーの2日後のラン（2026-12-08 火）の特設ページ。名前は「BEETLE RUN」＋サブタイトル「HOT ROD SHOW AFTER RUN」（TAKE 11/24）
  *
- * 経緯: BR定例 第12回（2026-11-23）で「有料のプラン ¥32,000（食事と高速代込み）・
- * 箱根 → OBBC でデザート → 七里ヶ浜で夕日」と決定。11/24 TAKE「特設ページを作って、トップとチョッパーのページからリンク。
- * Googleフォームで申し込み → Square のリンク決済」。同日 TAKE「何のアフターランか分からない」＝名前を変える・
- * 「先着順ではあるものの多少は選びたい（インスタも見て）」・「10時集合、6時間くらい」・「決済リンクはこちらから送る」。
+ * 経緯: BR定例 第12回（2026-11-23）で有料のプラン ¥32,000（食事と高速代込み）に決定。11/24 TAKE「特設ページを作って、トップとチョッパーのページからリンク。
+ * Googleフォームで申し込み → Square のリンク決済」。
+ * 11/24 夕方 TAKE「逗子海岸のサンセットは描かなくていい」「日程も、箱根まで行って飯食うくらいのシンプルな感じで」「サイトは全部英語のみで大丈夫」
+ * 「タイトルもバランスよく」「フォントは変えて。もっと手作り感満載のページに」「帯は日付をもっとわかりやすく」「アプライCTAはもうちょっと分かりやすく」
+ * ＝壁に手作りのチラシを貼った見た目に作り直した。字は 筆記体 Mr Dafoe（名前）・マーカー Permanent Marker（見出し・書き込み）・タイプライター Special Elite（本文）。
+ *   紙・マスキングテープ・ゴム印・手描きの線は、生成した絵を使わず CSS と手で書いた SVG で作る（AI 感を出さない）。
  *
+ * - 英語だけ。日本語の URL（/beetle-run）は英語のページへ送る（src/pages/beetle-run.astro）
  * - noindex（BaseLayout の noindex）＋ サイトマップから外す（astro.config.mjs の filter）
- * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 先着順で決済リンクをメールで送る → 払ったら確定（11/24 TAKE「店が選ぶ　これ先着にして」）
- * - 締め切り: 一次募集は 11/30・二次募集はショー前日の 12/5（11/24 TAKE）。台数は書かない・ほかの未定は消す（同）
- * - 未決（TBC）は EVENT の値が null / '' のとき「TBC / 未定」の印を出す。TAKE が決めたら値を入れる
+ * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 先着順で決済リンクをメールで送る → 払ったら確定
+ * - 締め切り: 一次募集は 11/30・二次募集はショー前日の 12/5。台数は書かない
  * - 12/8 18:00（日本時間）を過ぎたら、申し込みボタンを「終了」に切り替える（ビルド時と表示時の両方）
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import IdpChecker from '../../components/IdpChecker.astro';
-import { getLangFromUrl, localePath } from '../../i18n/config';
+import { localePath } from '../../i18n/config';
 
-const lang = getLangFromUrl(Astro.url);
-const en = lang === 'en';
+const lang = 'en' as const;
 
-// ===== 名前（筆記体の部分と、ブロック体の部分） =====
-const NAME = { script: 'Beetle', block: 'RUN', full: 'BEETLE RUN', sub: 'HOT ROD SHOW AFTER RUN' };
-
-// ===== 決まったら埋める（null / '' の間は TBC の印が出る） =====
 const EVENT = {
   endsAt: '2026-12-08T18:00:00+09:00',
   formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdtUkXlgyKal-lftUGtGgZNZJSVEAZvHx0YTm78bpcoKoGF2A/viewform', // 江ノ島店の Gmail のフォーム（公開は TAKE の OK 後）
-  closesEn: 'first round Nov 30, second round Dec 5 (the day before the show)', closesJa: '一次募集は11月30日（月）まで、二次募集はショー前日の12月5日（土）まで', // TAKE 11/24「一次募集は月末まで。二次募集がロットショー前日まで」
-  fuelEn: 'Included.', fuelJa: '込み。',   // ガソリン代も込み（TAKE 11/24）
-  helmetEn: 'We lend helmets, gloves and riding gear.', helmetJa: 'ヘルメット・グローブ・ギアの貸し出しがあります。', // TAKE 11/24「ギアの貸出はしてます」「グローブも貸し出しある」
-  weatherEn: 'If it rains, we cancel the ride and refund you in full.', weatherJa: '雨なら中止して、全額を返金します。', // TAKE 11/24「雨なら中止で全額返金」
-  cancelEn: 'No cancellations once you pay. The only exception is rain: if we cancel the ride, you get a full refund.', cancelJa: 'お支払いのあとのキャンセルはできません。雨で中止したときだけ、全額を返金します。', // TAKE 11/24「雨（開催中止）以外でキャンセル禁止」
 };
 const closed = Date.now() > Date.parse(EVENT.endsAt);
-const TBC = en ? 'TBC' : '未定';
-const applyHref = EVENT.formUrl || '#how';
-const applyExternal = !!EVENT.formUrl;
+const link = { href: EVENT.formUrl, target: '_blank', rel: 'noopener' };
 
-const T = en
-  ? {
-      metaTitle: `${NAME.full} · Hot Rod Show After Run · Tue, Dec 8｜BEETLE RIDER Kamakura`,
-      metaDesc: 'The Hot Rod Show after run. One day on vintage choppers with JOSE. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama. Tuesday, December 8. Meet 10:00 am in Kamakura. ¥32,000 per rider, fuel included. Only a few bikes.',
-      tag: 'TUESDAY, DECEMBER 8 · ONE DAY CHOPPER RIDE',
-      lead: 'Ride Japan before you fly home.',
-      intro: 'The after run for the Hot Rod show in Yokohama, two days after the show. Take one day on our vintage choppers and ride Japan with JOSE and TSUGUMI. Lunch by Lake Ashi in Hakone, dessert by the sea, then the sun goes down over the water at Shichirigahama.',
-      apply: 'APPLY FOR A BIKE',
-      how: 'HOW IT WORKS',
-      closedMsg: 'This ride has finished. Thank you for riding with us.',
-      facts: [
-        { k: 'WHEN', v: 'Tue, Dec 8 · Meet 10:00 am' as string | null },
-        { k: 'PRICE', v: '¥32,000 per rider' as string | null },
-        { k: 'INCLUDED', v: 'Your chopper for the day, fuel, lunch, dessert, expressway tolls' as string | null },
-      ],
-      dayLabel: 'THE DAY',
-      dayTitle: 'About six hours. Mountains first, then the sea.',
-      day: [
-        { time: '10:00 AM', place: 'KAMAKURA', text: 'Meet at BEETLE RIDER Kamakura. Paperwork, license check and a short briefing on your bike.' },
-        { time: '', place: 'HAKONE', text: 'West along the coast, then up into the mountains. We line the bikes up at Lake Ashi, take photos and have lunch.' },
-        { time: '', place: 'ENOSHIMA', text: 'Back down to the sea. Dessert at OCEANBEETLE BREAKFAST CLUB, our cafe by the beach near Enoshima.' },
-        { time: '4:30 PM', place: 'SHICHIRIGAHAMA', text: 'The sun goes down over the sea around 4:30 pm. On a clear day, Mt. Fuji and Enoshima sit right in front of you.' },
-        { time: '', place: 'KAMAKURA', text: 'Back to the shop.' },
-      ],
-      joseLabel: 'RIDE WITH JOSE & TSUGUMI',
-      joseTitle: 'The value of this day is the people you ride with.',
-      joseText: [
-        'JOSE runs our Kamakura shop and builds choppers (@build_by_jose). TSUGUMI is part of our Kamakura crew. The two of them lead the ride on roads they ride every week.',
-        'Our crew rides with the group, speaks English and shoots photos and video along the way. No big event. Just a small pack of bikes and a long day in Japan.',
-      ],
-      whoLabel: 'WHO CAN JOIN',
-      who: [
-        'A full motorcycle license with no engine size limit.',
-        'From overseas: an IDP with Category A, your home license and your passport. Germany, Switzerland, Taiwan, Monaco, Estonia and Slovenia: your home license with an official JAF translation. France and Belgium: either one.',
-        'You are comfortable riding a heavy bike in a group, on mountain roads, in the cold.',
-        'We check your documents again on the morning of the ride.',
-      ],
-      howLabel: 'HOW TO JOIN',
-      howTitle: 'First come, first served. Apply and we email you a payment link.',
-      steps: [
-        { n: '01', t: 'Apply', d: 'Send the form with your details and your Instagram. It takes about two minutes. One form per rider.' },
-        { n: '02', t: 'First come, first served', d: 'We email payment links in the order the applications arrive, until the bikes are gone.' },
-        { n: '03', t: 'Pay and you are in', d: 'The email has a payment link. Your bike is confirmed when the payment is done.' },
-      ],
-      closes: 'Applications close',
-      knowLabel: 'GOOD TO KNOW',
-      know: [
-        { k: 'Included', v: 'Your chopper for the day, fuel, lunch in Hakone, dessert at OCEANBEETLE BREAKFAST CLUB, expressway tolls and third-party liability insurance.' },
-        { k: 'Fuel', v: EVENT.fuelEn },
-        { k: 'Helmet and gear', v: EVENT.helmetEn },
-        { k: 'Not included', v: 'Hotels and travel to Kamakura. This is a day ride, not a tour package. Damage to the bike is not covered, same as our regular rental.' },
-        { k: 'Bring', v: 'Your license documents and passport. Warm layers. Hakone in December is cold.' },
-        { k: 'Rain or ice', v: EVENT.weatherEn },
-        { k: 'Cancellation', v: EVENT.cancelEn },
-        { k: 'Meeting point', v: 'BEETLE RIDER Kamakura, 1-15-2 Komachi, Kamakura. Meet at 10:00 am.', link: { href: localePath('/access', lang), label: 'ACCESS →' } },
-      ],
-      finalTitle: 'Only a few bikes. One day.',
-      ask: 'Questions? Message us on Instagram',
-    }
-  : {
-      metaTitle: `${NAME.full}・ロッドショーのアフターラン・12月8日（火）｜BEETLE RIDER 鎌倉`,
-      metaDesc: 'ロッドショーのアフターラン。JOSE とビンテージのチョッパーで走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。12月8日（火）10時に鎌倉店に集合。¥32,000（ガソリン・食事・高速代込み）。台数わずか。',
-      tag: '12月8日（火）・チョッパーで走る1日',
-      lead: '国に帰る前に、日本を走る。',
-      intro: '横浜のロッドショーのアフターラン（ショーの2日後）。うちのビンテージのチョッパーで、JOSE と TSUGUMI と日本を走る1日。箱根の芦ノ湖でお昼、海に戻ってデザート、最後は七里ヶ浜で海に沈む夕日。',
-      notice: '海外から日本に来ているお客さま向けのランです。案内は英語で行います。',
-      toEn: 'ENGLISH PAGE →',
-      apply: '申し込む',
-      how: '申し込みの流れ',
-      closedMsg: 'このランは終了しました。ありがとうございました。',
-      facts: [
-        { k: '日時', v: '12月8日（火）10:00 集合' as string | null },
-        { k: '料金', v: '1人 ¥32,000' as string | null },
-        { k: '含まれるもの', v: '1日分のチョッパー・ガソリン・お昼・デザート・高速代' as string | null },
-      ],
-      dayLabel: 'THE DAY',
-      dayTitle: '6時間ほど。山へ行って、海に戻る。',
-      day: [
-        { time: '10:00', place: '鎌倉', text: 'BEETLE RIDER 鎌倉店に集合。書類と免許の確認、バイクの説明。' },
-        { time: '', place: '箱根', text: '海沿いを西へ、そこから山へ。芦ノ湖でバイクを並べて写真を撮り、お昼。' },
-        { time: '', place: '江の島', text: '海へ下りて、江の島の近くの OCEANBEETLE BREAKFAST CLUB でデザート。' },
-        { time: '16:30ごろ', place: '七里ヶ浜', text: '16時半ごろ、海に夕日が沈む。晴れていれば、正面に富士山と江の島。' },
-        { time: '', place: '鎌倉', text: '店に戻って解散。' },
-      ],
-      joseLabel: 'RIDE WITH JOSE & TSUGUMI',
-      joseTitle: 'この日の価値は、誰と走るか。',
-      joseText: [
-        'JOSE は鎌倉店を任されていて、チョッパーも作る（@build_by_jose）。TSUGUMI も鎌倉店のスタッフ。毎週走っている道を、2人が先頭で案内します。',
-        'スタッフも一緒に走り、英語で話し、写真と動画を撮ります。大きなイベントではなく、少ない台数で走る長い1日。',
-      ],
-      whoLabel: 'WHO CAN JOIN',
-      who: [
-        '排気量の制限のない二輪の免許（大型二輪）。',
-        '海外の免許の方: Category A の入った国際免許（IDP）・母国の免許・パスポート。ドイツ・スイス・台湾・モナコ・エストニア・スロベニアは、母国の免許と JAF の翻訳文。フランスとベルギーはどちらでも可。',
-        '重いバイクで、山道を、寒い中、何台かで走るのに慣れている方。',
-        '当日の朝にも、書類をもう一度確認します。',
-      ],
-      howLabel: 'HOW TO JOIN',
-      howTitle: '先着順です。申し込みが届いた順に、決済のリンクを送ります。',
-      steps: [
-        { n: '01', t: '申し込む', d: 'フォームに、名前などの情報とインスタを書いて送る（2分ほど）。1人1回送ってください。' },
-        { n: '02', t: '先着順', d: '申し込みが届いた順に、決済のリンクをメールで送ります。台がなくなったら締め切ります。' },
-        { n: '03', t: '払ったら確定', d: 'メールに決済のリンクがあります。払い終わった時点で台が決まります。' },
-      ],
-      closes: '申し込みの締め切り',
-      knowLabel: 'GOOD TO KNOW',
-      know: [
-        { k: '含まれるもの', v: '1日分のチョッパー・ガソリン・箱根のお昼・OCEANBEETLE BREAKFAST CLUB のデザート・高速代・対人対物の保険。' },
-        { k: 'ガソリン', v: EVENT.fuelJa },
-        { k: 'ヘルメット・装備', v: EVENT.helmetJa },
-        { k: '含まれないもの', v: '宿と鎌倉までの交通。日帰りのランで、旅行のパッケージではありません。車両の損害は、いつものレンタルと同じく補償の外です。' },
-        { k: '持ち物', v: '免許の書類とパスポート。暖かい服（12月の箱根は寒い）。' },
-        { k: '雨・凍結', v: EVENT.weatherJa },
-        { k: 'キャンセル', v: EVENT.cancelJa },
-        { k: '集合', v: 'BEETLE RIDER 鎌倉店（鎌倉市小町1-15-2）に 10:00。', link: { href: localePath('/access', lang), label: 'アクセス →' } },
-      ],
-      finalTitle: '台数わずか。この日だけ。',
-      ask: '質問はインスタの DM へ',
-    };
+// 日程は「箱根まで行ってご飯」くらいの粒度で（TAKE 11/24）。夕日とデザートは書かない
+const plan = [
+  { t: '10:00', d: 'Meet at BEETLE RIDER Kamakura' },
+  { t: '', d: 'Ride to Hakone' },
+  { t: '', d: 'Lunch' },
+  { t: '', d: 'Ride back to Kamakura' },
+];
 
-const facts = T.facts;
-const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
-const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
+const who = [
+  'A full motorcycle license, no engine size limit.',
+  'From overseas: an IDP with Category A, your home license and your passport.',
+  'Germany, Switzerland, Taiwan, Monaco, Estonia, Slovenia: your home license and an official JAF translation. France and Belgium: either one.',
+  'You are OK riding a heavy bike in a group, on mountain roads, in the cold.',
+];
+
+const steps = [
+  { n: '1', t: 'Fill in the form', d: 'Takes 2 minutes. One form per rider.' },
+  { n: '2', t: 'Get a payment link', d: 'We email links in the order the forms come in.' },
+  { n: '3', t: 'Pay and you are in', d: 'Your bike is booked once you pay.' },
+];
+
+const know = [
+  { k: 'Bring', v: 'Your license documents and passport. Warm layers: Hakone in December is cold.' },
+  { k: 'Gear', v: 'We lend helmets, gloves and riding gear.' },
+  { k: 'Rain', v: 'We cancel the ride and refund you in full.' },
+  { k: 'Cancellation', v: 'No cancellations once you pay. Rain is the only exception.' },
+  { k: 'Not included', v: 'Hotels and travel to Kamakura. Damage to the bike is not covered, same as our regular rental.' },
+  { k: 'Meet', v: 'BEETLE RIDER Kamakura, 1-15-2 Komachi, Kamakura. 10:00 AM.', link: { href: localePath('/access', lang), label: 'SEE MAP' } },
+];
+
+const metaTitle = 'BEETLE RUN · Hot Rod Show After Run · Tue, Dec 8｜BEETLE RIDER Kamakura';
+const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers with JOSE and TSUGUMI, eat lunch, ride back. Tuesday, December 8. Meet 10:00 am in Kamakura. ¥32,000 all in.';
 ---
 
-<BaseLayout title={T.metaTitle} description={T.metaDesc} activePage="chopper" headerLogo="chopper" ogImage="/assets/after-run/og.jpg" noindex={true}>
+<BaseLayout title={metaTitle} description={metaDesc} activePage="chopper" headerLogo="chopper" ogImage="/assets/after-run/og.jpg" noindex={true}>
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Yellowtail&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
   </Fragment>
 
-  <!-- Hero -->
-  <section class="ar-hero">
-    <img src="/assets/after-run/hero.webp" alt={en ? 'Our choppers lined up on the Shonan coast with Enoshima and Mt. Fuji' : '江の島と富士山を背に並んだチョッパー'} class="ar-hero-img" loading="eager" width="2000" height="1333" />
-    <div class="ar-hero-shade"></div>
-    <div class="ar-hero-inner">
-      <div class="ar-hero-text">
-      <p class="ar-presents">Beetle Rider <small>presents</small></p>
-      <p class="ar-hotrod">★ {NAME.sub} ★</p>
-      <h1 class="ar-title">{NAME.full}</h1>
-      <p class="ar-subline">{T.tag}</p>
-      <p class="ar-lead">{T.lead}</p>
-      <p class="ar-intro">{T.intro}</p>
-      {!en && (
-        <p class="ar-notice">{(T as any).notice} <a href={localePath('/beetle-run', 'en')}>{(T as any).toEn}</a></p>
-      )}
-      <div class="ar-ctas" data-ar-open>
-        {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
-        {!closed && <a class="ar-btn ar-btn-ghost" href="#how">{T.how}</a>}
-        {closed && <p class="ar-closed">{T.closedMsg}</p>}
-      </div>
-      <p class="ar-closed" data-ar-closed hidden>{T.closedMsg}</p>
-      </div>
-    </div>
-  </section>
+  <div class="brp">
 
-  <!-- Facts -->
-  <section class="ar-sec ar-sec-tight">
-    <div class="ar-wrap ar-facts">
-      {facts.map((f) => (
-        <div class="ar-fact">
-          <p class="ar-fact-k">{f.k}</p>
-          <p class="ar-fact-v">{f.v ?? <span class="ar-tbc">{TBC}</span>}</p>
+    <!-- ===== 1. 名前と日付と申し込み（壁に貼ったチラシ） ===== -->
+    <section class="sec sec-hero">
+      <div class="paper flyer">
+        <span class="tape tape-tl" aria-hidden="true"></span>
+        <span class="tape tape-tr" aria-hidden="true"></span>
+
+        <p class="presents">BEETLE RIDER KAMAKURA <i>presents</i></p>
+        <div class="lockup">
+          <p class="hotrod">★ HOT ROD SHOW AFTER RUN ★</p>
+          <h1 class="title">Beetle Run</h1>
+          <svg class="swash" viewBox="0 0 600 60" aria-hidden="true"><path d="M8 42 C 118 20, 298 9, 468 14 C 528 16, 574 22, 597 31 C 561 27, 521 25, 470 25 C 302 23, 132 35, 15 50 Z" /></svg>
         </div>
-      ))}
-    </div>
-  </section>
 
-  <!-- The day -->
-  <section class="ar-sec">
-    <div class="ar-wrap">
-      <p class="ar-label">{T.dayLabel}</p>
-      <h2 class="ar-h2">{T.dayTitle}</h2>
-      <ol class="ar-day">
-        {T.day.map((d) => (
-          <li class="ar-stop">
-            <p class="ar-stop-time">{d.time}</p>
-            <div>
-              <p class="ar-stop-place">{d.place}</p>
-              <p class="ar-stop-text">{d.text}</p>
-              {'noteLabel' in d && (
-                <p class="ar-stop-note">{(d as any).noteLabel}: {(d as any).note ? (d as any).note : <span class="ar-tbc">{TBC}</span>}</p>
-              )}
+        <p class="lead">Ride to Hakone. Eat lunch. Ride back.</p>
+        <p class="lead-sub">Two days after the Hot Rod show in Yokohama: one day on our choppers with JOSE &amp; TSUGUMI.</p>
+
+        <div class="hero-row">
+          <div class="when">
+            <p class="cal" aria-label="Tuesday, December 8">
+              <span class="cal-m">DEC</span>
+              <span class="cal-d">8</span>
+              <span class="cal-w">TUESDAY</span>
+            </p>
+            <p class="when-lines">
+              <b>MEET 10:00 AM</b><br />
+              BEETLE RIDER Kamakura<br />
+              <b>¥32,000</b> all in
+            </p>
+          </div>
+
+          <div class="cta" data-ar-open>
+            {!closed && (
+              <>
+                <span class="apply-wrap">
+                  <a class="apply" id="apply-top" {...link}>APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></a>
+                  <span class="scrawl scrawl-cta" aria-hidden="true">
+                    <svg class="scrawl-arrow" viewBox="0 0 60 40"><path d="M57 5 C 40 3, 22 11, 9 30" /><path d="M3 19 L 8 32 L 21 28" /></svg>
+                    takes 2 min!
+                  </span>
+                </span>
+                <p class="apply-note">Fill in the form. We email you a payment link.</p>
+              </>
+            )}
+            {closed && <p class="closed-msg">This ride has finished. Thank you for riding with us.</p>}
+          </div>
+        </div>
+        <p class="closed-msg" data-ar-closed hidden>This ride has finished. Thank you for riding with us.</p>
+      </div>
+    </section>
+
+    <!-- ===== 2. 日程（シンプルに）と写真 ===== -->
+    <section class="sec">
+      <div class="grid-plan">
+        <div class="paper card card-plan">
+          <span class="tape tape-tl" aria-hidden="true"></span>
+          <h2 class="h">The plan</h2>
+          <svg class="route" viewBox="0 0 440 150" aria-hidden="true">
+            <path class="route-sea" d="M14 132 q 9 -7 18 0 t 18 0 t 18 0 M40 144 q 9 -7 18 0 t 18 0" />
+            <path class="route-hill" d="M292 78 L 318 40 L 334 58 L 356 26 L 392 78" />
+            <path class="route-line" d="M58 116 C 120 92, 160 132, 222 104 S 318 92, 368 96" />
+            <circle class="route-dot" cx="50" cy="118" r="9" />
+            <circle class="route-dot" cx="374" cy="96" r="9" />
+            <text class="route-label" x="20" y="100">KAMAKURA</text>
+            <text class="route-label" x="330" y="128">HAKONE</text>
+            <text class="route-note" x="392" y="62">lunch!</text>
+          </svg>
+          <ol class="plan">
+            {plan.map((p) => (
+              <li><span class="plan-t">{p.t ? p.t : <svg class="plan-arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg>}</span><span class="plan-d">{p.d}</span></li>
+            ))}
+          </ol>
+          <p class="scrawl scrawl-plan">about 6 hours</p>
+          <p class="small">JOSE &amp; TSUGUMI from our Kamakura shop lead the ride.</p>
+        </div>
+
+        <div class="photos">
+          <figure class="polaroid pol-1">
+            <span class="tape tape-top" aria-hidden="true"></span>
+            <img src="/assets/after-run/hero.webp" alt="Our choppers lined up by the sea, with Enoshima and Mt. Fuji behind" loading="lazy" width="2000" height="1333" />
+            <figcaption>our choppers</figcaption>
+          </figure>
+          <figure class="polaroid pol-2">
+            <span class="tape tape-top" aria-hidden="true"></span>
+            <img src="/assets/after-run/ride.webp" alt="Riding together on our choppers" loading="lazy" width="1600" height="1067" />
+            <figcaption>the pack</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3. 料金（値札）と乗れる人 ===== -->
+    <section class="sec">
+      <div class="grid-who">
+        <div class="tag-wrap">
+          <div class="tag">
+            <span class="tag-hole" aria-hidden="true"></span>
+            <p class="tag-k">ALL IN</p>
+            <p class="tag-price">¥32,000</p>
+            <p class="tag-per">per rider</p>
+            <ul class="tag-list">
+              <li>chopper for the day</li>
+              <li>fuel</li>
+              <li>lunch</li>
+              <li>expressway tolls</li>
+              <li>insurance</li>
+            </ul>
+            <p class="tag-gear">+ we lend helmets, gloves and gear</p>
+          </div>
+        </div>
+
+        <div class="paper card card-who">
+          <span class="tape tape-tr" aria-hidden="true"></span>
+          <h2 class="h">Who can ride</h2>
+          <ul class="stars">
+            {who.map((w) => <li>{w}</li>)}
+          </ul>
+          <div class="ink-card">
+            <IdpChecker lang={lang} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. 申し込みの流れ ===== -->
+    <section class="sec" id="how">
+      <div class="paper card card-how">
+        <span class="tape tape-tl" aria-hidden="true"></span>
+        <span class="tape tape-tr" aria-hidden="true"></span>
+        <h2 class="h">How to join</h2>
+        <p class="scrawl scrawl-how">first come, first served</p>
+        <ol class="steps">
+          {steps.map((s) => (
+            <li class="step">
+              <svg class="step-n" viewBox="0 0 64 64" aria-hidden="true">
+                <path d="M34 6 C 52 7, 60 22, 57 36 C 54 51, 40 59, 26 56 C 11 53, 4 40, 7 26 C 10 13, 22 5, 39 9" />
+                <text x="32" y="44">{s.n}</text>
+              </svg>
+              <p class="step-t">{s.t}</p>
+              <p class="step-d">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="how-bottom">
+          <p class="note">
+            <b>Deadlines</b><br />
+            Round 1: Nov 30<br />
+            Round 2: Dec 5
+          </p>
+          <div class="cta cta-how" data-ar-open>
+            {!closed && (
+              <>
+                <a class="apply" id="apply-how" {...link}>APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></a>
+                <p class="apply-note">2-minute form. We email you a payment link.</p>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. 知っておくこと ===== -->
+    <section class="sec">
+      <div class="paper card card-know">
+        <span class="tape tape-tr" aria-hidden="true"></span>
+        <h2 class="h">Good to know</h2>
+        <dl class="know">
+          {know.map((row) => (
+            <div class="know-row">
+              <dt>{row.k}</dt>
+              <dd>
+                {row.v}
+                {'link' in row && row.link && <a class="inline-link" href={row.link.href}>{row.link.label}</a>}
+              </dd>
             </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+          ))}
+        </dl>
+      </div>
+    </section>
 
-  <!-- Ride with JOSE -->
-  <section class="ar-sec">
-    <div class="ar-wrap ar-jose">
-      <div class="ar-jose-img">
-        <img src="/assets/after-run/ride.webp" alt={en ? 'Riding together on our choppers' : 'チョッパーで一緒に走る'} loading="lazy" width="1600" height="1067" />
+    <!-- ===== 6. 最後の申し込み ===== -->
+    <section class="sec sec-final">
+      <div class="paper flyer flyer-final">
+        <span class="tape tape-tl" aria-hidden="true"></span>
+        <span class="tape tape-tr" aria-hidden="true"></span>
+        <p class="stamp stamp-final" aria-hidden="true">FIRST COME<br />FIRST SERVED</p>
+        <p class="hotrod">★ HOT ROD SHOW AFTER RUN ★</p>
+        <p class="title title-final">Beetle Run</p>
+        <p class="final-date"><span class="nw">TUE, DEC 8 · 10:00 AM</span><span class="sep"> · </span><span class="nw">KAMAKURA</span></p>
+        <div class="cta" data-ar-open>
+          {!closed && (
+            <>
+              <a class="apply" id="apply-final" {...link}>APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></a>
+              <p class="apply-note">2-minute form. We email you a payment link.</p>
+            </>
+          )}
+        </div>
+        <p class="closed-msg" data-ar-closed hidden>This ride has finished. Thank you for riding with us.</p>
+        <p class="ask">Questions? Message us on Instagram <a href="https://ig.me/m/beetlerider_japan" target="_blank" rel="noopener">@beetlerider_japan</a></p>
       </div>
-      <div>
-        <p class="ar-label">{T.joseLabel}</p>
-        <h2 class="ar-h2">{T.joseTitle}</h2>
-        {T.joseText.map((p) => <p class="ar-p">{p}</p>)}
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Who can join -->
-  <section class="ar-sec">
-    <div class="ar-wrap ar-narrow">
-      <p class="ar-label">{T.whoLabel}</p>
-      <ul class="ar-list">
-        {T.who.map((w) => <li>{w}</li>)}
-      </ul>
-      <div class="ar-idp">
-        <IdpChecker lang={lang} />
-      </div>
-    </div>
-  </section>
-
-  <!-- How to join -->
-  <section class="ar-sec" id="how">
-    <div class="ar-wrap">
-      <p class="ar-label">{T.howLabel}</p>
-      <h2 class="ar-h2">{T.howTitle}</h2>
-      <div class="ar-steps">
-        {T.steps.map((s) => (
-          <div class="ar-step">
-            <p class="ar-step-n">{s.n}</p>
-            <p class="ar-step-t">{s.t}</p>
-            <p class="ar-step-d">{s.d}</p>
-          </div>
-        ))}
-      </div>
-      <div class="ar-apply-row" data-ar-open>
-        {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
-        <p class="ar-closes">{T.closes}: {closesValue ? closesValue : <span class="ar-tbc">{TBC}</span>}</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Good to know -->
-  <section class="ar-sec">
-    <div class="ar-wrap ar-narrow">
-      <p class="ar-label">{T.knowLabel}</p>
-      <dl class="ar-know">
-        {T.know.map((row) => (
-          <div class="ar-know-row">
-            <dt>{row.k}</dt>
-            <dd>
-              {row.v ? row.v : <span class="ar-tbc">{TBC}</span>}
-              {'link' in row && row.link && <a class="ar-inline-link" href={row.link.href}>{row.link.label}</a>}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="ar-final">
-    <div class="ar-stripes" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="ar-wrap ar-final-inner">
-      <p class="ar-final-date">{en ? 'TUE, DEC 8 · 10:00 AM · KAMAKURA' : '12月8日（火）10:00・鎌倉'}</p>
-      <p class="ar-final-hotrod">★ {NAME.sub} ★</p>
-      <p class="ar-final-name">{NAME.full}</p>
-      <h2 class="ar-final-title">{T.finalTitle}</h2>
-      <div data-ar-open>
-        {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
-      </div>
-      <p class="ar-ask">{T.ask} <a href="https://ig.me/m/beetlerider_japan" target="_blank" rel="noopener">@beetlerider_japan</a></p>
-    </div>
-  </section>
+    {!closed && (
+      <a class="float-apply" id="float-apply" data-ar-open {...link} aria-label="Apply now for BEETLE RUN on Tuesday, December 8">
+        <span class="float-k">DEC 8</span>
+        <span class="float-v">APPLY NOW <svg class="arr" viewBox="0 0 40 24" aria-hidden="true"><path d="M3 13 C 12 11, 22 12, 34 12" /><path d="M25 4 L 35 12 L 26 20" /></svg></span>
+      </a>
+    )}
+  </div>
 
   <script is:inline define:vars={{ endsAt: EVENT.endsAt }}>
     // 12/8 18:00（日本時間）を過ぎたら、申し込みボタンを隠して「終了」を出す（ビルドし直さなくても切り替わる）
@@ -316,107 +286,233 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
       document.querySelectorAll('[data-ar-open]').forEach(function (el) { el.setAttribute('hidden', ''); });
       document.querySelectorAll('[data-ar-closed]').forEach(function (el) { el.removeAttribute('hidden'); });
     }
+    // 下に送ったときに出る申し込みボタン（最初と途中と最後のボタンが見えている間は隠す）
+    (function () {
+      var fab = document.getElementById('float-apply');
+      var top = document.getElementById('apply-top');
+      if (!fab || !top || !('IntersectionObserver' in window)) return;
+      var seen = { top: true, how: false, fin: false };
+      var passed = false;
+      function sync() { fab.classList.toggle('is-on', passed && !seen.top && !seen.how && !seen.fin); }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var k = e.target.id === 'apply-top' ? 'top' : e.target.id === 'apply-how' ? 'how' : 'fin';
+          seen[k] = e.isIntersecting;
+          if (k === 'top') passed = !e.isIntersecting && e.boundingClientRect.top < 0;
+        });
+        sync();
+      });
+      ['apply-top', 'apply-how', 'apply-final'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    })();
   </script>
 
   <style>
-    .ar-hero { position: relative; min-height: 94svh; display: flex; align-items: flex-end; overflow: hidden; background: #111; padding-top: 66px; }
-    .ar-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: grayscale(1) contrast(1.08); }
-    .ar-hero-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26, 6, 6, 0.35) 0%, rgba(26, 6, 6, 0.45) 45%, rgba(45, 10, 10, 0.97) 100%); }
-    .ar-hero-inner { position: relative; z-index: 2; width: 100%; max-width: 1120px; margin: 0 auto; padding: 32px 24px 56px; display: grid; grid-template-columns: 1fr; gap: 48px; align-items: end; }
-    .ar-hero-text { max-width: 760px; }   /* ポスターは外した（TAKE 11/24「サイトからはポスター消して」） */
-    .ar-presents { font-family: 'Yellowtail', cursive; font-size: clamp(30px, 3.6vw, 44px); color: #F1E6CF; line-height: 1; margin-bottom: 10px; }
-    .ar-presents small { font-size: 0.75em; opacity: 0.85; margin-left: 6px; }
-    .ar-hotrod { font-family: var(--font-heading); font-size: clamp(19px, 2.6vw, 36px); line-height: 1.1; color: #F1E6CF; letter-spacing: 0.02em; margin-bottom: 6px; }
-    @media (min-width: 861px) { .ar-hotrod, .ar-title { white-space: nowrap; } }
-    @media (max-width: 480px) { .ar-hotrod { font-size: 4.3vw; white-space: nowrap; letter-spacing: 0; } }   /* スマホで「RUN ★」だけ次の行に落ちないように */
-        .ar-title { margin: 0 0 14px; font-family: 'Rye', serif; font-weight: 400; font-size: clamp(48px, 6.2vw, 84px); line-height: 1; color: var(--color-brand); text-shadow: 4px 4px 0 #F1E6CF, 8px 8px 0 #1A1110; }
-                    .ar-ribbon { display: inline-block; background: var(--color-brand); color: #F1E6CF; font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: clamp(13px, 1.6vw, 17px); letter-spacing: 0.16em; padding: 9px 18px; margin-bottom: 20px; box-shadow: 5px 5px 0 #1A1110; }
-    .ar-subline { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.28em; color: #F1E6CF; margin: -6px 0 18px; }
-    .ar-lead { font-family: var(--font-heading); font-size: clamp(22px, 3.2vw, 34px); color: #fff; letter-spacing: -0.01em; margin-bottom: 12px; }
-    .ar-intro { font-size: clamp(14px, 1.6vw, 17px); line-height: 1.85; color: rgba(255, 255, 255, 0.8); max-width: 660px; margin-bottom: 22px; }
-    .ar-notice { font-size: 13px; line-height: 1.8; color: #F1E6CF; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(241, 230, 207, 0.25); border-radius: 12px; padding: 10px 14px; max-width: 660px; margin-bottom: 22px; }
-    .ar-notice a { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; margin-left: 6px; white-space: nowrap; }
-    .ar-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-    .ar-btn { display: inline-flex; align-items: center; justify-content: center; padding: 15px 28px; border-radius: 999px; background: var(--color-brand); color: #fff; font-weight: 800; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; transition: transform 0.2s ease, background 0.2s ease; }
-    .ar-btn:hover { transform: translateY(-2px); background: #a80b1e; }
-    .ar-btn-ghost { background: transparent; border: 1px solid rgba(255, 255, 255, 0.45); }
-    .ar-btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
-    .ar-closed { font-size: 15px; font-weight: 700; color: #F1E6CF; }
-    .ar-tbc { display: inline-block; padding: 1px 8px; border: 1px dashed #E9A93A; border-radius: 6px; color: #E9A93A; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; vertical-align: middle; }
+    .brp {
+      --ink: #1A1110;
+      --red: #C30E23;
+      --paper: #F3E8D2;
+      --kraft: #D6B888;
+      --tape: rgba(240, 229, 198, 0.8);
+      --hand: 'Permanent Marker', 'Marker Felt', cursive;
+      --type: 'Special Elite', 'Courier New', monospace;
+      --script: 'Mr Dafoe', 'Brush Script MT', cursive;
+      background-color: var(--color-deep-red);
+      background-image: url(/assets/after-run/wall-grain.png);
+      background-size: 256px;
+      color: var(--ink);
+      overflow-x: hidden;
+      overflow-x: clip;
+      padding: 104px 0 40px;
+    }
+    .sec { padding: 26px 24px; }
+    .sec-hero { padding-top: 8px; }
 
-    .ar-sec { background: var(--color-deep-red); padding: 72px 24px; }
-    .ar-sec-tight { padding: 28px 24px 8px; }
-    .ar-wrap { max-width: 1000px; margin: 0 auto; }
-    .ar-narrow { max-width: 820px; }
-    .ar-label { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.3em; color: #F1E6CF; opacity: 0.85; margin-bottom: 10px; }
-    .ar-label::before { content: '★ '; color: var(--color-brand); }
-    .ar-h2 { font-family: var(--font-heading); font-size: clamp(24px, 3.4vw, 40px); color: #fff; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 28px; }
-    .ar-p { font-size: 15px; line-height: 1.9; color: rgba(255, 255, 255, 0.72); margin-bottom: 14px; }
+    /* 紙・テープ */
+    .paper { position: relative; background-color: var(--paper); background-image: url(/assets/after-run/paper-grain.png); background-size: 256px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 18px 30px -14px rgba(0, 0, 0, 0.7), 0 4px 10px rgba(0, 0, 0, 0.28); }
+    .tape { position: absolute; z-index: 3; width: 128px; height: 32px; background: var(--tape); background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.14)); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); clip-path: polygon(2% 0, 98% 5%, 100% 24%, 97% 46%, 100% 70%, 98% 100%, 3% 95%, 0 76%, 3% 52%, 0 28%); }
+    .tape-tl { top: -13px; left: 22px; transform: rotate(-7deg); }
+    .tape-tr { top: -13px; right: 22px; transform: rotate(6deg); }
+    .tape-top { top: -15px; left: 50%; margin-left: -64px; transform: rotate(-3deg); }
 
-    .ar-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-    .ar-fact { background: #F1E6CF; color: #1A1110; border-radius: 6px; padding: 18px 18px 16px; border: 3px solid #1A1110; box-shadow: 5px 5px 0 var(--color-brand); }
-    .ar-fact-k { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.24em; color: var(--color-brand); margin-bottom: 8px; }
-    .ar-fact-v { font-weight: 800; font-size: 15px; line-height: 1.45; }
-    .ar-fact .ar-tbc { color: #9a5a00; border-color: #9a5a00; }
+    /* 手書きの書き込み */
+    .scrawl { font-family: var(--hand); color: var(--red); line-height: 1.1; }
 
-    .ar-day { list-style: none; margin: 0; padding: 0; border-left: 2px solid rgba(241, 230, 207, 0.22); }
-    .ar-stop { display: grid; grid-template-columns: 110px 1fr; gap: 18px; padding: 0 0 26px 22px; position: relative; }
-    .ar-stop::before { content: ''; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-brand); box-shadow: 0 0 0 4px var(--color-deep-red); }
-    .ar-stop-time { font-family: var(--font-heading); font-size: 15px; color: #F1E6CF; padding-top: 2px; }
-    .ar-stop-place { font-family: var(--font-heading); font-size: 18px; color: #fff; letter-spacing: 0.02em; margin-bottom: 4px; }
-    .ar-stop-text { font-size: 14px; line-height: 1.85; color: rgba(255, 255, 255, 0.68); }
-    .ar-stop-note { font-size: 12px; color: rgba(255, 255, 255, 0.5); margin-top: 6px; }
+    /* ===== 1. チラシ ===== */
+    .flyer { max-width: 980px; margin: 0 auto; padding: 50px 48px 46px; text-align: center; transform: rotate(-0.6deg); }
+    .presents { font-family: var(--type); font-size: 14px; letter-spacing: 0.2em; margin-bottom: 14px; }
+    .presents i { font-family: var(--script); font-style: normal; font-size: 28px; letter-spacing: 0; color: var(--red); margin-left: 4px; vertical-align: -3px; }
+    .lockup { display: inline-flex; flex-direction: column; align-items: center; }
+    .hotrod { font-family: var(--hand); font-size: clamp(14px, 2.45vw, 35px); letter-spacing: 0.07em; line-height: 1; white-space: nowrap; }   /* 名前の幅の8割5分ほどにそろえる（TAKE 11/24「タイトルもバランスよく」） */
+    .title { font-family: var(--script); font-weight: 400; font-size: clamp(66px, 12vw, 172px); line-height: 0.86; color: var(--red); text-shadow: 3px 4px 0 var(--ink); transform: rotate(-4deg); margin: 10px 0 0; padding: 0 0.12em; white-space: nowrap; animation: br-in 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.2) both; }
+    .swash { display: block; width: 88%; height: auto; margin: -2px auto 0; transform: rotate(-4deg); fill: var(--ink); animation: br-draw 0.6s 0.45s ease-out both; }
 
-    .ar-jose { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; align-items: center; }
-    .ar-jose-img { border-radius: 8px; overflow: hidden; aspect-ratio: 4 / 3; background: #111; border: 4px solid #F1E6CF; }
-    .ar-jose-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); }
+    .hero-row { display: flex; justify-content: center; align-items: center; gap: 56px; margin-top: 30px; }
+    .hero-row .cta { flex: none; }
+    .when { display: flex; justify-content: center; align-items: center; gap: 22px; }
+    .cal { flex: none; width: 122px; margin: 0; background: #FBF6EA; border: 3px solid var(--ink); border-radius: 4px; box-shadow: 4px 5px 0 var(--ink); transform: rotate(-3deg); text-align: center; overflow: hidden; }
+    .cal-m { display: block; background: var(--red); color: #FBF6EA; font-family: var(--hand); font-size: 23px; letter-spacing: 0.14em; padding: 5px 0 2px; border-bottom: 3px solid var(--ink); }
+    .cal-d { display: block; font-family: var(--hand); font-size: 68px; line-height: 1; padding-top: 8px; }
+    .cal-w { display: block; font-family: var(--type); font-size: 13px; letter-spacing: 0.22em; padding: 2px 0 10px; }
+    .when-lines { margin: 0; text-align: left; font-family: var(--type); font-size: 17px; line-height: 1.65; }
+    .when-lines b { font-family: var(--hand); font-weight: 400; font-size: 23px; letter-spacing: 0.03em; }
 
-    .ar-list { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 10px; }
-    .ar-list li { position: relative; padding-left: 24px; font-size: 15px; line-height: 1.8; color: rgba(255, 255, 255, 0.78); }
-    .ar-list li::before { content: '★'; position: absolute; left: 0; top: 0; color: var(--color-brand); font-size: 13px; }
+    .lead { font-family: var(--hand); font-size: clamp(24px, 3.4vw, 34px); line-height: 1.15; margin: 18px 0 8px; }
+    .lead-sub { font-family: var(--type); font-size: clamp(15px, 1.7vw, 17px); line-height: 1.7; max-width: 600px; margin: 0 auto; }
 
-    .ar-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 28px; }
-    .ar-step { border: 1px solid rgba(241, 230, 207, 0.18); background: rgba(255, 255, 255, 0.03); border-radius: 8px; padding: 22px; }
-    .ar-step-n { font-family: var(--font-heading); color: var(--color-brand); font-size: 22px; letter-spacing: 0.06em; margin-bottom: 6px; }
-    .ar-step-t { font-family: var(--font-heading); color: #fff; font-size: 19px; margin-bottom: 8px; }
-    .ar-step-d { font-size: 14px; line-height: 1.8; color: rgba(255, 255, 255, 0.68); }
-    .ar-apply-row { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
-    .ar-closes { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+    .cta { position: relative; display: flex; flex-direction: column; align-items: center; }
+    .apply { display: inline-flex; align-items: center; gap: 14px; white-space: nowrap; padding: 16px 38px 13px; background: var(--red); color: #FBF6EA; font-family: var(--hand); font-size: clamp(23px, 3vw, 29px); letter-spacing: 0.06em; line-height: 1.1; border: 3px solid var(--ink); border-radius: 16px 22px 14px 24px / 22px 14px 24px 16px; box-shadow: 5px 6px 0 var(--ink); transform: rotate(-1.5deg); transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; }
+    .arr { width: 1.2em; height: 0.72em; flex: none; fill: none; stroke: currentColor; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s ease; }
+    .apply:hover { background: #A80B1E; transform: rotate(-1.5deg) translate(-2px, -2px); box-shadow: 7px 8px 0 var(--ink); }
+    .apply:hover .arr { transform: translateX(4px); }
+    .apply:active { transform: rotate(-1.5deg) translate(3px, 4px); box-shadow: 2px 2px 0 var(--ink); }
+    .apply-note { font-family: var(--type); font-size: 14px; line-height: 1.6; margin-top: 16px; }
+    .apply-wrap { position: relative; display: inline-block; }
+    .scrawl-cta { position: absolute; left: 56%; bottom: calc(100% + 8px); font-size: 20px; transform: rotate(-5deg); white-space: nowrap; }
+    .scrawl-arrow { position: absolute; left: -44px; top: 12px; width: 42px; height: 28px; fill: none; stroke: var(--red); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .closed-msg { font-family: var(--hand); font-size: 22px; color: var(--red); }
 
-    .ar-know { margin: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-    .ar-know-row { display: grid; grid-template-columns: 170px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-    .ar-know-row dt { font-weight: 800; font-size: 13px; letter-spacing: 0.04em; color: #F1E6CF; }
-    .ar-know-row dd { margin: 0; font-size: 14px; line-height: 1.8; color: rgba(255, 255, 255, 0.72); }
-    .ar-inline-link { margin-left: 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: #F1E6CF; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+    .stamp { position: absolute; margin: 0; color: var(--red); border: 3px solid currentColor; outline: 2px solid currentColor; outline-offset: 3px; padding: 7px 12px 5px; font-family: var(--type); font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: 0.16em; text-align: center; opacity: 0.85; -webkit-mask-image: url(/assets/after-run/stamp-mask.png); mask-image: url(/assets/after-run/stamp-mask.png); -webkit-mask-size: 150px; mask-size: 150px; }
+    
+    /* ===== 2. 日程と写真 ===== */
+    .grid-plan { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
+    .card { padding: 40px 38px 34px; }
+    .card-plan { transform: rotate(0.6deg); }
+    .h { display: inline-block; font-family: var(--hand); font-weight: 400; font-size: clamp(28px, 3.6vw, 38px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.1; padding-bottom: 10px; margin-bottom: 18px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8 C 40 3, 80 11, 120 6 S 200 3, 237 8' stroke='%23C30E23' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% 12px; }
+    .route { display: block; width: 100%; max-width: 440px; height: auto; margin: 0 0 18px; overflow: visible; }
+    .route-line { fill: none; stroke: var(--ink); stroke-width: 3; stroke-dasharray: 2 9; stroke-linecap: round; }
+    .route-hill { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+    .route-sea { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; opacity: 0.7; }
+    .route-dot { fill: var(--red); stroke: var(--ink); stroke-width: 2.5; }
+    .route-label { font-family: var(--hand); font-size: 19px; fill: var(--ink); letter-spacing: 0.04em; }
+    .route-note { font-family: var(--hand); font-size: 19px; fill: var(--red); transform: rotate(8deg); transform-box: fill-box; }
+    .plan { list-style: none; margin: 0 0 14px; padding: 0; font-family: var(--type); font-size: 18px; line-height: 1.5; }
+    .plan li { display: grid; grid-template-columns: 70px 1fr; gap: 8px; padding: 9px 0; border-bottom: 1.5px dashed rgba(26, 17, 16, 0.35); }
+    .plan li:last-child { border-bottom: 0; }
+    .plan-t { font-family: var(--hand); color: var(--red); }
+    .plan-arr { width: 28px; height: 17px; margin-top: 4px; fill: none; stroke: var(--red); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .scrawl-plan { font-size: 24px; transform: rotate(-3deg); margin: 6px 0 12px 64px; }
+    .small { font-family: var(--type); font-size: 14px; line-height: 1.6; opacity: 0.85; }
 
-    .ar-final { background: #F1E6CF; color: #1A1110; padding: 0 24px 72px; text-align: center; }
-    .ar-stripes { display: grid; margin: 0 -24px 48px; }
-    .ar-stripes i { display: block; height: 10px; }
-    .ar-stripes i:nth-child(1) { background: var(--color-brand); }
-    .ar-stripes i:nth-child(2) { background: #F1E6CF; }
-    .ar-stripes i:nth-child(3) { background: #1A1110; }
-    .ar-final-inner { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .ar-final-date { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.3em; color: #1A1110; }
-    .ar-final-hotrod { font-family: var(--font-heading); font-size: clamp(18px, 2.6vw, 28px); color: var(--color-brand); letter-spacing: 0.02em; }
-    .ar-final-name { font-family: 'Rye', serif; font-size: clamp(48px, 8vw, 92px); line-height: 1; color: var(--color-brand); text-shadow: 4px 4px 0 #1A1110; }
-            .ar-final-title { font-family: var(--font-heading); font-size: clamp(24px, 3.6vw, 38px); line-height: 1.1; letter-spacing: -0.01em; margin: 6px 0 8px; }
-    .ar-ask { font-size: 13px; color: rgba(26, 17, 16, 0.75); margin-top: 6px; }
-    .ar-ask a { font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+    .photos { position: relative; min-height: 610px; }
+    .polaroid { position: absolute; width: 80%; margin: 0; background: #FBF8F1; padding: 12px 12px 46px; box-shadow: 0 16px 26px -12px rgba(0, 0, 0, 0.7), 0 3px 8px rgba(0, 0, 0, 0.3); }
+    .polaroid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; filter: grayscale(1) contrast(1.08) sepia(0.12); }
+    .polaroid figcaption { position: absolute; left: 0; right: 0; bottom: 11px; text-align: center; font-family: var(--hand); font-size: 19px; color: var(--ink); }
+    .pol-1 { top: 0; left: 0; transform: rotate(-3.5deg); }
+    .pol-1 figcaption { text-align: left; padding-left: 22px; }   /* 2枚目の写真に隠れないよう左に寄せる */
+    .pol-2 { bottom: 0; right: 0; width: 76%; transform: rotate(3.5deg); }
 
-    @media (max-width: 860px) {
-      .ar-hero-inner { grid-template-columns: 1fr; gap: 28px; }
-      .ar-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .ar-fact:last-child { grid-column: 1 / -1; }
-      .ar-jose { grid-template-columns: 1fr; gap: 24px; }
-      .ar-steps { grid-template-columns: 1fr; }
+    /* ===== 3. 値札と乗れる人 ===== */
+    .grid-who { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 44px; align-items: start; }
+    .tag-wrap { filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.5)); transform: rotate(-3deg); margin-top: 30px; }
+    .tag { position: relative; background-color: var(--kraft); background-image: url(/assets/after-run/paper-grain.png); background-size: 256px; clip-path: polygon(22% 0, 78% 0, 100% 13%, 100% 100%, 0 100%, 0 13%); padding: 62px 26px 30px; text-align: center; }
+    .tag-hole { position: absolute; top: 22px; left: 50%; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--color-deep-red); box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.6), 0 0 0 4px rgba(255, 255, 255, 0.35); }
+    .tag-k { font-family: var(--type); font-size: 14px; letter-spacing: 0.3em; }
+    .tag-price { font-family: var(--hand); font-size: 54px; line-height: 1.05; color: var(--red); margin: 4px 0 0; }
+    .tag-per { font-family: var(--type); font-size: 14px; margin-bottom: 18px; }
+    .tag-list { list-style: none; padding: 14px 0 0; margin: 0 0 14px; border-top: 1.5px dashed rgba(26, 17, 16, 0.45); font-family: var(--type); font-size: 15px; line-height: 1.75; }
+    .tag-gear { font-family: var(--hand); font-size: 17px; line-height: 1.3; transform: rotate(-2deg); }
+
+    .card-who { transform: rotate(-0.5deg); }
+    .stars { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 12px; font-family: var(--type); font-size: 16px; line-height: 1.65; }
+    .stars li { position: relative; padding-left: 28px; }
+    .stars li::before { content: ''; position: absolute; left: 0; top: 4px; width: 18px; height: 18px; background: var(--red); clip-path: polygon(50% 0, 61% 36%, 98% 37%, 68% 59%, 79% 95%, 50% 73%, 21% 96%, 32% 59%, 2% 38%, 39% 35%); }
+    .ink-card { background: var(--ink); border-radius: 6px; transform: rotate(0.6deg); box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.7); }
+    .ink-card :global(h3) { font-family: var(--hand) !important; letter-spacing: 0.03em !important; }
+
+    /* ===== 4. 申し込みの流れ ===== */
+    .card-how { max-width: 1040px; margin: 0 auto; transform: rotate(0.4deg); padding-bottom: 42px; }
+    .scrawl-how { font-size: 24px; transform: rotate(-4deg); display: inline-block; margin: 0 0 8px 18px; }
+    .steps { list-style: none; padding: 0; margin: 10px 0 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
+    .step-n { width: 64px; height: 64px; margin-bottom: 8px; overflow: visible; }
+    .step-n path { fill: none; stroke: var(--red); stroke-width: 3.2; stroke-linecap: round; }
+    .step-n text { font-family: var(--hand); font-size: 30px; fill: var(--ink); text-anchor: middle; }
+    .step-t { font-family: var(--hand); font-size: 23px; line-height: 1.2; margin-bottom: 6px; }
+    .step-d { font-family: var(--type); font-size: 16px; line-height: 1.6; }
+    .how-bottom { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 30px; }
+    .note { margin: 0; background: #FBF6EA; padding: 16px 22px 14px; font-family: var(--type); font-size: 16px; line-height: 1.6; transform: rotate(-2.5deg); box-shadow: 0 8px 14px -8px rgba(0, 0, 0, 0.55); border-left: 4px solid var(--red); }
+    .note b { font-family: var(--hand); font-weight: 400; font-size: 19px; color: var(--red); }
+    .cta-how { align-items: center; }
+
+    /* ===== 5. 知っておくこと ===== */
+    .card-know { max-width: 860px; margin: 0 auto; transform: rotate(-0.5deg); }
+    .know { margin: 0; }
+    .know-row { display: grid; grid-template-columns: 150px 1fr; gap: 18px; padding: 13px 0; border-bottom: 1.5px dashed rgba(26, 17, 16, 0.35); }
+    .know-row:last-child { border-bottom: 0; }
+    .know-row dt { font-family: var(--hand); font-size: 18px; color: var(--red); line-height: 1.4; }
+    .know-row dd { margin: 0; font-family: var(--type); font-size: 16px; line-height: 1.65; }
+    .inline-link { margin-left: 10px; font-family: var(--hand); font-size: 16px; color: var(--red); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+
+    /* ===== 6. 最後 ===== */
+    .sec-final { padding-bottom: 70px; }
+    .flyer-final { max-width: 860px; transform: rotate(0.6deg); padding-top: 64px; }
+    .title-final { animation: none; font-size: clamp(84px, 13vw, 150px); margin-bottom: 12px; }
+    .final-date { font-family: var(--hand); font-size: clamp(19px, 2.6vw, 26px); letter-spacing: 0.04em; margin: 8px 0 26px; }
+    .final-date .nw { white-space: nowrap; }
+    .stamp-final { right: 40px; bottom: 38px; transform: rotate(-10deg); }
+    .ask { font-family: var(--type); font-size: 14px; margin-top: 26px; }
+    .ask a { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* 下に送ったときの申し込みボタン */
+    .float-apply { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 90; display: flex; flex-direction: column; align-items: center; padding: 9px 20px 8px; background: var(--red); color: #FBF6EA; border: 3px solid var(--ink); border-radius: 14px 18px 12px 20px / 18px 12px 20px 14px; box-shadow: 4px 5px 0 var(--ink); font-family: var(--hand); line-height: 1.05; transform: rotate(-4deg) translateY(30px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; }
+    .float-apply.is-on { opacity: 1; pointer-events: auto; transform: rotate(-4deg) translateY(0); }
+    .float-k { font-family: var(--type); font-size: 12px; letter-spacing: 0.18em; }
+    .float-v { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; letter-spacing: 0.04em; }
+
+    @keyframes br-in { from { opacity: 0; transform: rotate(-4deg) scale(1.08); } to { opacity: 1; transform: rotate(-4deg) scale(1); } }
+    @keyframes br-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+    @media (prefers-reduced-motion: reduce) {
+      .title, .swash { animation: none; }
+      .float-apply { transition: none; }
+    }
+
+    @media (max-width: 900px) {
+      .grid-plan, .grid-who { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+      .photos { min-height: 0; display: grid; gap: 0; padding: 4px 6px 0; }
+      .polaroid { position: relative; width: 86%; }
+      .pol-1 { top: auto; left: auto; }
+      .pol-2 { bottom: auto; right: auto; margin: -10px 0 0 auto; }
+      .tag-wrap { max-width: 320px; margin: 0 auto; }
+      .steps { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+      .step { display: grid; grid-template-columns: 64px 1fr; column-gap: 14px; align-items: start; }
+      .step-n { grid-row: span 2; margin: 0; }
+      .step-t { align-self: end; margin-top: 8px; }
+      .how-bottom { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+      .note { justify-self: start; }
+    }
+    @media (max-width: 760px) {
+      .hero-row { flex-direction: column; gap: 30px; margin-top: 26px; }
+      .apply-wrap { display: flex; flex-direction: column-reverse; align-items: center; }
+      .scrawl-cta { position: static; display: block; padding-left: 0; margin-bottom: 12px; font-size: 19px; transform: rotate(-4deg); }
+      .scrawl-arrow { display: none; }
+      .stamp-final { position: static; display: inline-block; margin-bottom: 26px; transform: rotate(-6deg); }
     }
     @media (max-width: 560px) {
-      .ar-hero { min-height: 100svh; }
-      .ar-hero-inner { padding-bottom: 40px; }
-      .ar-stop { grid-template-columns: 1fr; gap: 4px; }
-      .ar-know-row { grid-template-columns: 1fr; gap: 6px; }
-      .ar-sec { padding: 56px 20px; }
-      .ar-btn { width: 100%; }
+      .brp { padding-top: 92px; }
+      .sec { padding: 20px 14px; }
+      .flyer { padding: 44px 18px 36px; transform: rotate(-0.4deg); }
+      .presents { font-size: 11px; letter-spacing: 0.14em; }
+      .presents i { font-size: 22px; }
+      .hotrod { font-size: 3.85vw; letter-spacing: 0.05em; }
+      .title { font-size: 18.6vw; }
+      .when { gap: 16px; }
+      .cal { width: 100px; }
+      .cal-m { font-size: 19px; }
+      .cal-d { font-size: 56px; }
+      .cal-w { font-size: 11px; letter-spacing: 0.16em; }
+      .when-lines { font-size: 15px; }
+      .when-lines b { font-size: 19px; }
+      .lead { font-size: 23px; }
+      .apply { padding: 15px 30px 12px; font-size: 25px; }
+      .card { padding: 34px 20px 28px; }
+      .plan { font-size: 16px; }
+      .plan li { grid-template-columns: 58px 1fr; }
+      .scrawl-plan { margin-left: 52px; }
+      .know-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+      .title-final { font-size: 18.6vw; }
+      .final-date .sep { display: none; }
+      .final-date .nw { display: block; }
+      .float-apply { right: 12px; padding: 8px 16px 7px; }
+      .float-v { font-size: 18px; }
     }
   </style>
 </BaseLayout>
