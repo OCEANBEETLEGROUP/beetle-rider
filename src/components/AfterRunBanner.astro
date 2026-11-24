@@ -1,6 +1,6 @@
 ---
 /**
- * AfterRunBanner：アフターラン（2026-12-08）の特設ページへの入口。ホームとチョッパーのページのヒーロー直下に置く。
+ * AfterRunBanner：12/8 のラン（JAPAN RUN・名前は仮）の特設ページへの入口。ホームとチョッパーのページのヒーロー直下に置く。
  * 12/8 18:00（日本時間）を過ぎたら自動で消える（ビルド時に出さない＋表示時にも消す）。終わったら外してよい。
  */
 import type { Lang } from '../i18n/config';
@@ -17,18 +17,19 @@ const show = Date.now() < Date.parse(ENDS_AT);
 
 {show && (
   <section class="arb" data-arb-until={ENDS_AT}>
-    <a class="arb-card" href={localePath('/after-run', lang)}>
-      <div class="arb-stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <link href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&family=Alfa+Slab+One&family=Oswald:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <a class="arb-card" href={localePath('/japan-run', lang)}>
+      <div class="arb-stripes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="arb-body">
         <div>
-          <p class="arb-kicker">{en ? 'TUE, DEC 8 · ONE DAY ONLY' : '12月8日（火）・この日だけ'}</p>
-          <p class="arb-title">AFTER RUN</p>
+          <p class="arb-kicker">★ {en ? 'TUE, DEC 8 · ONE DAY CHOPPER RIDE' : '12月8日（火）・チョッパーで走る1日'} ★</p>
+          <p class="arb-title"><span class="arb-script">Japan</span><span class="arb-block">RUN</span></p>
           <p class="arb-text">
             {en
-              ? 'After the show, ride Japan with JOSE. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama.'
-              : 'ロッドショーのあと、JOSE と走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。'}
+              ? 'Ride Japan with JOSE before you fly home. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama.'
+              : 'JOSE と走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。'}
           </p>
-          <p class="arb-meta">{en ? '¥32,000 per rider · Lunch, dessert and tolls included · Only a few bikes' : '¥32,000（食事・高速代込み）・台数わずか'}</p>
+          <p class="arb-meta">{en ? 'Meet 10:00 am in Kamakura · ¥32,000 per rider · Only a few bikes' : '10:00 鎌倉店に集合・¥32,000（食事・高速代込み）・台数わずか'}</p>
         </div>
         <span class="arb-cta">{en ? 'SEE DETAILS' : 'くわしく見る'} <span aria-hidden="true">→</span></span>
       </div>
@@ -44,22 +45,23 @@ const show = Date.now() < Date.parse(ENDS_AT);
 
 <style>
   .arb { background: var(--color-deep-red); padding: 10px 8px 6px; }
-  .arb-card { display: block; max-width: 1200px; margin: 0 auto; background: #F3E7CF; color: #2D0A0A; border-radius: 24px; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+  .arb-card { display: block; max-width: 1200px; margin: 0 auto; background: #F1E6CF; color: #1A1110; border-radius: 10px; overflow: hidden; border: 3px solid #1A1110; transition: transform 0.25s ease, box-shadow 0.25s ease; }
   .arb-card:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35); }
   .arb-stripes { display: grid; }
   .arb-stripes i { display: block; height: 8px; }
   .arb-stripes i:nth-child(1) { background: var(--color-brand); }
-  .arb-stripes i:nth-child(2) { background: #E2672B; }
-  .arb-stripes i:nth-child(3) { background: #E9A93A; }
-  .arb-stripes i:nth-child(4) { background: #6B2E1A; }
-  .arb-body { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 28px 24px; }
-  .arb-kicker { font-size: 10.5px; font-weight: 800; letter-spacing: 0.26em; color: #B4441B; margin-bottom: 4px; }
-  .arb-title { font-family: var(--font-heading); font-size: clamp(30px, 4.4vw, 52px); line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 8px; }
-  .arb-text { font-size: 14px; line-height: 1.7; color: rgba(45, 10, 10, 0.82); max-width: 640px; }
-  .arb-meta { font-size: 12px; font-weight: 700; color: rgba(45, 10, 10, 0.6); margin-top: 4px; }
+  .arb-stripes i:nth-child(2) { background: #F1E6CF; }
+  .arb-stripes i:nth-child(3) { background: #1A1110; }
+  .arb-body { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 28px 22px; }
+  .arb-kicker { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.26em; color: #1A1110; margin-bottom: 2px; }
+  .arb-title { line-height: 0.95; display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+  .arb-script { font-family: 'Mr Dafoe', cursive; font-size: clamp(56px, 7vw, 84px); color: var(--color-brand); transform: rotate(-6deg); display: inline-block; text-shadow: 4px 4px 0 #1A1110; padding-right: 6px; }
+  .arb-block { font-family: 'Alfa Slab One', var(--font-heading), serif; font-size: clamp(30px, 3.6vw, 44px); letter-spacing: 0.12em; color: #1A1110; }
+  .arb-text { font-size: 14px; line-height: 1.7; color: rgba(26, 17, 16, 0.85); max-width: 640px; }
+  .arb-meta { font-size: 12px; font-weight: 700; color: rgba(26, 17, 16, 0.62); margin-top: 4px; }
   .arb-cta { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; border-radius: 999px; background: var(--color-brand); color: #fff; font-weight: 800; font-size: 12px; letter-spacing: 0.16em; }
   @media (max-width: 720px) {
-    .arb-body { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px 20px 20px; }
+    .arb-body { flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 20px 20px; }
     .arb-cta { width: 100%; justify-content: center; }
   }
 </style>

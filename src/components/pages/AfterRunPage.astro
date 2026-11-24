@@ -1,14 +1,14 @@
 ---
 /**
- * AfterRunPage：ロッドショー後のアフターラン（2026-12-08 火）の特設ページ
+ * AfterRunPage：ロッドショーの2日後のラン（2026-12-08 火）の特設ページ。名前は「JAPAN RUN」（仮・TAKE が名前を決めたら NAME を直す）
  *
  * 経緯: BR定例 第12回（2026-11-23）で「有料のプラン ¥32,000（食事と高速代込み）・
- * 箱根 → OBBC でデザート → 七里ヶ浜で夕日」と決定。11/24 TAKE「特設ページを作って、
- * サイトのトップやチョッパーページのトップにリンク。Googleフォームで申し込み → Square のリンク決済」。
+ * 箱根 → OBBC でデザート → 七里ヶ浜で夕日」と決定。11/24 TAKE「特設ページを作って、トップとチョッパーのページからリンク。
+ * Googleフォームで申し込み → Square のリンク決済」。同日 TAKE「何のアフターランか分からない」＝名前を変える・
+ * 「先着順ではあるものの多少は選びたい（インスタも見て）」・「10時集合、6時間くらい」・「決済リンクはこちらから送る」。
  *
  * - noindex（BaseLayout の noindex）＋ サイトマップから外す（astro.config.mjs の filter）
- * - 申し込みの流れ: フォーム → 店が免許と空きを確認 → 決済リンクをメールで送る → 払った順に確定
- *   （Square のリンクは定員で止まらないので、先にリンクを出さない）
+ * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 店が選ぶ → 決済リンクをメールで送る → 払ったら確定
  * - 未決（TBC）は EVENT の値が null / '' のとき「TBC / 未定」の印を出す。TAKE が決めたら値を入れる
  * - 12/8 18:00（日本時間）を過ぎたら、申し込みボタンを「終了」に切り替える（ビルド時と表示時の両方）
  */
@@ -19,15 +19,15 @@ import { getLangFromUrl, localePath } from '../../i18n/config';
 const lang = getLangFromUrl(Astro.url);
 const en = lang === 'en';
 
+// ===== 名前（筆記体の部分と、ブロック体の部分） =====
+const NAME = { script: 'Japan', block: 'RUN', full: 'JAPAN RUN' };
+
 // ===== 決まったら埋める（null / '' の間は TBC の印が出る） =====
 const EVENT = {
   endsAt: '2026-12-08T18:00:00+09:00',
-  formUrl: '',                       // Googleフォーム（変更提案の OK 後に作る）
+  formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdtUkXlgyKal-lftUGtGgZNZJSVEAZvHx0YTm78bpcoKoGF2A/viewform', // 江ノ島店の Gmail のフォーム（公開は TAKE の OK 後）
   seats: null as number | null,      // 最大人数
   closesEn: '', closesJa: '',        // 申し込みの締め切り
-  meetEn: '', meetJa: '',            // 集合の時間
-  backEn: '', backJa: '',            // 店に戻る（解散）時間
-  replyEn: '', replyJa: '',          // 申し込みへの返事の早さ（例: within 24 hours）
   fuelEn: '', fuelJa: '',            // ガソリン代の扱い
   helmetEn: '', helmetJa: '',        // ヘルメット・装備の扱い
   weatherEn: '', weatherJa: '',      // 雨・凍結のとき
@@ -37,32 +37,33 @@ const EVENT = {
 const closed = Date.now() > Date.parse(EVENT.endsAt);
 const TBC = en ? 'TBC' : '未定';
 const applyHref = EVENT.formUrl || '#how';
+const applyExternal = !!EVENT.formUrl;
 
 const T = en
   ? {
-      metaTitle: 'AFTER RUN · Tue, Dec 8｜Ride Japan after the show｜BEETLE RIDER Kamakura',
-      metaDesc: 'One day on vintage choppers with JOSE. Lunch in Hakone, dessert by the sea near Enoshima, sunset at Shichirigahama. Tuesday, December 8. ¥32,000 per rider. Only a few bikes.',
-      tag: 'TUESDAY, DECEMBER 8 · ONE DAY ONLY',
-      lead: 'After the show, ride Japan.',
-      intro: 'The show is over. Before you fly home, take one day on our vintage choppers. Ride with JOSE. Lunch by Lake Ashi in Hakone, dessert by the sea, then the sun goes down over the water at Shichirigahama.',
+      metaTitle: `${NAME.full} · Tue, Dec 8｜One-day chopper ride from Kamakura｜BEETLE RIDER`,
+      metaDesc: 'One day on vintage choppers with JOSE. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama. Tuesday, December 8. Meet 10:00 am in Kamakura. ¥32,000 per rider. Only a few bikes.',
+      tag: 'TUESDAY, DECEMBER 8 · ONE DAY CHOPPER RIDE',
+      lead: 'Ride Japan before you fly home.',
+      intro: 'Two days after the custom show in Yokohama. Take one day on our vintage choppers and ride with JOSE. Lunch by Lake Ashi in Hakone, dessert by the sea, then the sun goes down over the water at Shichirigahama.',
       apply: 'APPLY FOR A BIKE',
       how: 'HOW IT WORKS',
       closedMsg: 'This ride has finished. Thank you for riding with us.',
       facts: [
-        { k: 'DATE', v: 'Tue, Dec 8, 2026' },
-        { k: 'PRICE', v: '¥32,000 per rider' },
-        { k: 'INCLUDED', v: 'Your chopper for the day, lunch, dessert, expressway tolls' },
+        { k: 'WHEN', v: 'Tue, Dec 8 · Meet 10:00 am' as string | null },
+        { k: 'PRICE', v: '¥32,000 per rider' as string | null },
+        { k: 'INCLUDED', v: 'Your chopper for the day, lunch, dessert, expressway tolls' as string | null },
         { k: 'BIKES', v: null as string | null },
       ],
       bikesValue: (n: number) => `Only ${n} bikes`,
       dayLabel: 'THE DAY',
-      dayTitle: 'Kamakura to Hakone and back to the sea.',
+      dayTitle: 'About six hours. Mountains first, then the sea.',
       day: [
-        { time: EVENT.meetEn, needsTime: true, place: 'KAMAKURA', text: 'Meet at BEETLE RIDER Kamakura. Paperwork, license check and a short briefing on your bike.' },
+        { time: '10:00 AM', place: 'KAMAKURA', text: 'Meet at BEETLE RIDER Kamakura. Paperwork, license check and a short briefing on your bike.' },
         { time: '', place: 'HAKONE', text: 'West along the coast, then up into the mountains. We line the bikes up at Lake Ashi, take photos and have lunch.', note: EVENT.lunchEn, noteLabel: 'Lunch spot' },
         { time: '', place: 'ENOSHIMA', text: 'Back down to the sea. Dessert at OCEANBEETLE BREAKFAST CLUB, our cafe by the beach near Enoshima.' },
         { time: '4:30 PM', place: 'SHICHIRIGAHAMA', text: 'The sun goes down over the sea around 4:30 pm. On a clear day, Mt. Fuji and Enoshima sit right in front of you.' },
-        { time: EVENT.backEn, needsTime: true, place: 'KAMAKURA', text: 'Back to the shop.' },
+        { time: '', place: 'KAMAKURA', text: 'Back to the shop.' },
       ],
       joseLabel: 'RIDE WITH JOSE',
       joseTitle: 'The value of this day is the people you ride with.',
@@ -78,14 +79,13 @@ const T = en
         'We check your documents again on the morning of the ride.',
       ],
       howLabel: 'HOW TO JOIN',
-      howTitle: 'Three steps. Bikes go in the order payments arrive.',
+      howTitle: 'Apply first. We pick the riders and email a payment link.',
       steps: [
-        { n: '01', t: 'Apply', d: 'Send the form. It takes about two minutes. Tell us your license, your height and your riding experience.' },
-        { n: '02', t: 'We check', d: 'We look at your license and email you a payment link (card, via Square).', extra: 'reply' },
-        { n: '03', t: 'Pay and you are in', d: 'Your bike is confirmed when the payment arrives. If we are full, you go on the waitlist.' },
+        { n: '01', t: 'Apply', d: 'Send the form with your details, your license and your Instagram. It takes about five minutes. One form per rider.' },
+        { n: '02', t: 'We review', d: 'We read every application, roughly in the order they arrive, and email the riders we can take.' },
+        { n: '03', t: 'Pay and you are in', d: 'The email has a payment link (card, via Square). Your bike is confirmed when the payment is done.' },
       ],
       closes: 'Applications close',
-      replyLabel: 'We reply',
       knowLabel: 'GOOD TO KNOW',
       know: [
         { k: 'Included', v: 'Your chopper for the day, lunch in Hakone, dessert at OCEANBEETLE BREAKFAST CLUB, expressway tolls and third-party liability insurance.' },
@@ -96,37 +96,37 @@ const T = en
         { k: 'Rain or ice', v: EVENT.weatherEn },
         { k: 'Cancellation', v: EVENT.cancelEn },
         { k: 'Photos', v: 'Our crew shoots photos and video on the day. If you would rather not be in them, tell us in the form.' },
-        { k: 'Meeting point', v: 'BEETLE RIDER Kamakura, 1-15-2 Komachi, Kamakura.', link: { href: localePath('/access', lang), label: 'ACCESS →' } },
+        { k: 'Meeting point', v: 'BEETLE RIDER Kamakura, 1-15-2 Komachi, Kamakura. Meet at 10:00 am.', link: { href: localePath('/access', lang), label: 'ACCESS →' } },
       ],
       finalTitle: 'Only a few bikes. One day.',
       ask: 'Questions? Message us on Instagram',
     }
   : {
-      metaTitle: 'AFTER RUN・12月8日（火）｜BEETLE RIDER 鎌倉',
-      metaDesc: 'ロッドショーのあと、JOSE とビンテージのチョッパーで走る1日。箱根でお昼、江の島の近くでデザート、七里ヶ浜で夕日。12月8日（火）。¥32,000（食事・高速代込み）。台数わずか。',
-      tag: '12月8日（火）・この日だけ',
-      lead: 'ロッドショーのあと、日本を走る。',
-      intro: 'ショーが終わって、国に帰る前の1日。うちのビンテージのチョッパーで、JOSE と走る。箱根の芦ノ湖でお昼、海に戻ってデザート、最後は七里ヶ浜で海に沈む夕日。',
+      metaTitle: `${NAME.full}・12月8日（火）｜BEETLE RIDER 鎌倉`,
+      metaDesc: 'ロッドショーの2日後、JOSE とビンテージのチョッパーで走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。12月8日（火）10時に鎌倉店に集合。¥32,000（食事・高速代込み）。台数わずか。',
+      tag: '12月8日（火）・チョッパーで走る1日',
+      lead: '国に帰る前に、日本を走る。',
+      intro: '横浜のカスタムショーの2日後。うちのビンテージのチョッパーで、JOSE と走る1日。箱根の芦ノ湖でお昼、海に戻ってデザート、最後は七里ヶ浜で海に沈む夕日。',
       notice: '海外から日本に来ているお客さま向けのランです。案内は英語で行います。',
       toEn: 'ENGLISH PAGE →',
       apply: '申し込む',
       how: '申し込みの流れ',
       closedMsg: 'このランは終了しました。ありがとうございました。',
       facts: [
-        { k: '日にち', v: '2026年12月8日（火）' },
-        { k: '料金', v: '1人 ¥32,000' },
-        { k: '含まれるもの', v: '1日分のチョッパー・お昼・デザート・高速代' },
+        { k: '日時', v: '12月8日（火）10:00 集合' as string | null },
+        { k: '料金', v: '1人 ¥32,000' as string | null },
+        { k: '含まれるもの', v: '1日分のチョッパー・お昼・デザート・高速代' as string | null },
         { k: '台数', v: null as string | null },
       ],
       bikesValue: (n: number) => `${n}台だけ`,
       dayLabel: 'THE DAY',
-      dayTitle: '鎌倉から箱根へ、そして海に戻る。',
+      dayTitle: '6時間ほど。山へ行って、海に戻る。',
       day: [
-        { time: EVENT.meetJa, needsTime: true, place: '鎌倉', text: 'BEETLE RIDER 鎌倉店に集合。書類と免許の確認、バイクの説明。' },
+        { time: '10:00', place: '鎌倉', text: 'BEETLE RIDER 鎌倉店に集合。書類と免許の確認、バイクの説明。' },
         { time: '', place: '箱根', text: '海沿いを西へ、そこから山へ。芦ノ湖でバイクを並べて写真を撮り、お昼。', note: EVENT.lunchJa, noteLabel: 'お店' },
         { time: '', place: '江の島', text: '海へ下りて、江の島の近くの OCEANBEETLE BREAKFAST CLUB でデザート。' },
         { time: '16:30ごろ', place: '七里ヶ浜', text: '16時半ごろ、海に夕日が沈む。晴れていれば、正面に富士山と江の島。' },
-        { time: EVENT.backJa, needsTime: true, place: '鎌倉', text: '店に戻って解散。' },
+        { time: '', place: '鎌倉', text: '店に戻って解散。' },
       ],
       joseLabel: 'RIDE WITH JOSE',
       joseTitle: 'この日の価値は、誰と走るか。',
@@ -142,14 +142,13 @@ const T = en
         '当日の朝にも、書類をもう一度確認します。',
       ],
       howLabel: 'HOW TO JOIN',
-      howTitle: '3つの手順。払った順に台が決まります。',
+      howTitle: '申し込みのあと、店が選んで決済のリンクを送ります。',
       steps: [
-        { n: '01', t: '申し込む', d: 'フォームを送る（2分ほど）。免許・身長・乗った経験を書いてください。' },
-        { n: '02', t: '店が確かめる', d: '免許を確かめて、決済のリンク（カード・Square）をメールで送ります。', extra: 'reply' },
-        { n: '03', t: '払ったら確定', d: '払い終わった時点で台が決まります。いっぱいのときは、キャンセル待ちになります。' },
+        { n: '01', t: '申し込む', d: 'フォームに、名前などの情報・免許・インスタを書いて送る（5分ほど）。1人1回送ってください。' },
+        { n: '02', t: '店が選ぶ', d: '届いた順を目安に全部の申し込みを見て、乗っていただく方にメールします。' },
+        { n: '03', t: '払ったら確定', d: 'メールに決済のリンク（カード・Square）があります。払い終わった時点で台が決まります。' },
       ],
       closes: '申し込みの締め切り',
-      replyLabel: '返事',
       knowLabel: 'GOOD TO KNOW',
       know: [
         { k: '含まれるもの', v: '1日分のチョッパー・箱根のお昼・OCEANBEETLE BREAKFAST CLUB のデザート・高速代・対人対物の保険。' },
@@ -160,37 +159,41 @@ const T = en
         { k: '雨・凍結', v: EVENT.weatherJa },
         { k: 'キャンセル', v: EVENT.cancelJa },
         { k: '写真', v: '当日はスタッフが写真と動画を撮ります。写りたくない方はフォームで教えてください。' },
-        { k: '集合場所', v: 'BEETLE RIDER 鎌倉店（鎌倉市小町1-15-2）', link: { href: localePath('/access', lang), label: 'アクセス →' } },
+        { k: '集合', v: 'BEETLE RIDER 鎌倉店（鎌倉市小町1-15-2）に 10:00。', link: { href: localePath('/access', lang), label: 'アクセス →' } },
       ],
       finalTitle: '台数わずか。この日だけ。',
       ask: '質問はインスタの DM へ',
     };
 
 const facts = T.facts.map((f) => (f.v === null ? { ...f, v: EVENT.seats ? T.bikesValue(EVENT.seats) : null } : f));
-const replyValue = en ? EVENT.replyEn : EVENT.replyJa;
 const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
+const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
 ---
 
 <BaseLayout title={T.metaTitle} description={T.metaDesc} activePage="chopper" headerLogo="chopper" ogImage="/assets/after-run/og.jpg" noindex={true}>
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&family=Alfa+Slab+One&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+  </Fragment>
 
   <!-- Hero -->
   <section class="ar-hero">
     <img src="/assets/after-run/hero.webp" alt={en ? 'Our choppers lined up on the Shonan coast with Enoshima and Mt. Fuji' : '江の島と富士山を背に並んだチョッパー'} class="ar-hero-img" loading="eager" width="2000" height="1333" />
     <div class="ar-hero-shade"></div>
     <div class="ar-hero-inner">
-      <p class="ar-tag">{T.tag}</p>
-      <h1 class="ar-title">AFTER RUN</h1>
-      <div class="ar-stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p class="ar-tag">★ BEETLE RIDER KAMAKURA PRESENTS ★</p>
+      <h1 class="ar-title"><span class="ar-script">{NAME.script}</span><span class="ar-block">{NAME.block}</span></h1>
+      <p class="ar-ribbon">{T.tag}</p>
       <p class="ar-lead">{T.lead}</p>
       <p class="ar-intro">{T.intro}</p>
       {!en && (
-        <p class="ar-notice">{(T as any).notice} <a href={localePath('/after-run', 'en')}>{(T as any).toEn}</a></p>
+        <p class="ar-notice">{(T as any).notice} <a href={localePath('/japan-run', 'en')}>{(T as any).toEn}</a></p>
       )}
       <div class="ar-ctas" data-ar-open>
-        {!closed && <a class="ar-btn" href={applyHref}>{T.apply}</a>}
+        {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
         {!closed && <a class="ar-btn ar-btn-ghost" href="#how">{T.how}</a>}
         {closed && <p class="ar-closed">{T.closedMsg}</p>}
-        {!closed && !EVENT.formUrl && <span class="ar-tbc">{en ? 'FORM LINK: TBC' : 'フォームのリンク: 未定'}</span>}
       </div>
       <p class="ar-closed" data-ar-closed hidden>{T.closedMsg}</p>
     </div>
@@ -216,7 +219,7 @@ const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
       <ol class="ar-day">
         {T.day.map((d) => (
           <li class="ar-stop">
-            <p class="ar-stop-time">{d.time ? d.time : ((d as any).needsTime ? <span class="ar-tbc">{TBC}</span> : '')}</p>
+            <p class="ar-stop-time">{d.time}</p>
             <div>
               <p class="ar-stop-place">{d.place}</p>
               <p class="ar-stop-text">{d.text}</p>
@@ -268,14 +271,11 @@ const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
             <p class="ar-step-n">{s.n}</p>
             <p class="ar-step-t">{s.t}</p>
             <p class="ar-step-d">{s.d}</p>
-            {s.extra === 'reply' && (
-              <p class="ar-step-x">{T.replyLabel}: {replyValue ? replyValue : <span class="ar-tbc">{TBC}</span>}</p>
-            )}
           </div>
         ))}
       </div>
       <div class="ar-apply-row" data-ar-open>
-        {!closed && <a class="ar-btn" href={applyHref}>{T.apply}</a>}
+        {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
         <p class="ar-closes">{T.closes}: {closesValue ? closesValue : <span class="ar-tbc">{TBC}</span>}</p>
       </div>
     </div>
@@ -301,12 +301,13 @@ const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
 
   <!-- Final CTA -->
   <section class="ar-final">
-    <div class="ar-stripes ar-stripes-wide" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="ar-stripes" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="ar-wrap ar-final-inner">
-      <p class="ar-final-date">{en ? 'TUE, DEC 8' : '12月8日（火）'}</p>
+      <p class="ar-final-date">{en ? 'TUE, DEC 8 · 10:00 AM · KAMAKURA' : '12月8日（火）10:00・鎌倉'}</p>
+      <p class="ar-final-name"><span class="ar-script">{NAME.script}</span><span class="ar-block">{NAME.block}</span></p>
       <h2 class="ar-final-title">{T.finalTitle}</h2>
       <div data-ar-open>
-        {!closed && <a class="ar-btn" href={applyHref}>{T.apply}</a>}
+        {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
       </div>
       <p class="ar-ask">{T.ask} <a href="https://ig.me/m/beetlerider_japan" target="_blank" rel="noopener">@beetlerider_japan</a></p>
     </div>
@@ -321,83 +322,87 @@ const closesValue = en ? EVENT.closesEn : EVENT.closesJa;
   </script>
 
   <style>
-    .ar-hero { position: relative; min-height: 92svh; display: flex; align-items: flex-end; overflow: hidden; background: #111; padding-top: 66px; }
-    .ar-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: saturate(0.85) sepia(0.18) contrast(1.02); }
-    .ar-hero-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(20, 6, 4, 0.15) 0%, rgba(20, 6, 4, 0.25) 40%, rgba(45, 10, 10, 0.96) 100%); }
+    .ar-hero { position: relative; min-height: 94svh; display: flex; align-items: flex-end; overflow: hidden; background: #111; padding-top: 66px; }
+    .ar-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: grayscale(1) contrast(1.08); }
+    .ar-hero-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26, 6, 6, 0.35) 0%, rgba(26, 6, 6, 0.45) 45%, rgba(45, 10, 10, 0.97) 100%); }
     .ar-hero-inner { position: relative; z-index: 2; width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 24px 56px; }
-    .ar-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #F3E7CF; opacity: 0.85; margin-bottom: 14px; }
-    .ar-title { font-family: var(--font-heading); font-size: clamp(64px, 14vw, 168px); line-height: 0.88; letter-spacing: -0.02em; color: #F3E7CF; margin: 0 0 18px; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35); }
-    .ar-stripes { display: grid; gap: 5px; width: min(420px, 70%); margin-bottom: 22px; }
-    .ar-stripes i { display: block; height: 7px; border-radius: 2px; }
-    .ar-stripes i:nth-child(1) { background: var(--color-brand); }
-    .ar-stripes i:nth-child(2) { background: #E2672B; }
-    .ar-stripes i:nth-child(3) { background: #E9A93A; }
-    .ar-stripes i:nth-child(4) { background: #F3E7CF; }
-    .ar-lead { font-family: var(--font-heading); font-size: clamp(22px, 3.4vw, 38px); color: #fff; letter-spacing: -0.01em; margin-bottom: 14px; }
-    .ar-intro { font-size: clamp(14px, 1.6vw, 17px); line-height: 1.85; color: rgba(255, 255, 255, 0.78); max-width: 640px; margin-bottom: 22px; }
-    .ar-notice { font-size: 13px; line-height: 1.8; color: #F3E7CF; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(243, 231, 207, 0.25); border-radius: 12px; padding: 10px 14px; max-width: 640px; margin-bottom: 22px; }
+    .ar-tag { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.32em; color: #F1E6CF; margin-bottom: 4px; }
+    .ar-title { margin: 0 0 40px; line-height: 0.9; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 18px; }
+    .ar-script { font-family: 'Mr Dafoe', cursive; color: var(--color-brand); font-weight: 400; transform: rotate(-6deg); display: inline-block; text-shadow: 3px 3px 0 #F1E6CF, 7px 7px 0 #1A1110; }
+    .ar-block { font-family: 'Alfa Slab One', var(--font-heading), serif; color: #F1E6CF; letter-spacing: 0.12em; }
+    .ar-title .ar-script { font-size: clamp(96px, 17vw, 196px); padding-right: 10px; }
+    .ar-title .ar-block { font-size: clamp(52px, 8.5vw, 104px); }
+    .ar-ribbon { display: inline-block; background: var(--color-brand); color: #F1E6CF; font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: clamp(13px, 1.6vw, 17px); letter-spacing: 0.16em; padding: 9px 18px; margin-bottom: 20px; box-shadow: 5px 5px 0 #1A1110; }
+    .ar-lead { font-family: var(--font-heading); font-size: clamp(22px, 3.2vw, 34px); color: #fff; letter-spacing: -0.01em; margin-bottom: 12px; }
+    .ar-intro { font-size: clamp(14px, 1.6vw, 17px); line-height: 1.85; color: rgba(255, 255, 255, 0.8); max-width: 660px; margin-bottom: 22px; }
+    .ar-notice { font-size: 13px; line-height: 1.8; color: #F1E6CF; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(241, 230, 207, 0.25); border-radius: 12px; padding: 10px 14px; max-width: 660px; margin-bottom: 22px; }
     .ar-notice a { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; margin-left: 6px; white-space: nowrap; }
     .ar-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
     .ar-btn { display: inline-flex; align-items: center; justify-content: center; padding: 15px 28px; border-radius: 999px; background: var(--color-brand); color: #fff; font-weight: 800; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; transition: transform 0.2s ease, background 0.2s ease; }
     .ar-btn:hover { transform: translateY(-2px); background: #a80b1e; }
-    .ar-btn-ghost { background: transparent; border: 1px solid rgba(255, 255, 255, 0.4); }
+    .ar-btn-ghost { background: transparent; border: 1px solid rgba(255, 255, 255, 0.45); }
     .ar-btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
-    .ar-closed { font-size: 15px; font-weight: 700; color: #F3E7CF; }
+    .ar-closed { font-size: 15px; font-weight: 700; color: #F1E6CF; }
     .ar-tbc { display: inline-block; padding: 1px 8px; border: 1px dashed #E9A93A; border-radius: 6px; color: #E9A93A; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; vertical-align: middle; }
 
     .ar-sec { background: var(--color-deep-red); padding: 72px 24px; }
     .ar-sec-tight { padding: 28px 24px 8px; }
     .ar-wrap { max-width: 1000px; margin: 0 auto; }
     .ar-narrow { max-width: 820px; }
-    .ar-label { font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #E2672B; margin-bottom: 12px; }
+    .ar-label { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.3em; color: #F1E6CF; opacity: 0.85; margin-bottom: 10px; }
+    .ar-label::before { content: '★ '; color: var(--color-brand); }
     .ar-h2 { font-family: var(--font-heading); font-size: clamp(24px, 3.4vw, 40px); color: #fff; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 28px; }
     .ar-p { font-size: 15px; line-height: 1.9; color: rgba(255, 255, 255, 0.72); margin-bottom: 14px; }
 
     .ar-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-    .ar-fact { background: #F3E7CF; color: #2D0A0A; border-radius: 16px; padding: 18px 18px 16px; }
-    .ar-fact-k { font-size: 10px; font-weight: 800; letter-spacing: 0.24em; color: #B4441B; margin-bottom: 8px; }
+    .ar-fact { background: #F1E6CF; color: #1A1110; border-radius: 6px; padding: 18px 18px 16px; border: 3px solid #1A1110; box-shadow: 5px 5px 0 var(--color-brand); }
+    .ar-fact-k { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.24em; color: var(--color-brand); margin-bottom: 8px; }
     .ar-fact-v { font-weight: 800; font-size: 15px; line-height: 1.45; }
     .ar-fact .ar-tbc { color: #9a5a00; border-color: #9a5a00; }
 
-    .ar-day { list-style: none; margin: 0; padding: 0; border-left: 2px solid rgba(243, 231, 207, 0.2); }
+    .ar-day { list-style: none; margin: 0; padding: 0; border-left: 2px solid rgba(241, 230, 207, 0.22); }
     .ar-stop { display: grid; grid-template-columns: 110px 1fr; gap: 18px; padding: 0 0 26px 22px; position: relative; }
-    .ar-stop::before { content: ''; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: #E2672B; box-shadow: 0 0 0 4px var(--color-deep-red); }
-    .ar-stop-time { font-family: var(--font-heading); font-size: 14px; color: #E9A93A; padding-top: 2px; }
+    .ar-stop::before { content: ''; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-brand); box-shadow: 0 0 0 4px var(--color-deep-red); }
+    .ar-stop-time { font-family: 'Alfa Slab One', var(--font-heading), serif; font-size: 15px; color: #F1E6CF; padding-top: 2px; }
     .ar-stop-place { font-family: var(--font-heading); font-size: 18px; color: #fff; letter-spacing: 0.02em; margin-bottom: 4px; }
-    .ar-stop-text { font-size: 14px; line-height: 1.85; color: rgba(255, 255, 255, 0.66); }
+    .ar-stop-text { font-size: 14px; line-height: 1.85; color: rgba(255, 255, 255, 0.68); }
     .ar-stop-note { font-size: 12px; color: rgba(255, 255, 255, 0.5); margin-top: 6px; }
 
     .ar-jose { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; align-items: center; }
-    .ar-jose-img { border-radius: 20px; overflow: hidden; aspect-ratio: 4 / 3; background: #111; }
-    .ar-jose-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9) sepia(0.12); }
+    .ar-jose-img { border-radius: 8px; overflow: hidden; aspect-ratio: 4 / 3; background: #111; border: 4px solid #F1E6CF; }
+    .ar-jose-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); }
 
     .ar-list { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 10px; }
-    .ar-list li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.8; color: rgba(255, 255, 255, 0.75); }
-    .ar-list li::before { content: ''; position: absolute; left: 0; top: 11px; width: 10px; height: 3px; background: #E9A93A; border-radius: 2px; }
+    .ar-list li { position: relative; padding-left: 24px; font-size: 15px; line-height: 1.8; color: rgba(255, 255, 255, 0.78); }
+    .ar-list li::before { content: '★'; position: absolute; left: 0; top: 0; color: var(--color-brand); font-size: 13px; }
 
     .ar-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 28px; }
-    .ar-step { border: 1px solid rgba(243, 231, 207, 0.16); background: rgba(255, 255, 255, 0.03); border-radius: 18px; padding: 22px; }
-    .ar-step-n { font-family: var(--font-heading); color: #E2672B; font-size: 14px; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .ar-step { border: 1px solid rgba(241, 230, 207, 0.18); background: rgba(255, 255, 255, 0.03); border-radius: 8px; padding: 22px; }
+    .ar-step-n { font-family: 'Alfa Slab One', var(--font-heading), serif; color: var(--color-brand); font-size: 22px; letter-spacing: 0.06em; margin-bottom: 6px; }
     .ar-step-t { font-family: var(--font-heading); color: #fff; font-size: 19px; margin-bottom: 8px; }
-    .ar-step-d { font-size: 14px; line-height: 1.8; color: rgba(255, 255, 255, 0.66); }
-    .ar-step-x { font-size: 12px; color: rgba(255, 255, 255, 0.5); margin-top: 10px; }
+    .ar-step-d { font-size: 14px; line-height: 1.8; color: rgba(255, 255, 255, 0.68); }
     .ar-apply-row { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
     .ar-closes { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
 
     .ar-know { margin: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
     .ar-know-row { display: grid; grid-template-columns: 170px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-    .ar-know-row dt { font-weight: 800; font-size: 13px; letter-spacing: 0.04em; color: #F3E7CF; }
-    .ar-know-row dd { margin: 0; font-size: 14px; line-height: 1.8; color: rgba(255, 255, 255, 0.7); }
-    .ar-inline-link { margin-left: 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: #E9A93A; white-space: nowrap; }
+    .ar-know-row dt { font-weight: 800; font-size: 13px; letter-spacing: 0.04em; color: #F1E6CF; }
+    .ar-know-row dd { margin: 0; font-size: 14px; line-height: 1.8; color: rgba(255, 255, 255, 0.72); }
+    .ar-inline-link { margin-left: 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: #F1E6CF; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 
-    .ar-final { background: #F3E7CF; color: #2D0A0A; padding: 0 24px 72px; text-align: center; }
-    .ar-stripes-wide { width: auto; max-width: none; margin: 0 -24px 56px; gap: 0; }
-    .ar-stripes-wide i { height: 12px; border-radius: 0; }
-    .ar-stripes-wide i:nth-child(4) { background: #6B2E1A; }
-    .ar-final-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .ar-final-date { font-size: 12px; font-weight: 800; letter-spacing: 0.3em; color: #B4441B; }
-    .ar-final-title { font-family: var(--font-heading); font-size: clamp(30px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 8px; }
-    .ar-ask { font-size: 13px; color: rgba(45, 10, 10, 0.7); margin-top: 6px; }
+    .ar-final { background: #F1E6CF; color: #1A1110; padding: 0 24px 72px; text-align: center; }
+    .ar-stripes { display: grid; margin: 0 -24px 48px; }
+    .ar-stripes i { display: block; height: 10px; }
+    .ar-stripes i:nth-child(1) { background: var(--color-brand); }
+    .ar-stripes i:nth-child(2) { background: #F1E6CF; }
+    .ar-stripes i:nth-child(3) { background: #1A1110; }
+    .ar-final-inner { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .ar-final-date { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.3em; color: #1A1110; }
+    .ar-final-name { line-height: 0.9; display: flex; align-items: baseline; gap: 14px; }
+    .ar-final-name .ar-script { font-size: clamp(76px, 11vw, 128px); text-shadow: 5px 5px 0 #1A1110; }
+    .ar-final-name .ar-block { font-size: clamp(40px, 6vw, 68px); color: #1A1110; }
+    .ar-final-title { font-family: var(--font-heading); font-size: clamp(24px, 3.6vw, 38px); line-height: 1.1; letter-spacing: -0.01em; margin: 6px 0 8px; }
+    .ar-ask { font-size: 13px; color: rgba(26, 17, 16, 0.75); margin-top: 6px; }
     .ar-ask a { font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 
     @media (max-width: 860px) {
