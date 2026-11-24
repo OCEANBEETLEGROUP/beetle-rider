@@ -1,6 +1,6 @@
 ---
 /**
- * AfterRunBanner：12/8 のラン（JAPAN RUN・名前は仮）の特設ページへの入口。ホームとチョッパーのページのヒーロー直下に置く。
+ * AfterRunBanner：12/8 のラン（BEETLE RUN・HOT ROD SHOW AFTER RUN）の特設ページへの入口。ホームとチョッパーのページのヒーロー直下に置く。
  * 12/8 18:00（日本時間）を過ぎたら自動で消える（ビルド時に出さない＋表示時にも消す）。終わったら外してよい。
  */
 import type { Lang } from '../i18n/config';
@@ -18,18 +18,18 @@ const show = Date.now() < Date.parse(ENDS_AT);
 {show && (
   <section class="arb" data-arb-until={ENDS_AT}>
     <link href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&family=Alfa+Slab+One&family=Oswald:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <a class="arb-card" href={localePath('/japan-run', lang)}>
+    <a class="arb-card" href={localePath('/beetle-run', lang)}>
       <div class="arb-stripes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="arb-body">
         <div>
-          <p class="arb-kicker">★ {en ? 'TUE, DEC 8 · ONE DAY CHOPPER RIDE' : '12月8日（火）・チョッパーで走る1日'} ★</p>
-          <p class="arb-title"><span class="arb-script">Japan</span><span class="arb-block">RUN</span></p>
+          <p class="arb-kicker">★ {en ? 'HOT ROD SHOW AFTER RUN · TUE, DEC 8' : 'ロッドショーのアフターラン・12月8日（火）'} ★</p>
+          <p class="arb-title"><span class="arb-script">Beetle</span><span class="arb-block">RUN</span></p>
           <p class="arb-text">
             {en
               ? 'Ride Japan with JOSE before you fly home. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama.'
               : 'JOSE と走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。'}
           </p>
-          <p class="arb-meta">{en ? 'Meet 10:00 am in Kamakura · ¥32,000 per rider · Only a few bikes' : '10:00 鎌倉店に集合・¥32,000（食事・高速代込み）・台数わずか'}</p>
+          <p class="arb-meta">{en ? 'Meet 10:00 am in Kamakura · ¥32,000 per rider, fuel included · Only a few bikes' : '10:00 鎌倉店に集合・¥32,000（ガソリン・食事・高速代込み）・台数わずか'}</p>
         </div>
         <span class="arb-cta">{en ? 'SEE DETAILS' : 'くわしく見る'} <span aria-hidden="true">→</span></span>
       </div>

@@ -1,6 +1,6 @@
 ---
 /**
- * AfterRunPage：ロッドショーの2日後のラン（2026-12-08 火）の特設ページ。名前は「JAPAN RUN」（仮・TAKE が名前を決めたら NAME を直す）
+ * AfterRunPage：ロッドショーの2日後のラン（2026-12-08 火）の特設ページ。名前は「BEETLE RUN」＋サブタイトル「HOT ROD SHOW AFTER RUN」（TAKE 11/24）
  *
  * 経緯: BR定例 第12回（2026-11-23）で「有料のプラン ¥32,000（食事と高速代込み）・
  * 箱根 → OBBC でデザート → 七里ヶ浜で夕日」と決定。11/24 TAKE「特設ページを作って、トップとチョッパーのページからリンク。
@@ -20,7 +20,7 @@ const lang = getLangFromUrl(Astro.url);
 const en = lang === 'en';
 
 // ===== 名前（筆記体の部分と、ブロック体の部分） =====
-const NAME = { script: 'Japan', block: 'RUN', full: 'JAPAN RUN' };
+const NAME = { script: 'Beetle', block: 'RUN', full: 'BEETLE RUN', sub: 'HOT ROD SHOW AFTER RUN' };
 
 // ===== 決まったら埋める（null / '' の間は TBC の印が出る） =====
 const EVENT = {
@@ -28,9 +28,9 @@ const EVENT = {
   formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdtUkXlgyKal-lftUGtGgZNZJSVEAZvHx0YTm78bpcoKoGF2A/viewform', // 江ノ島店の Gmail のフォーム（公開は TAKE の OK 後）
   seats: null as number | null,      // 最大人数
   closesEn: '', closesJa: '',        // 申し込みの締め切り
-  fuelEn: '', fuelJa: '',            // ガソリン代の扱い
-  helmetEn: '', helmetJa: '',        // ヘルメット・装備の扱い
-  weatherEn: '', weatherJa: '',      // 雨・凍結のとき
+  fuelEn: 'Included.', fuelJa: '込み。',   // ガソリン代も込み（TAKE 11/24）
+  helmetEn: 'We lend helmets and riding gear.', helmetJa: 'ヘルメットとギアの貸し出しがあります。', // TAKE 11/24「ギアの貸出はしてます」
+  weatherEn: 'If it rains, we cancel the ride and refund you in full.', weatherJa: '雨なら中止して、全額を返金します。', // TAKE 11/24「雨なら中止で全額返金」
   cancelEn: '', cancelJa: '',        // キャンセルの決まり
   lunchEn: '', lunchJa: '',          // 箱根の店
 };
@@ -41,18 +41,18 @@ const applyExternal = !!EVENT.formUrl;
 
 const T = en
   ? {
-      metaTitle: `${NAME.full} · Tue, Dec 8｜One-day chopper ride from Kamakura｜BEETLE RIDER`,
-      metaDesc: 'One day on vintage choppers with JOSE. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama. Tuesday, December 8. Meet 10:00 am in Kamakura. ¥32,000 per rider. Only a few bikes.',
+      metaTitle: `${NAME.full} · Hot Rod Show After Run · Tue, Dec 8｜BEETLE RIDER Kamakura`,
+      metaDesc: 'The Hot Rod Show after run. One day on vintage choppers with JOSE. Lunch in Hakone, dessert by the sea, sunset at Shichirigahama. Tuesday, December 8. Meet 10:00 am in Kamakura. ¥32,000 per rider, fuel included. Only a few bikes.',
       tag: 'TUESDAY, DECEMBER 8 · ONE DAY CHOPPER RIDE',
       lead: 'Ride Japan before you fly home.',
-      intro: 'Two days after the custom show in Yokohama. Take one day on our vintage choppers and ride with JOSE. Lunch by Lake Ashi in Hakone, dessert by the sea, then the sun goes down over the water at Shichirigahama.',
+      intro: 'Two days after the Hot Rod show in Yokohama. Take one day on our vintage choppers and ride with JOSE. Lunch by Lake Ashi in Hakone, dessert by the sea, then the sun goes down over the water at Shichirigahama.',
       apply: 'APPLY FOR A BIKE',
       how: 'HOW IT WORKS',
       closedMsg: 'This ride has finished. Thank you for riding with us.',
       facts: [
         { k: 'WHEN', v: 'Tue, Dec 8 · Meet 10:00 am' as string | null },
         { k: 'PRICE', v: '¥32,000 per rider' as string | null },
-        { k: 'INCLUDED', v: 'Your chopper for the day, lunch, dessert, expressway tolls' as string | null },
+        { k: 'INCLUDED', v: 'Your chopper for the day, fuel, lunch, dessert, expressway tolls' as string | null },
         { k: 'BIKES', v: null as string | null },
       ],
       bikesValue: (n: number) => `Only ${n} bikes`,
@@ -88,7 +88,7 @@ const T = en
       closes: 'Applications close',
       knowLabel: 'GOOD TO KNOW',
       know: [
-        { k: 'Included', v: 'Your chopper for the day, lunch in Hakone, dessert at OCEANBEETLE BREAKFAST CLUB, expressway tolls and third-party liability insurance.' },
+        { k: 'Included', v: 'Your chopper for the day, fuel, lunch in Hakone, dessert at OCEANBEETLE BREAKFAST CLUB, expressway tolls and third-party liability insurance.' },
         { k: 'Fuel', v: EVENT.fuelEn },
         { k: 'Helmet and gear', v: EVENT.helmetEn },
         { k: 'Not included', v: 'Hotels and travel to Kamakura. This is a day ride, not a tour package. Damage to the bike is not covered, same as our regular rental.' },
@@ -102,11 +102,11 @@ const T = en
       ask: 'Questions? Message us on Instagram',
     }
   : {
-      metaTitle: `${NAME.full}・12月8日（火）｜BEETLE RIDER 鎌倉`,
-      metaDesc: 'ロッドショーの2日後、JOSE とビンテージのチョッパーで走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。12月8日（火）10時に鎌倉店に集合。¥32,000（食事・高速代込み）。台数わずか。',
+      metaTitle: `${NAME.full}・ロッドショーのアフターラン・12月8日（火）｜BEETLE RIDER 鎌倉`,
+      metaDesc: 'ロッドショーのアフターラン。JOSE とビンテージのチョッパーで走る1日。箱根でお昼、海でデザート、七里ヶ浜で夕日。12月8日（火）10時に鎌倉店に集合。¥32,000（ガソリン・食事・高速代込み）。台数わずか。',
       tag: '12月8日（火）・チョッパーで走る1日',
       lead: '国に帰る前に、日本を走る。',
-      intro: '横浜のカスタムショーの2日後。うちのビンテージのチョッパーで、JOSE と走る1日。箱根の芦ノ湖でお昼、海に戻ってデザート、最後は七里ヶ浜で海に沈む夕日。',
+      intro: '横浜のロッドショーの2日後。うちのビンテージのチョッパーで、JOSE と走る1日。箱根の芦ノ湖でお昼、海に戻ってデザート、最後は七里ヶ浜で海に沈む夕日。',
       notice: '海外から日本に来ているお客さま向けのランです。案内は英語で行います。',
       toEn: 'ENGLISH PAGE →',
       apply: '申し込む',
@@ -115,7 +115,7 @@ const T = en
       facts: [
         { k: '日時', v: '12月8日（火）10:00 集合' as string | null },
         { k: '料金', v: '1人 ¥32,000' as string | null },
-        { k: '含まれるもの', v: '1日分のチョッパー・お昼・デザート・高速代' as string | null },
+        { k: '含まれるもの', v: '1日分のチョッパー・ガソリン・お昼・デザート・高速代' as string | null },
         { k: '台数', v: null as string | null },
       ],
       bikesValue: (n: number) => `${n}台だけ`,
@@ -151,7 +151,7 @@ const T = en
       closes: '申し込みの締め切り',
       knowLabel: 'GOOD TO KNOW',
       know: [
-        { k: '含まれるもの', v: '1日分のチョッパー・箱根のお昼・OCEANBEETLE BREAKFAST CLUB のデザート・高速代・対人対物の保険。' },
+        { k: '含まれるもの', v: '1日分のチョッパー・ガソリン・箱根のお昼・OCEANBEETLE BREAKFAST CLUB のデザート・高速代・対人対物の保険。' },
         { k: 'ガソリン', v: EVENT.fuelJa },
         { k: 'ヘルメット・装備', v: EVENT.helmetJa },
         { k: '含まれないもの', v: '宿と鎌倉までの交通。日帰りのランで、旅行のパッケージではありません。車両の損害は、いつものレンタルと同じく補償の外です。' },
@@ -184,11 +184,12 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
     <div class="ar-hero-inner">
       <p class="ar-tag">★ BEETLE RIDER KAMAKURA PRESENTS ★</p>
       <h1 class="ar-title"><span class="ar-script">{NAME.script}</span><span class="ar-block">{NAME.block}</span></h1>
-      <p class="ar-ribbon">{T.tag}</p>
+      <p class="ar-ribbon">{NAME.sub}</p>
+      <p class="ar-subline">{T.tag}</p>
       <p class="ar-lead">{T.lead}</p>
       <p class="ar-intro">{T.intro}</p>
       {!en && (
-        <p class="ar-notice">{(T as any).notice} <a href={localePath('/japan-run', 'en')}>{(T as any).toEn}</a></p>
+        <p class="ar-notice">{(T as any).notice} <a href={localePath('/beetle-run', 'en')}>{(T as any).toEn}</a></p>
       )}
       <div class="ar-ctas" data-ar-open>
         {!closed && <a class="ar-btn" href={applyHref} {...linkAttrs}>{T.apply}</a>}
@@ -333,6 +334,7 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
     .ar-title .ar-script { font-size: clamp(96px, 17vw, 196px); padding-right: 10px; }
     .ar-title .ar-block { font-size: clamp(52px, 8.5vw, 104px); }
     .ar-ribbon { display: inline-block; background: var(--color-brand); color: #F1E6CF; font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: clamp(13px, 1.6vw, 17px); letter-spacing: 0.16em; padding: 9px 18px; margin-bottom: 20px; box-shadow: 5px 5px 0 #1A1110; }
+    .ar-subline { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.28em; color: #F1E6CF; margin: -6px 0 18px; }
     .ar-lead { font-family: var(--font-heading); font-size: clamp(22px, 3.2vw, 34px); color: #fff; letter-spacing: -0.01em; margin-bottom: 12px; }
     .ar-intro { font-size: clamp(14px, 1.6vw, 17px); line-height: 1.85; color: rgba(255, 255, 255, 0.8); max-width: 660px; margin-bottom: 22px; }
     .ar-notice { font-size: 13px; line-height: 1.8; color: #F1E6CF; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(241, 230, 207, 0.25); border-radius: 12px; padding: 10px 14px; max-width: 660px; margin-bottom: 22px; }
