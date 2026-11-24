@@ -36,11 +36,11 @@ const plan = [
   { t: '', d: 'Ride back to Kamakura' },
 ];
 
+// 国ごとの書類（JAF の翻訳文の国など）は、下の LICENSE CHECK で出るので書かない
 const who = [
   'A full motorcycle license, no engine size limit.',
-  'From overseas: an IDP with Category A, your home license and your passport.',
-  'Germany, Switzerland, Taiwan, Monaco, Estonia, Slovenia: your home license and an official JAF translation. France and Belgium: either one.',
-  'You are OK riding a heavy bike in a group, on mountain roads, in the cold.',
+  'From overseas: an IDP with Category A, your home license and your passport. Some countries need a JAF translation instead: check below.',
+  'You ride a heavy bike in a group, in the mountains, in the cold.',
 ];
 
 const steps = [
@@ -446,7 +446,7 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
     .sec-final { padding-bottom: 70px; }
     .flyer-final { max-width: 860px; transform: rotate(0.6deg); padding-top: 64px; }
     .title-final { animation: none; font-size: clamp(84px, 13vw, 150px); margin-bottom: 12px; }
-    .flyer-final .hotrod { font-size: clamp(14px, 2.1vw, 30px); }   /* 最後の名前は小さいので、上の行も合わせて名前の8割5分ほどに */
+    .flyer-final .hotrod { font-size: clamp(14px, 2.65vw, 30.5px); }   /* 最後の名前は小さいので、上の行も合わせて名前の8割5分ほどに */
     .final-date { font-family: var(--hand); font-size: clamp(19px, 2.6vw, 26px); letter-spacing: 0.04em; margin: 8px 0 26px; }
     .final-date .nw { white-space: nowrap; }
     .stamp-final { right: 40px; bottom: 38px; transform: rotate(-10deg); }
@@ -512,6 +512,8 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
       .title-final { font-size: 18.6vw; }
       .final-date .sep { display: none; }
       .final-date .nw { display: block; }
+      .flyer-final .hotrod { font-size: 3.85vw; }
+      .final-date { font-size: 4.1vw; }   /* 日付の行が名前より広くならないように */
       .float-apply { right: 12px; padding: 8px 16px 7px; }
       .float-v { font-size: 18px; }
     }
