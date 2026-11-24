@@ -14,7 +14,8 @@
  * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 先着順で決済リンクをメールで送る → 払ったら確定
  * - 締め切り: 一次募集は 11/30・二次募集はショー前日の 12/5。台数は書かない
  * - タンデム（後ろに乗る人）は ＋¥5,000（TAKE 11/25「タンデムの人はプラス5,000円にしたいです。サイトとフォームに入れてください」）。
- *   値札の下と Good to know に書く。フォームは「後ろに人を乗せるか」を聞く。値段はチョッパーのよくある質問のタンデム（+¥5,000）と同じ
+ *   値札の下にだけ書く（Good to know に1行足すと、その区切りが 90 語を超える＝layout_check.py page の ⚠️）。
+ *   フォームは「後ろに人を乗せるか」を聞く。値段はチョッパーのよくある質問のタンデム（+¥5,000）と同じ
  * - 12/8 18:00（日本時間）を過ぎたら、申し込みボタンを「終了」に切り替える（ビルド時と表示時の両方）
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -57,7 +58,6 @@ const know = [
   { k: 'Bring', v: 'Your license documents and passport. Warm layers: Hakone in December is cold.' },
   { k: 'Gear', v: 'We lend helmets, gloves and riding gear.' },
   { k: 'Your bike', v: 'Which chopper you ride is decided on the day.' },   // TAKE 11/24「車両は当日決めることも書いて」
-  { k: 'Tandem', v: 'Bring a passenger for +¥5,000. Passengers need no license. Tell us in the form.' },   // TAKE 11/25「タンデムの人はプラス5,000円」
   { k: 'Rain', v: 'We cancel the ride and refund you in full.' },
   { k: 'Cancellation', v: 'No cancellations once you pay. Rain is the only exception.' },
   { k: 'Not included', v: 'Hotels and travel to Kamakura. Damage to the bike is not covered, same as our regular rental.' },
@@ -188,7 +188,7 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
             <div class="tag-tandem">
               <p class="tag-k">TANDEM</p>
               <p class="tag-plus">+¥5,000</p>
-              <p class="tag-per">per passenger</p>
+              <p class="tag-per">per passenger<br />no license needed</p>
             </div>
           </div>
         </div>
