@@ -328,6 +328,7 @@ const linkAttrs = applyExternal ? { target: '_blank', rel: 'noopener' } : {};
     .ar-presents small { font-size: 0.75em; opacity: 0.85; margin-left: 6px; }
     .ar-hotrod { font-family: var(--font-heading); font-size: clamp(19px, 2.6vw, 36px); line-height: 1.1; color: #F1E6CF; letter-spacing: 0.02em; margin-bottom: 6px; }
     @media (min-width: 861px) { .ar-hotrod, .ar-title { white-space: nowrap; } }
+    @media (max-width: 480px) { .ar-hotrod { font-size: 4.3vw; white-space: nowrap; letter-spacing: 0; } }   /* スマホで「RUN ★」だけ次の行に落ちないように */
         .ar-title { margin: 0 0 14px; font-family: 'Rye', serif; font-weight: 400; font-size: clamp(48px, 6.2vw, 84px); line-height: 1; color: var(--color-brand); text-shadow: 4px 4px 0 #F1E6CF, 8px 8px 0 #1A1110; }
                     .ar-ribbon { display: inline-block; background: var(--color-brand); color: #F1E6CF; font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: clamp(13px, 1.6vw, 17px); letter-spacing: 0.16em; padding: 9px 18px; margin-bottom: 20px; box-shadow: 5px 5px 0 #1A1110; }
     .ar-subline { font-family: 'Oswald', var(--font-heading), sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.28em; color: #F1E6CF; margin: -6px 0 18px; }
