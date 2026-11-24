@@ -13,6 +13,8 @@
  * - noindex（BaseLayout の noindex）＋ サイトマップから外す（astro.config.mjs の filter）
  * - 申し込みの流れ: フォーム（江ノ島店の Gmail のフォーム）→ 先着順で決済リンクをメールで送る → 払ったら確定
  * - 締め切り: 一次募集は 11/30・二次募集はショー前日の 12/5。台数は書かない
+ * - タンデム（後ろに乗る人）は ＋¥5,000（TAKE 11/25「タンデムの人はプラス5,000円にしたいです。サイトとフォームに入れてください」）。
+ *   値札の下と Good to know に書く。フォームは「後ろに人を乗せるか」を聞く。値段はチョッパーのよくある質問のタンデム（+¥5,000）と同じ
  * - 12/8 18:00（日本時間）を過ぎたら、申し込みボタンを「終了」に切り替える（ビルド時と表示時の両方）
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -55,6 +57,7 @@ const know = [
   { k: 'Bring', v: 'Your license documents and passport. Warm layers: Hakone in December is cold.' },
   { k: 'Gear', v: 'We lend helmets, gloves and riding gear.' },
   { k: 'Your bike', v: 'Which chopper you ride is decided on the day.' },   // TAKE 11/24「車両は当日決めることも書いて」
+  { k: 'Tandem', v: 'Bring a passenger for +¥5,000. Passengers need no license. Tell us in the form.' },   // TAKE 11/25「タンデムの人はプラス5,000円」
   { k: 'Rain', v: 'We cancel the ride and refund you in full.' },
   { k: 'Cancellation', v: 'No cancellations once you pay. Rain is the only exception.' },
   { k: 'Not included', v: 'Hotels and travel to Kamakura. Damage to the bike is not covered, same as our regular rental.' },
@@ -182,6 +185,11 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
               <li>insurance</li>
             </ul>
             <p class="tag-gear">+ we lend helmets, gloves and gear</p>
+            <div class="tag-tandem">
+              <p class="tag-k">TANDEM</p>
+              <p class="tag-plus">+¥5,000</p>
+              <p class="tag-per">per passenger</p>
+            </div>
           </div>
         </div>
 
@@ -418,6 +426,10 @@ const metaDesc = 'The Hot Rod Show after run. Ride to Hakone on our choppers wit
     .tag-per { font-family: var(--type); font-size: 14px; margin-bottom: 18px; }
     .tag-list { list-style: none; padding: 14px 0 0; margin: 0 0 14px; border-top: 1.5px dashed rgba(26, 17, 16, 0.45); font-family: var(--type); font-size: 15px; line-height: 1.75; }
     .tag-gear { font-family: var(--hand); font-size: 17px; line-height: 1.3; transform: rotate(-2deg); }
+    /* タンデム（TAKE 11/25）: 上の ALL IN と同じ組み方で小さく。点線で区切る */
+    .tag-tandem { margin-top: 18px; padding-top: 14px; border-top: 1.5px dashed rgba(26, 17, 16, 0.45); }
+    .tag-plus { font-family: var(--hand); font-size: 34px; line-height: 1.05; color: var(--red); margin: 2px 0 0; }
+    .tag-tandem .tag-per { margin-bottom: 0; }
 
     .card-who { transform: rotate(-0.5deg); }
     .stars { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 12px; font-family: var(--type); font-size: 16px; line-height: 1.65; }
