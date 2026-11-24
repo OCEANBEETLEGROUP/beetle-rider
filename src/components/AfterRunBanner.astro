@@ -17,7 +17,7 @@ const show = Date.now() < Date.parse(ENDS_AT);
 ---
 
 {show && (
-  <section class="arb" data-arb-until={ENDS_AT}>
+  <section class="arb" id="beetle-run-banner" data-arb-until={ENDS_AT}>
     <link href="https://fonts.googleapis.com/css2?family=Rye&family=Oswald:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <a class="arb-card" href={localePath('/beetle-run', lang)}>
       <img class="arb-poster" src="/assets/after-run/poster.webp" width="1080" height="1350" loading="lazy" alt="BEETLE RUN poster: Hot Rod Show after run, Tuesday December 8" />
