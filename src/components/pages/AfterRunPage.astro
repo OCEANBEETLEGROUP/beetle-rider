@@ -31,7 +31,7 @@ const EVENT = {
   fuelEn: 'Included.', fuelJa: '込み。',   // ガソリン代も込み（TAKE 11/24）
   helmetEn: 'We lend helmets and riding gear.', helmetJa: 'ヘルメットとギアの貸し出しがあります。', // TAKE 11/24「ギアの貸出はしてます」
   weatherEn: 'If it rains, we cancel the ride and refund you in full.', weatherJa: '雨なら中止して、全額を返金します。', // TAKE 11/24「雨なら中止で全額返金」
-  cancelEn: '', cancelJa: '',        // キャンセルの決まり
+  cancelEn: 'No cancellations once you pay. The only exception is rain: if we cancel the ride, you get a full refund.', cancelJa: 'お支払いのあとのキャンセルはできません。雨で中止したときだけ、全額を返金します。', // TAKE 11/24「雨（開催中止）以外でキャンセル禁止」
   lunchEn: '', lunchJa: '',          // 箱根の店
 };
 const closed = Date.now() > Date.parse(EVENT.endsAt);
